@@ -112,10 +112,19 @@
   .out .row{display:flex;justify-content:space-between;gap:10px;font-size:.86rem;padding:8px 0;border-bottom:1px solid var(--line)}
   .out .row:last-of-type{border-bottom:0} .out .row b{font-family:var(--mono)}
   .out .lead2{font-size:.83rem;color:var(--dim);margin-top:12px;line-height:1.55;border-top:1px solid var(--line);padding-top:12px}
+  .field select{width:100%;min-width:0;background:transparent;border:0;color:var(--ink);font-family:inherit;font-size:.98rem;font-weight:700;padding:11px 4px;outline:none;cursor:pointer}
+  .field select option{background:var(--panel);color:var(--ink)}
+  .gpill{display:inline-block;font-weight:800;font-size:.95rem;padding:8px 15px;border-radius:999px;margin-bottom:14px}
+  .gpill.g{background:color-mix(in srgb,var(--g) 16%,transparent);color:var(--g)}
+  .gpill.y{background:color-mix(in srgb,var(--y) 16%,transparent);color:var(--y)}
+  .gpill.r{background:color-mix(in srgb,var(--r) 16%,transparent);color:var(--r)}
+  .gm{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:2px}
+  .gm .k{font-size:.68rem;text-transform:uppercase;color:var(--dim);letter-spacing:.04em}
+  .gm .v{font-family:var(--mono);font-weight:700;font-size:1.15rem;margin-top:3px}
 
   footer{border-top:1px solid var(--line);margin-top:24px;padding:26px 0 50px;color:var(--dimmer);font-size:.8rem}
 
-  @media(max-width:720px){ .rules{grid-template-columns:1fr} .ex{grid-template-columns:1fr} .exwrap{grid-template-columns:1fr} .fields{grid-template-columns:1fr} .seg{flex-direction:column} .brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem} }
+  @media(max-width:720px){ .rules{grid-template-columns:1fr} .ex{grid-template-columns:1fr} .exwrap{grid-template-columns:1fr} .fields{grid-template-columns:1fr} .gm{grid-template-columns:1fr} .seg{flex-direction:column} .brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem} }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
 </style>
 </head>
@@ -149,7 +158,8 @@
   <nav class="subnav">
     <a href="#semaforo">🚦 O semáforo</a>
     <a href="#exemplos">📌 3 exemplos</a>
-    <a href="#calculadora">🧮 Calculadora</a>
+    <a href="#calculadora">🧮 Entrada × prestação</a>
+    <a href="#gatilho">🎯 Preço-gatilho</a>
   </nav>
 
   <!-- 01 SEMÁFORO -->
@@ -233,6 +243,24 @@ Parcela  = amortização de (preço×75%) a 7,5%/30a<br>
     </div>
     <p style="color:var(--dimmer);font-size:.8rem;margin-top:10px">Amortização francesa (parcela fixa), como um financiamento <i>conventional</i>/DSCR. Para o veredito completo com imposto, vacância e cash flow, use o <a href="analisador.html">analisador</a>.</p>
   </section>
+
+  <!-- 04 PREÇO-GATILHO -->
+  <section id="gatilho">
+    <div class="sec-head"><span class="idx">04</span><h2>Calculadora de preço-gatilho</h2></div>
+    <p style="color:var(--dim)">A pergunta que fecha o negócio: <b>"a que preço essa casa vira 🟢 verde?"</b> Diga o aluguel e o imposto (escolha a cidade que já preenche o efetivo) e a calculadora roda o <b>mesmo motor do semáforo</b> — dá o veredito no preço pedido e o <b>preço-gatilho</b> (o maior preço em que ela passa a valer a pena). É a sua watchlist: <i>"compro se cair para X"</i>.</p>
+
+    <div class="calc">
+      <div class="fields">
+        <div class="field"><label>Cidade (preenche o imposto)</label><div class="inp"><select id="g_city"></select></div></div>
+        <div class="field"><label>Imposto efetivo</label><div class="inp"><input id="g_tax" type="number" value="1.845" min="0" step="0.01"><span class="suf">%</span></div></div>
+        <div class="field"><label>Preço pedido</label><div class="inp"><span class="pre">US$</span><input id="g_price" type="number" value="420000" min="0" step="5000"></div></div>
+        <div class="field"><label>Aluguel total</label><div class="inp"><span class="pre">US$</span><input id="g_rent" type="number" value="4200" min="0" step="50"><span class="suf">/mês</span></div></div>
+        <div class="field"><label>Nº de unidades</label><div class="inp"><input id="g_units" type="number" value="2" min="1" step="1"></div></div>
+      </div>
+      <div class="out" id="g_out"></div>
+    </div>
+    <p style="color:var(--dimmer);font-size:.8rem;margin-top:10px">Premissas do motor: 25% de entrada · 7,5%/30a · vacância 6% · gestão 9% · manutenção 10% · seguro US$ 1.800/ano. Mesmo cálculo do <a href="lista.html">Lista</a> e do <a href="analisador.html">analisador</a>.</p>
+  </section>
 </div>
 
 <footer><div class="wrap">
@@ -304,6 +332,60 @@ Parcela  = amortização de (preço×75%) a 7,5%/30a<br>
     }
     ['c_price','c_target','c_downpct','c_rate','c_term'].forEach(id=>{const el=$(id);if(el)el.addEventListener('input',calc);});
     calc();
+  })();
+
+  /* ---------- calculadora de preço-gatilho (porta exata do estrategias.py) ---------- */
+  (function(){
+    const $=id=>document.getElementById(id);
+    const CITY_TAX={'Newark':1.845,'Irvington':2.26,'East Orange':2.888,'Bloomfield':2.603,'Elizabeth':2.072,'Fort Lee':1.891,'Englewood':2.171,'Teaneck':2.250,'Hackensack':2.678,'Jersey City':1.919,'Union City':1.997,'Bayonne':2.116};
+    const sel=$('g_city');
+    sel.innerHTML='<option value="">— escolher —</option>'+Object.keys(CITY_TAX).map(c=>`<option value="${c}">${c}</option>`).join('');
+    sel.value='Newark';
+    const DEF={ins:1800,vac:0.06,mgmt:0.09,maint:0.10,down:0.25,rate:0.075/12,term:360};
+    const fmt=n=>'US$ '+Math.round(n).toLocaleString('pt-BR');
+    function metrics(price,rent,units,effTax){
+      const tax=price*effTax, gsi=rent*12, egi=gsi*(1-DEF.vac);
+      const opex=tax+DEF.ins+gsi*DEF.mgmt+gsi*DEF.maint;
+      const noi=egi-opex, loan=price*(1-DEF.down), r=DEF.rate;
+      const pmt=loan*r/(1-Math.pow(1+r,-DEF.term)), debt=pmt*12;
+      return {noi, cap:noi/price*100, cf:noi-debt, cfu:(noi-debt)/12/units, dscr:noi/debt};
+    }
+    const green=(p,rent,u,t)=>{const m=metrics(p,rent,u,t); return m.cfu>=100 && m.cap>=6 && m.dscr>=1.2;};
+    function trigger(rent,u,t,cur){
+      let lo=1000, hi=Math.max(cur*3,2000000);
+      if(green(hi,rent,u,t)) return hi;
+      if(!green(lo,rent,u,t)) return null;
+      for(let i=0;i<44;i++){const mid=(lo+hi)/2; if(green(mid,rent,u,t)) lo=mid; else hi=mid;}
+      return lo;
+    }
+    function run(){
+      const price=+$('g_price').value||0, rent=+$('g_rent').value||0, units=Math.max(1,+$('g_units').value||1), effTax=(+$('g_tax').value||0)/100;
+      const out=$('g_out');
+      if(price<=0||rent<=0){out.innerHTML='<div class="lead2">Informe preço e aluguel.</div>';return;}
+      const m=metrics(price,rent,units,effTax), cfm=m.cf/12;
+      let v,vl;
+      if(m.cfu>=100&&m.cap>=6&&m.dscr>=1.2){v='g';vl='Comprar';}
+      else if(cfm<-50||m.dscr<1.0){v='r';vl='Passar';}
+      else{v='y';vl='Observar';}
+      const trig=trigger(rent,units,effTax,price);
+      let gline;
+      if(v==='g') gline=`<b style="color:var(--g)">🟢 Já está verde</b> no preço pedido — segue verde até ≈ <b>${fmt(trig)}</b>.`;
+      else if(trig==null) gline=`<b style="color:var(--r)">Não vira verde</b> com esse aluguel, nem baixando o preço — precisa de <b>mais aluguel</b> (ou menos imposto/unidades).`;
+      else if(trig>=price) gline=`No preço pedido já deveria estar verde (gatilho ${fmt(trig)}). Reveja os números.`;
+      else gline=`🎯 Vira <b style="color:var(--g)">🟢 verde</b> se o preço cair para <b>≤ ${fmt(trig)}</b> <span style="color:var(--dimmer)">(${Math.round((1-trig/price)*100)}% abaixo do pedido). Essa é a sua watchlist.</span>`;
+      const c1=m.cap>=6?'var(--g)':'var(--ink)', c2=m.cfu>=0?'var(--g)':'var(--r)', c3=m.dscr>=1.2?'var(--g)':(m.dscr<1?'var(--r)':'var(--ink)');
+      out.innerHTML=
+        `<div class="gpill ${v}">${v==='g'?'🟢':v==='y'?'🟡':'🔴'} ${vl}</div>`+
+        `<div class="gm">`+
+          `<div><div class="k">Cap rate</div><div class="v" style="color:${c1}">${m.cap.toFixed(1).replace('.',',')}%</div></div>`+
+          `<div><div class="k">Cash flow / un / mês</div><div class="v" style="color:${c2}">${m.cfu>=0?'+':'−'}${fmt(Math.abs(m.cfu))}</div></div>`+
+          `<div><div class="k">DSCR</div><div class="v" style="color:${c3}">${m.dscr.toFixed(2).replace('.',',')}</div></div>`+
+        `</div>`+
+        `<div class="lead2">${gline}</div>`;
+    }
+    sel.addEventListener('change',()=>{ if(CITY_TAX[sel.value]!=null){ $('g_tax').value=CITY_TAX[sel.value]; } run(); });
+    ['g_tax','g_price','g_rent','g_units'].forEach(id=>$(id).addEventListener('input',run));
+    run();
   })();
 </script>
 </body>

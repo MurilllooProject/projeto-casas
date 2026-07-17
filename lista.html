@@ -63,6 +63,8 @@
   .vd.g{background:var(--g)}.vd.y{background:var(--y)}.vd.r{background:var(--r)}
   .casa .addr{font-weight:600;line-height:1.3}
   .casa .sub{font-size:.74rem;color:var(--dim);margin-top:2px}
+  .star{background:none;border:0;cursor:pointer;font-size:1.1rem;color:var(--dimmer);padding:0;line-height:1;margin-top:0;flex-shrink:0;transition:color .12s,transform .12s}
+  .star:hover{transform:scale(1.2);color:var(--accent)} .star.on{color:var(--accent)}
   .pos{color:var(--g)} .neg{color:var(--r)} .cap.ok{color:var(--g)}
   .pill{display:inline-block;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:4px 9px;border-radius:999px;white-space:nowrap}
   .pill.g{background:color-mix(in srgb,var(--g) 15%,transparent);color:var(--g)}
@@ -112,6 +114,7 @@
       <span class="chip" data-v="y"><span class="d" style="background:var(--y)"></span>Observar</span>
       <span class="chip" data-v="r"><span class="d" style="background:var(--r)"></span>Passar</span>
     </div>
+    <span class="chip" id="favchip" title="mostrar só os favoritos">⭐ <span id="favn">Favoritos</span></span>
   </div>
   <p class="cnt" id="cnt"></p>
 
@@ -142,7 +145,9 @@ const LISTINGS = [{"city": "Newark", "address": "149 Pomona Ave, Newark, NJ", "t
 const fmt=n=>n==null?'—':'US$ '+Math.round(n).toLocaleString('pt-BR');
 const fmtk=n=>n==null?'—':(n>=0?'+':'−')+'US$ '+Math.abs(Math.round(n)).toLocaleString('pt-BR');
 const VMETA={g:['Comprar','g'],y:['Observar','y'],r:['Passar','r']};
-let state={q:'',city:'',v:'all',sort:'v',dir:1};
+const FAV=new Set(JSON.parse(localStorage.getItem('casas_fav')||'[]'));
+const saveFav=()=>localStorage.setItem('casas_fav',JSON.stringify([...FAV]));
+let state={q:'',city:'',v:'all',favOnly:false,sort:'v',dir:1};
 
 // popular cidades
 const cities=[...new Set(LISTINGS.map(l=>l.city))].sort();
@@ -157,6 +162,7 @@ function sortVal(l,k){ if(k==='address')return (l.city+' '+l.address).toLowerCas
 function apply(){
   let rows=LISTINGS.filter(l=>{
     if(state.v!=='all' && l.v!==state.v) return false;
+    if(state.favOnly && !FAV.has(l.address)) return false;
     if(state.city && l.city!==state.city) return false;
     if(state.q){const t=(l.address+' '+l.city+' '+l.type).toLowerCase(); if(!t.includes(state.q)) return false;}
     return true;
@@ -173,7 +179,7 @@ function apply(){
     const conf=l.conf?`<span class="conf ${l.conf}">${l.conf}</span>`:'—';
     const src=l.src?`<a class="srcl" href="${l.src}" target="_blank" rel="noopener" title="ver anúncio">↗</a>`:'';
     return `<tr>
-      <td><div class="casa"><span class="vd ${l.v}"></span><div><div class="addr">${l.address}</div>
+      <td><div class="casa"><button class="star${FAV.has(l.address)?' on':''}" data-fav="${l.address.replace(/"/g,'&quot;')}" aria-label="favoritar" title="favoritar">${FAV.has(l.address)?'★':'☆'}</button><span class="vd ${l.v}"></span><div><div class="addr">${l.address}</div>
         <div class="sub" title="${(l.note||'').replace(/"/g,'&quot;')}">${l.city} · ${l.type}${bb}</div></div></div></td>
       <td class="num">${fmt(l.price)}</td>
       <td class="num ${capc}">${l.cap==null?'—':l.cap.toString().replace('.',',')+'%'}</td>
@@ -186,6 +192,7 @@ function apply(){
   }).join('');
   document.getElementById('empty').style.display=rows.length?'none':'block';
   document.getElementById('cnt').textContent=`${rows.length} de ${LISTINGS.length} casas`;
+  document.getElementById('favn').textContent='Favoritos'+(FAV.size?' ('+FAV.size+')':'');
   document.querySelectorAll('thead th[data-k]').forEach(th=>{
     const on=th.dataset.k===state.sort;
     th.querySelector('.ar')?.remove();
@@ -205,6 +212,13 @@ document.querySelectorAll('thead th[data-k]').forEach(th=>th.addEventListener('c
   if(state.sort===k){state.dir*=-1;} else {state.sort=k; state.dir=(k==='address'||k==='v'||k==='conf')?1:-1;}
   apply();
 }));
+document.getElementById('tb').addEventListener('click',e=>{
+  const b=e.target.closest('.star'); if(!b)return;
+  const id=b.dataset.fav; FAV.has(id)?FAV.delete(id):FAV.add(id); saveFav(); apply();
+});
+document.getElementById('favchip').addEventListener('click',()=>{
+  state.favOnly=!state.favOnly; document.getElementById('favchip').classList.toggle('on',state.favOnly); apply();
+});
 apply();
 </script>
 </body>

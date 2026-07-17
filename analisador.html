@@ -119,11 +119,12 @@
     <div class="panel">
       <h2>Entradas (padrões de Newark pré-carregados)</h2>
       <div class="frow">
+        <div class="field"><label>Cidade <span class="tag">preenche o imposto</span></label><select id="u_city" onchange="setCity()"></select></div>
         <div class="field"><label>Preço de compra (US$)</label><input id="u_price" type="number" value="350000" oninput="calcU()"></div>
         <div class="field"><label>Reforma estimada (US$)</label><input id="u_rehab" type="number" value="20000" oninput="calcU()"></div>
         <div class="field"><label>Aluguel mensal total (US$)</label><input id="u_rent" type="number" value="2600" oninput="calcU()"></div>
         <div class="field"><label>Nº de unidades <span class="tag">p/ cash flow/unid.</span></label><input id="u_units" type="number" value="3" oninput="calcU()"></div>
-        <div class="field"><label>Property tax anual (US$) <span class="tag">Newark ~1,845%</span></label><input id="u_tax" type="number" value="6458" oninput="calcU(true)"><p class="hint">Auto = preço × 1,845%. <b>Troque pela conta REAL</b> do lote (NJ Property Explorer).</p></div>
+        <div class="field"><label>Property tax anual (US$) <span class="tag" id="u_tax_lbl">Newark ~1,845%</span></label><input id="u_tax" type="number" value="6458" oninput="calcU(true)"><p class="hint">Auto = preço × imposto efetivo da cidade. <b>Troque pela conta REAL</b> do lote (NJ Property Explorer).</p></div>
         <div class="field"><label>Seguro anual (US$) <span class="tag">+flood?</span></label><input id="u_ins" type="number" value="1800" oninput="calcU()"></div>
         <div class="field"><label>HOA mensal (US$)</label><input id="u_hoa" type="number" value="0" oninput="calcU()"></div>
         <div class="field"><label>Vacância (%)</label><input id="u_vac" type="number" value="6" oninput="calcU()"></div>
@@ -353,9 +354,18 @@ function triggerPrice(C,units,curPrice){
   for(let i=0;i<44;i++){ const mid=(lo+hi)/2; if(isGreen(mid,C,units)) lo=mid; else hi=mid; }
   return lo;
 }
+const U_CITY_TAX={'Newark':1.845,'Irvington':2.26,'East Orange':2.888,'Bloomfield':2.603,'Elizabeth':2.072,'Fort Lee':1.891,'Englewood':2.171,'Teaneck':2.250,'Hackensack':2.678,'Jersey City':1.919,'Union City':1.997,'Bayonne':2.116};
+let effTaxRate=0.01845;
+(function(){const s=document.getElementById('u_city'); if(s){ s.innerHTML=Object.keys(U_CITY_TAX).map(c=>`<option value="${c}">${c} · ${String(U_CITY_TAX[c]).replace('.',',')}%</option>`).join('')+'<option value="">Outra (manual)</option>'; s.value='Newark'; }})();
+function setCity(){
+  const c=document.getElementById('u_city').value;
+  if(U_CITY_TAX[c]!=null){ effTaxRate=U_CITY_TAX[c]/100;
+    const t=document.getElementById('u_tax_lbl'); if(t) t.textContent=c+' ~'+String(U_CITY_TAX[c]).replace('.',',')+'%'; }
+  calcU();
+}
 function calcU(taxManual){
   const price=num('u_price'), rehab=num('u_rehab'), rent=num('u_rent'), units=Math.max(1,num('u_units'));
-  if(!taxManual){ document.getElementById('u_tax').value=Math.round(price*0.01845); }
+  if(!taxManual){ document.getElementById('u_tax').value=Math.round(price*effTaxRate); }
   const tax=num('u_tax'), ins=num('u_ins'), hoa=num('u_hoa')*12;
   const C={ rent, ins, hoa, effTax: price? tax/price : 0.01845,
     vac:num('u_vac')/100, mgmt:num('u_mgmt')/100, maint:num('u_maint')/100,
