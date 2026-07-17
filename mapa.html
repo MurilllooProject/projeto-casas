@@ -37,6 +37,11 @@
 .cpop .cs{margin-top:8px;font-size:.74rem;font-weight:700}
 .legend{position:absolute;z-index:900;bottom:14px;left:14px;background:rgba(22,30,44,.92);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.76rem}
 .legend div{margin:3px 0}
+.lsep{height:1px;background:var(--line);margin:9px 0}
+.lt{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:5px}
+.lchip{display:flex!important;align-items:center;gap:7px;cursor:pointer;color:var(--dim);padding:3px 0;user-select:none}
+.lchip:hover{color:var(--ink)} .lchip.on{color:var(--ink);font-weight:700}
+.lc{width:11px;height:11px;border-radius:3px;opacity:.45;flex-shrink:0} .lchip.on .lc{opacity:1}
 .leaflet-control-attribution{background:rgba(14,20,32,.8)!important;color:var(--dim)!important}
 /* PAINEL */
 .panel{position:absolute;z-index:1100;top:0;right:0;bottom:0;width:380px;max-width:92vw;background:var(--panel);
@@ -100,7 +105,10 @@
 <div><span class="dot" style="background:var(--watch)"></span>Observar (gatilho)</div>
 <div><span class="dot" style="background:var(--pass)"></span>Passar</div>
 <div><span class="star-note">✅ Promissora</span></div>
-<div style="color:var(--dim);margin-top:5px;font-size:.7rem">clique num pin → painel completo</div></div>
+<div style="color:var(--dim);margin-top:5px;font-size:.7rem">clique num pin → painel completo</div>
+<div class="lsep"></div><div class="lt">Camadas (orientação dos hubs)</div>
+<div class="lchip" data-l="flood"><span class="lc" style="background:#3B82F6"></span>🌊 Flood / alagamento</div>
+<div class="lchip" data-l="crime"><span class="lc" style="background:#F0563E"></span>🚨 Crime · 🟢 mais seguro</div></div>
 <div class="panel" id="panel"><button class="close" onclick="document.getElementById('panel').classList.remove('open')">✕</button><div id="pcontent"></div></div>
 <div class="modal" id="modal"><div class="box"><button class="close" onclick="document.getElementById('modal').classList.remove('open')">Fechar ✕</button><h2>📚 Estratégias que usamos</h2>
 <p class=sub>Toda casa é classificada por um <b>semáforo</b>: 🟢 comprar · 🟡 observar (com preço-gatilho) · 🔴 passar.</p>
@@ -205,6 +213,36 @@ csel.value=selectedCity; csel.onchange=()=>selectCity(csel.value);
 const opts=[['all','Todas'],['buy','🟢'],['watch','🟡'],['pass','🔴']];
 function bf(){document.getElementById('filters').innerHTML=opts.map(([k,l])=>`<span class="chip ${k===filter?'on':''}" data-f="${k}">${l}</span>`).join('');
  document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{filter=ch.dataset.f;bf();apply();});}
+
+// ---- camadas de orientação (flood / crime) — qualitativo dos hubs verificados ----
+const ZONES=[
+  {k:'flood',lat:40.720,lng:-74.150,r:1500,t:'Newark — Ironbound sul / porto',n:'Flood alto (Zone AE): Passaic River + porto.'},
+  {k:'flood',lat:40.803,lng:-74.196,r:750,t:'Bloomfield — Third River',n:'Corredor do Third River em pontos.'},
+  {k:'flood',lat:40.655,lng:-74.190,r:1500,t:'Elizabeth — costa / Elizabeth River',n:'Perto do porto/Newark Bay; passivo ambiental.'},
+  {k:'flood',lat:40.884,lng:-74.030,r:950,t:'Hackensack — First/Second Ward',n:'Corredor do Hackensack River (Zone AE).'},
+  {k:'flood',lat:40.720,lng:-74.055,r:2400,t:'Jersey City — ~40% em flood',n:'Waterfront + lado do Hackensack River.'},
+  {k:'flood',lat:40.665,lng:-74.108,r:2000,t:'Bayonne — bordas da península',n:'Baía de NY / Newark Bay nas bordas.'},
+  {k:'flood',lat:40.732,lng:-74.229,r:900,t:'Irvington — flood pluvial',n:'Flood pluvial moderado (não costeiro).'},
+  {k:'risk',lat:40.720,lng:-74.212,r:1600,t:'Newark — South Ward',n:'Crime mais alto (Weequahic/Clinton Hill). Barato + risco.'},
+  {k:'risk',lat:40.732,lng:-74.229,r:1400,t:'Irvington — geral',n:'Crime alto no geral; DD por quadra.'},
+  {k:'risk',lat:40.742,lng:-74.192,r:1200,t:'Newark — West/Central (bolsões)',n:'Bolsões de crime — varia muito por quadra.'},
+  {k:'safe',lat:40.768,lng:-74.170,r:800,t:'Newark — Forest Hill',n:'Mais seguro (norte), histórico.'},
+  {k:'safe',lat:40.732,lng:-74.160,r:900,t:'Newark — Ironbound',n:'Mais seguro, comercial/imigrante (mas flood).'},
+  {k:'safe',lat:40.895,lng:-74.048,r:800,t:'Hackensack — Fairmount/Heights',n:'Mais seguro e seco (oeste/norte).'},
+];
+const ZSTY={flood:{c:'#3B82F6',fo:0.16},risk:{c:'#F0563E',fo:0.15},safe:{c:'#2FBF71',fo:0.12}};
+const floodGroup=L.layerGroup(), crimeGroup=L.layerGroup();
+ZONES.forEach(z=>{
+  const s=ZSTY[z.k];
+  const circle=L.circle([z.lat,z.lng],{radius:z.r,color:s.c,weight:1,opacity:.65,fillColor:s.c,fillOpacity:s.fo});
+  circle.bindPopup(`<div class="cpop"><div class="t">${z.k==='flood'?'🌊':z.k==='risk'?'🚨':'🟢'} ${z.t}</div><div class="n2">${z.n}</div><div class="cs" style="color:var(--dim);font-weight:400;font-size:.68rem;margin-top:6px">Orientação qualitativa dos hubs — confirme no FEMA (flood) e em dados oficiais (crime) por endereço.</div></div>`);
+  (z.k==='flood'?floodGroup:crimeGroup).addLayer(circle);
+});
+const LGROUP={flood:floodGroup,crime:crimeGroup};
+document.querySelectorAll('.lchip[data-l]').forEach(el=>el.onclick=()=>{
+  const on=el.classList.toggle('on');
+  if(on) map.addLayer(LGROUP[el.dataset.l]); else map.removeLayer(LGROUP[el.dataset.l]);
+});
 
 // init — abre mostrando as 12 cidades
 apply(); refreshCounts(); bf();
