@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analisador de Deal — Newark</title>
+<style>
+  :root{
+    --bg:#0f1216; --panel:#171b22; --panel2:#1e242d; --line:#2a323d;
+    --tx:#e8edf3; --tx2:#9aa7b6; --accent:#4f9cf9; --good:#35c66b; --bad:#f0553d; --warn:#f2b53d;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f4f6f9; --panel:#ffffff; --panel2:#eef2f7; --line:#dce3ec;
+      --tx:#121820; --tx2:#5a6675; --accent:#1f6fe0; --good:#1a9e51; --bad:#d63b22; --warn:#c98a00; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5}
+  .wrap{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+  header h1{margin:0 0 4px;font-size:1.5rem}
+  header p{margin:0 0 18px;color:var(--tx2);font-size:.92rem}
+  .tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+  .tab{background:var(--panel2);color:var(--tx2);border:1px solid var(--line);padding:9px 16px;border-radius:10px;cursor:pointer;font-size:.92rem;font-weight:600}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  h2{font-size:1.05rem;margin:0 0 10px}
+  label{display:block;font-size:.8rem;color:var(--tx2);margin:0 0 4px;font-weight:600}
+  textarea,input,select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--tx);border-radius:9px;padding:9px 10px;font-size:.9rem;font-family:inherit}
+  textarea{min-height:130px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+  .hint{font-size:.78rem;color:var(--tx2);margin:6px 0 0}
+  button.go{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:12px}
+  button.go:hover{filter:brightness(1.08)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 12px}
+  .stat .k{font-size:.72rem;color:var(--tx2);text-transform:uppercase;letter-spacing:.03em}
+  .stat .v{font-size:1.15rem;font-weight:700;margin-top:3px}
+  .v.good{color:var(--good)} .v.bad{color:var(--bad)} .v.warn{color:var(--warn)}
+  .chartbox{width:100%;overflow-x:auto;margin-top:14px}
+  svg{display:block;max-width:100%}
+  .read{margin-top:14px;padding:12px 14px;border-radius:11px;background:var(--panel2);border-left:4px solid var(--accent);font-size:.9rem}
+  .read strong{color:var(--accent)}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.frow{grid-template-columns:1fr}}
+  .field{margin-bottom:10px}
+  .out{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:6px}
+  table{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  td,th{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--tx2);font-weight:600}
+  .tag{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:var(--tx2)}
+  .note{font-size:.8rem;color:var(--tx2);background:var(--panel2);border-radius:9px;padding:9px 11px;margin-top:10px;border:1px solid var(--line)}
+  .hide{display:none}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🏙️ Analisador de Deal — Newark, NJ</h1>
+    <p>Ferramenta local do projeto. Cole o histórico de preços de uma casa para ver as <b>quedas (price drops)</b> e o poder de negociação, e rode o <b>underwriting</b> já calibrado para Newark. Tudo roda no seu navegador — nada é enviado para fora.</p>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="precos">📉 Preços</div>
+    <div class="tab" data-tab="under">🔑 Buy &amp; Hold</div>
+    <div class="tab" data-tab="flip">🔨 Flip</div>
+    <div class="tab" data-tab="lien">🧾 Tax Lien</div>
+    <div class="tab" data-tab="wholesale">🤝 Wholesale</div>
+  </div>
+
+  <!-- ================= TAB PREÇOS ================= -->
+  <section id="precos">
+    <div class="panel">
+      <h2>Histórico de preços da casa</h2>
+      <label for="hist">Cole os eventos — um por linha: <code>data, preço, evento</code></label>
+      <textarea id="hist">2024-08-12, 359000, Listed
+2024-09-20, 349000, Price cut
+2024-11-05, 335000, Price cut
+2025-01-10, 319000, Price cut
+2025-02-28, 305000, Pending</textarea>
+      <p class="hint">Data em <code>AAAA-MM-DD</code> ou <code>MM/DD/AAAA</code>. Preço com ou sem <code>$</code> e vírgula. Evento é opcional (Listed, Price cut, Pending, Sold, Relisted). <b>Onde pegar:</b> seção <i>Price history</i> do Zillow/Redfin, ou PropStream. Veja <a href="../puxar-valores-dados.md">como puxar valores</a>.</p>
+      <button class="go" onclick="runHist()">Gerar gráfico</button>
+      <div id="histerr" class="note hide"></div>
+    </div>
+
+    <div class="panel hide" id="histres">
+      <h2>Resultado</h2>
+      <div class="chartbox"><svg id="chart" viewBox="0 0 900 340" width="900" height="340"></svg></div>
+      <div class="grid" id="histstats"></div>
+      <div class="read" id="histread"></div>
+      <table id="histtable"><thead><tr><th>Data</th><th>Preço</th><th>Evento</th><th>Variação</th></tr></thead><tbody></tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= TAB UNDERWRITING ================= -->
+  <section id="under" class="hide">
+    <div class="panel">
+      <h2>Entradas (padrões de Newark pré-carregados)</h2>
+      <div class="frow">
+        <div class="field"><label>Preço de compra (US$)</label><input id="u_price" type="number" value="350000" oninput="calcU()"></div>
+        <div class="field"><label>Reforma estimada (US$)</label><input id="u_rehab" type="number" value="20000" oninput="calcU()"></div>
+        <div class="field"><label>Aluguel mensal total (US$)</label><input id="u_rent" type="number" value="2600" oninput="calcU()"></div>
+        <div class="field"><label>Nº de unidades <span class="tag">p/ cash flow/unid.</span></label><input id="u_units" type="number" value="3" oninput="calcU()"></div>
+        <div class="field"><label>Property tax anual (US$) <span class="tag">Newark ~1,845%</span></label><input id="u_tax" type="number" value="6458" oninput="calcU(true)"><p class="hint">Auto = preço × 1,845%. <b>Troque pela conta REAL</b> do lote (NJ Property Explorer).</p></div>
+        <div class="field"><label>Seguro anual (US$) <span class="tag">+flood?</span></label><input id="u_ins" type="number" value="1800" oninput="calcU()"></div>
+        <div class="field"><label>HOA mensal (US$)</label><input id="u_hoa" type="number" value="0" oninput="calcU()"></div>
+        <div class="field"><label>Vacância (%)</label><input id="u_vac" type="number" value="6" oninput="calcU()"></div>
+        <div class="field"><label>Gestão (%)</label><input id="u_mgmt" type="number" value="9" oninput="calcU()"></div>
+        <div class="field"><label>Manutenção + CapEx (%)</label><input id="u_maint" type="number" value="10" oninput="calcU()"></div>
+        <div class="field"><label>Entrada (%)</label><input id="u_down" type="number" value="25" oninput="calcU()"></div>
+        <div class="field"><label>Juros do financiamento (% a.a.)</label><input id="u_rate" type="number" value="7.5" step="0.1" oninput="calcU()"></div>
+        <div class="field"><label>Prazo (anos)</label><input id="u_term" type="number" value="30" oninput="calcU()"></div>
+      </div>
+      <div class="note">⚠️ <b>Rent control em Newark</b>: aluguel de unidades sob controle sobe no máx. ~4% (ou CPI) ao ano — modele crescimento travado, não reversão a mercado. <b>Property tax</b> é o inimigo nº 1: sempre use a conta real do imóvel.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Aluguel — buy &amp; hold</h2>
+      <div class="out" id="u_out_hold"></div>
+    </div>
+
+    <div class="panel">
+      <h2>🚦 Veredito + preço-gatilho</h2>
+      <div id="u_verdict"></div>
+      <h2 style="margin-top:18px">Preço × aluguel</h2>
+      <div class="out" id="u_ratios"></div>
+      <h2 style="margin-top:18px">Cenários de entrada (down payment)</h2>
+      <div style="overflow-x:auto" id="u_scen"></div>
+    </div>
+
+  </section>
+
+  <!-- ================= FLIP ================= -->
+  <section id="flip" class="hide">
+    <div class="panel">
+      <h2>🔨 Fix &amp; Flip — análise completa</h2>
+      <div class="frow">
+        <div class="field"><label>Preço de compra (US$)</label><input id="fl_price" type="number" value="300000" oninput="calcFlip()"></div>
+        <div class="field"><label>ARV — valor reformado (US$)</label><input id="fl_arv" type="number" value="430000" oninput="calcFlip()"></div>
+        <div class="field"><label>Reforma (US$)</label><input id="fl_rehab" type="number" value="60000" oninput="calcFlip()"></div>
+        <div class="field"><label>Meses de holding</label><input id="fl_months" type="number" value="6" oninput="calcFlip()"></div>
+        <div class="field"><label>Juros hard money (% a.a.)</label><input id="fl_rate" type="number" value="11" step="0.1" oninput="calcFlip()"></div>
+        <div class="field"><label>Entrada no hard money (%)</label><input id="fl_down" type="number" value="10" oninput="calcFlip()"></div>
+        <div class="field"><label>Custo de venda (% do ARV)</label><input id="fl_sell" type="number" value="7" oninput="calcFlip()"></div>
+        <div class="field"><label>Custo de compra (% do preço)</label><input id="fl_buy" type="number" value="2" oninput="calcFlip()"></div>
+        <div class="field"><label>Fator da regra (%)</label><input id="fl_factor" type="number" value="70" oninput="calcFlip()"></div>
+      </div>
+      <div id="fl_verdict"></div>
+      <div class="out" id="fl_out" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- ================= TAX LIEN ================= -->
+  <section id="lien" class="hide">
+    <div class="panel">
+      <h2>🧾 Tax Lien (NJ) — yield da redenção</h2>
+      <div class="frow">
+        <div class="field"><label>Valor do lien / certificado (US$)</label><input id="tl_lien" type="number" value="8000" oninput="calcLien()"></div>
+        <div class="field"><label>Juro ganho no leilão (% a.a.)</label><input id="tl_rate" type="number" value="6" step="0.1" oninput="calcLien()"></div>
+        <div class="field"><label>Premium pago (US$)</label><input id="tl_prem" type="number" value="1500" oninput="calcLien()"></div>
+        <div class="field"><label>Subsequent taxes pagos (US$)</label><input id="tl_sub" type="number" value="6000" oninput="calcLien()"></div>
+        <div class="field"><label>Juro sobre subsequent (% a.a.)</label><input id="tl_subrate" type="number" value="18" step="0.1" oninput="calcLien()"></div>
+        <div class="field"><label>Meses até a redenção</label><input id="tl_months" type="number" value="18" oninput="calcLien()"></div>
+        <div class="field"><label>Valor do imóvel (US$)</label><input id="tl_value" type="number" value="300000" oninput="calcLien()"></div>
+      </div>
+      <div id="tl_verdict"></div>
+      <div class="out" id="tl_out" style="margin-top:12px"></div>
+      <div class="note">Penalty de redenção (automático): 2% (&gt;$200), 4% (&gt;$5k), 6% (&gt;$10k) sobre o lien, só na redenção. Premium <b>não rende juros</b> e escheat em 5 anos. Foreclosure de terceiro só após <b>2 anos</b>.</div>
+    </div>
+  </section>
+
+  <!-- ================= WHOLESALE ================= -->
+  <section id="wholesale" class="hide">
+    <div class="panel">
+      <h2>🤝 Wholesale — spread / assignment fee</h2>
+      <div class="frow">
+        <div class="field"><label>ARV (US$)</label><input id="w_arv" type="number" value="430000" oninput="calcWholesale()"></div>
+        <div class="field"><label>Reforma estimada (US$)</label><input id="w_rehab" type="number" value="60000" oninput="calcWholesale()"></div>
+        <div class="field"><label>Fator do comprador (%)</label><input id="w_factor" type="number" value="70" oninput="calcWholesale()"></div>
+        <div class="field"><label>Seu preço de contrato (US$)</label><input id="w_contract" type="number" value="240000" oninput="calcWholesale()"></div>
+      </div>
+      <div id="w_verdict"></div>
+      <div class="out" id="w_out" style="margin-top:12px"></div>
+      <div class="note">Você trava o imóvel em contrato por um preço baixo e <b>repassa (assign)</b> a outro investidor. O spread é sua taxa. Precisa de <b>lista de cash buyers</b> e atenção à legalidade do wholesaling no estado.</div>
+    </div>
+  </section>
+
+  <p class="hint" style="text-align:center;margin-top:24px">Estimativas de estudo — não é aconselhamento financeiro. Sempre valide a conta real de imposto, o rent control e o flood zone antes de fechar.</p>
+</div>
+
+<script>
+// ---------- tabs ----------
+const TABS=['precos','under','flip','lien','wholesale'];
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  TABS.forEach(id=>document.getElementById(id).classList.toggle('hide', t.dataset.tab!==id));
+});
+
+// ---------- helpers ----------
+const money = n => '$'+Math.round(n).toLocaleString('en-US');
+const pct = n => (n>=0?'+':'')+n.toFixed(1)+'%';
+function parseDate(s){
+  s=s.trim();
+  let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if(m) return new Date(+m[1],+m[2]-1,+m[3]);
+  m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/); if(m) return new Date(+m[3],+m[1]-1,+m[2]);
+  const d=new Date(s); return isNaN(d)?null:d;
+}
+function parseHist(txt){
+  // Agnóstico a delimitador: extrai data e preço por regex (aceita $ e vírgula de milhar).
+  const rows=[];
+  txt.split(/\n+/).forEach(line=>{
+    const raw=line.trim();
+    if(!raw) return;
+    let date=null, rest=raw;
+    const dm=raw.match(/\d{4}-\d{1,2}-\d{1,2}|\d{1,2}\/\d{1,2}\/\d{2,4}|[A-Za-z]{3,9}\.?\s+\d{1,2},?\s+\d{4}/);
+    if(dm){ date=parseDate(dm[0]); rest=rest.replace(dm[0],' '); }
+    const pm=rest.match(/\$?\s*(\d{1,3}(?:,\d{3})+|\d{4,})/);
+    let price=null;
+    if(pm){ price=parseFloat(pm[1].replace(/,/g,'')); rest=rest.replace(pm[0],' '); }
+    const label=rest.replace(/[,$]/g,' ').replace(/\s+/g,' ').trim();
+    if(date && price!=null && !isNaN(price)) rows.push({date,price,label});
+  });
+  rows.sort((a,b)=>a.date-b.date);
+  return rows;
+}
+
+// ---------- price history ----------
+function runHist(){
+  const err=document.getElementById('histerr');
+  const rows=parseHist(document.getElementById('hist').value);
+  if(rows.length<2){ err.textContent='Informe pelo menos 2 eventos válidos (data + preço).'; err.classList.remove('hide'); return; }
+  err.classList.add('hide');
+  document.getElementById('histres').classList.remove('hide');
+  drawChart(rows);
+  fillStats(rows);
+  fillTable(rows);
+}
+function drawChart(rows){
+  const W=900,H=340,pad={l:70,r:20,t:20,b:40};
+  const prices=rows.map(r=>r.price), times=rows.map(r=>r.date.getTime());
+  const minP=Math.min(...prices), maxP=Math.max(...prices);
+  const minT=Math.min(...times), maxT=Math.max(...times);
+  const spanP=(maxP-minP)||1, spanT=(maxT-minT)||1;
+  const x=t=>pad.l+(t-minT)/spanT*(W-pad.l-pad.r);
+  const y=p=>H-pad.b-(p-minP)/spanP*(H-pad.t-pad.b);
+  const css=getComputedStyle(document.documentElement);
+  const cLine=css.getPropertyValue('--line'), cTx2=css.getPropertyValue('--tx2');
+  const cGood=css.getPropertyValue('--good'), cBad=css.getPropertyValue('--bad'), cAcc=css.getPropertyValue('--accent');
+  let s='';
+  // grid + y labels (5)
+  for(let i=0;i<=4;i++){
+    const p=minP+spanP*i/4, yy=y(p);
+    s+=`<line x1="${pad.l}" y1="${yy}" x2="${W-pad.r}" y2="${yy}" stroke="${cLine}" stroke-width="1"/>`;
+    s+=`<text x="${pad.l-8}" y="${yy+4}" text-anchor="end" font-size="11" fill="${cTx2}">${money(p)}</text>`;
+  }
+  // x labels (first,last)
+  const fmt=d=>d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'});
+  s+=`<text x="${pad.l}" y="${H-14}" font-size="11" fill="${cTx2}">${fmt(rows[0].date)}</text>`;
+  s+=`<text x="${W-pad.r}" y="${H-14}" text-anchor="end" font-size="11" fill="${cTx2}">${fmt(rows[rows.length-1].date)}</text>`;
+  // line
+  let d='M'+x(times[0])+' '+y(prices[0]);
+  for(let i=1;i<rows.length;i++) d+=' L'+x(times[i])+' '+y(prices[i]);
+  s+=`<path d="${d}" fill="none" stroke="${cAcc}" stroke-width="2.5"/>`;
+  // points
+  rows.forEach((r,i)=>{
+    let col=cAcc;
+    if(i>0) col = r.price<rows[i-1].price? cBad : (r.price>rows[i-1].price? cGood : cTx2);
+    s+=`<circle cx="${x(r.date.getTime())}" cy="${y(r.price)}" r="5" fill="${col}"><title>${r.date.toLocaleDateString('pt-BR')} — ${money(r.price)}${r.label?' ('+r.label+')':''}</title></circle>`;
+  });
+  document.getElementById('chart').innerHTML=s;
+}
+function fillStats(rows){
+  const first=rows[0].price, last=rows[rows.length-1].price;
+  const peak=Math.max(...rows.map(r=>r.price));
+  const dropPeak=peak-last, dropPeakPct=peak? -(dropPeak/peak*100):0;
+  let cuts=0, biggest=0, biggestPct=0;
+  for(let i=1;i<rows.length;i++){ if(rows[i].price<rows[i-1].price){cuts++; const c=rows[i-1].price-rows[i].price; if(c>biggest){biggest=c; biggestPct=c/rows[i-1].price*100;}} }
+  const dom=Math.round((rows[rows.length-1].date-rows[0].date)/86400000);
+  const totalPct = first? (last-first)/first*100:0;
+  const S=[
+    ['Preço inicial', money(first),''],
+    ['Preço atual', money(last), last<first?'bad':(last>first?'good':'')],
+    ['Pico', money(peak),''],
+    ['Queda desde o pico', money(dropPeak)+' ('+dropPeakPct.toFixed(1)+'%)', dropPeak>0?'bad':''],
+    ['Nº de cortes', String(cuts), cuts>=2?'warn':''],
+    ['Maior corte', biggest?money(biggest)+' ('+biggestPct.toFixed(1)+'%)':'—', biggest?'bad':''],
+    ['Dias no mercado', dom+' d', dom>90?'warn':''],
+    ['Variação total', pct(totalPct), totalPct<0?'bad':(totalPct>0?'good':'')],
+  ];
+  document.getElementById('histstats').innerHTML=S.map(([k,v,c])=>`<div class="stat"><div class="k">${k}</div><div class="v ${c}">${v}</div></div>`).join('');
+  // read
+  let msgs=[];
+  if(cuts>=2 && dropPeakPct<=-8) msgs.push('<strong>Vendedor provavelmente motivado.</strong> Vários cortes de preço e queda relevante desde o pico — há espaço para uma oferta agressiva abaixo do asking.');
+  else if(cuts>=1) msgs.push('<strong>Sinais de flexibilidade.</strong> Houve corte(s) de preço — teste uma oferta abaixo do anunciado.');
+  else msgs.push('<strong>Preço firme.</strong> Sem cortes no histórico — menos alavancagem óbvia de negociação.');
+  if(dom>120) msgs.push('Imóvel há '+dom+' dias no mercado (DOM alto) — forte leverage do comprador.');
+  else if(dom>60) msgs.push('DOM moderado ('+dom+' dias).');
+  const last2 = rows[rows.length-1].label.toLowerCase();
+  if(last2.includes('sold')) msgs.push('Último evento = <b>Sold</b>: é comp fechado, use como referência de mercado.');
+  if(last2.includes('pending')) msgs.push('Último evento = <b>Pending</b>: já tem proposta aceita.');
+  document.getElementById('histread').innerHTML=msgs.join(' ');
+}
+function fillTable(rows){
+  const tb=document.querySelector('#histtable tbody');
+  tb.innerHTML=rows.map((r,i)=>{
+    let dv='—';
+    if(i>0){const c=r.price-rows[i-1].price; const p=c/rows[i-1].price*100; dv=`<span style="color:var(--${c<0?'bad':(c>0?'good':'tx2')})">${c>=0?'+':''}${money(c).replace('$','$ ')} (${p>=0?'+':''}${p.toFixed(1)}%)</span>`;}
+    return `<tr><td>${r.date.toLocaleDateString('pt-BR')}</td><td>${money(r.price)}</td><td>${r.label||'—'}</td><td>${dv}</td></tr>`;
+  }).join('');
+}
+
+// ---------- underwriting ----------
+const GREEN={cfUnit:100, cap:6, dscr:1.2}; // limites do semáforo (verde)
+function num(id){return parseFloat(document.getElementById(id).value)||0;}
+function holdMetrics(p, C){
+  const tax=p*C.effTax;
+  const gsi=C.rent*12, egi=gsi*(1-C.vac);
+  const opex=tax+C.ins+C.hoa+gsi*C.mgmt+gsi*C.maint;
+  const noi=egi-opex;
+  const loan=p*(1-C.down);
+  const pmt=C.rate>0? loan*C.rate/(1-Math.pow(1+C.rate,-C.term)) : loan/C.term;
+  const debt=pmt*12;
+  return {tax,noi,cap:p?noi/p*100:0,pmt,debt,cf:noi-debt,dscr:debt?noi/debt:0};
+}
+function isGreen(p,C,units){ const m=holdMetrics(p,C); return (m.cf/12/units)>=GREEN.cfUnit && m.cap>=GREEN.cap && m.dscr>=GREEN.dscr; }
+function triggerPrice(C,units,curPrice){
+  let lo=1000, hi=Math.max(curPrice*3, 2000000);
+  if(isGreen(hi,C,units)) return hi;      // verde até preços altos
+  if(!isGreen(lo,C,units)) return null;   // nunca verde
+  for(let i=0;i<44;i++){ const mid=(lo+hi)/2; if(isGreen(mid,C,units)) lo=mid; else hi=mid; }
+  return lo;
+}
+function calcU(taxManual){
+  const price=num('u_price'), rehab=num('u_rehab'), rent=num('u_rent'), units=Math.max(1,num('u_units'));
+  if(!taxManual){ document.getElementById('u_tax').value=Math.round(price*0.01845); }
+  const tax=num('u_tax'), ins=num('u_ins'), hoa=num('u_hoa')*12;
+  const C={ rent, ins, hoa, effTax: price? tax/price : 0.01845,
+    vac:num('u_vac')/100, mgmt:num('u_mgmt')/100, maint:num('u_maint')/100,
+    down:num('u_down')/100, rate:num('u_rate')/100/12, term:num('u_term')*12 };
+  const m=holdMetrics(price, C);
+  const invested=price*C.down + rehab + price*0.03; // entrada + reforma + ~3% closing
+  const coc=invested? m.cf/invested*100:0;
+  const onepct = price? rent/price*100:0;
+  const p2r = rent? price/(rent*12):0;
+  const cfUnit=m.cf/12/units;
+  const H=[
+    ['NOI anual', money(m.noi), m.noi>0?'good':'bad'],
+    ['Cap rate', m.cap.toFixed(2)+'%', m.cap>=6?'good':(m.cap>=4?'warn':'bad')],
+    ['Parcela mensal', money(m.pmt),''],
+    ['Cash flow mensal', money(m.cf/12), m.cf>=0?'good':'bad'],
+    ['Cash flow /unid./mês', money(cfUnit), cfUnit>=100?'good':(cfUnit>=-50?'warn':'bad')],
+    ['Cash-on-Cash', coc.toFixed(1)+'%', coc>=8?'good':(coc>=0?'warn':'bad')],
+    ['DSCR', m.dscr.toFixed(2), m.dscr>=1.2?'good':(m.dscr>=1?'warn':'bad')],
+    ['Capital investido', money(invested),''],
+  ];
+  document.getElementById('u_out_hold').innerHTML=H.map(([k,v,c])=>`<div class="stat"><div class="k">${k}</div><div class="v ${c}">${v}</div></div>`).join('');
+  // preço x aluguel
+  const R=[
+    ['Price-to-Rent', p2r.toFixed(1), p2r<=15?'good':(p2r<=20?'warn':'bad')],
+    ['GRM', p2r.toFixed(1), p2r<=15?'good':(p2r<=20?'warn':'bad')],
+    ['Regra do 1%', onepct.toFixed(2)+'%', onepct>=1?'good':(onepct>=0.8?'warn':'bad')],
+    ['Aluguel/preço (RTV)', onepct.toFixed(2)+'%', onepct>=1?'good':(onepct>=0.8?'warn':'bad')],
+  ];
+  document.getElementById('u_ratios').innerHTML=R.map(([k,v,c])=>`<div class="stat"><div class="k">${k}</div><div class="v ${c}">${v}</div></div>`).join('');
+  // cenários de entrada
+  const scen=[20,25,30].map(d=>{ const mm=holdMetrics(price, Object.assign({},C,{down:d/100})); const inv=price*d/100+rehab+price*0.03; return {d, pmt:mm.pmt, cf:mm.cf, dscr:mm.dscr, coc:inv?mm.cf/inv*100:0}; });
+  document.getElementById('u_scen').innerHTML =
+    '<table><thead><tr><th>Entrada</th><th>Parcela/mês</th><th>Cash flow/mês</th><th>DSCR</th><th>CoC</th></tr></thead><tbody>'+
+    scen.map(s=>`<tr><td>${s.d}%</td><td>${money(s.pmt)}</td><td style="color:var(--${s.cf>=0?'good':'bad'})">${money(s.cf/12)}</td><td>${s.dscr.toFixed(2)}</td><td>${s.coc.toFixed(1)}%</td></tr>`).join('')+
+    '</tbody></table>';
+  // veredito semáforo
+  const green = cfUnit>=GREEN.cfUnit && m.cap>=GREEN.cap && m.dscr>=GREEN.dscr;
+  const red = (m.cf/12 < -50) || m.dscr<1.0;
+  const verdict = green?'verde':(red?'vermelho':'amarelo');
+  const trig = triggerPrice(C, units, price);
+  const vcolor = verdict==='verde'?'good':(verdict==='amarelo'?'warn':'bad');
+  const vlabel = verdict==='verde'?'🟢 VERDE — boa recomendação de compra':(verdict==='amarelo'?'🟡 AMARELO — observar':'🔴 VERMELHO — fora da estratégia (nos números)');
+  const checks = `CF/unid. ${money(cfUnit)} (alvo ≥ ${money(GREEN.cfUnit)}) · Cap ${m.cap.toFixed(1)}% (≥ ${GREEN.cap}%) · DSCR ${m.dscr.toFixed(2)} (≥ ${GREEN.dscr})`;
+  let trigHtml='';
+  if(verdict!=='verde'){
+    trigHtml = trig ? `<div style="margin-top:8px;font-weight:700">🎯 Vira 🟢 verde se o preço ≤ ${money(trig)} <span style="font-weight:400;color:var(--tx2)">(preço-gatilho — coloque na watchlist)</span></div>`
+                    : `<div style="margin-top:8px;color:var(--tx2)">Sem preço-gatilho: o aluguel não cobre as despesas nem a preço baixo — reveja aluguel/despesas.</div>`;
+  }
+  document.getElementById('u_verdict').innerHTML =
+    `<div style="padding:14px;border-radius:11px;border:2px solid var(--${vcolor});background:var(--panel2)">`+
+    `<div style="font-size:1.1rem;font-weight:800;color:var(--${vcolor})">${vlabel}</div>`+
+    `<div style="margin-top:6px;font-size:.85rem;color:var(--tx2)">${checks}</div>${trigHtml}`+
+    `<div style="margin-top:8px;font-size:.78rem;color:var(--tx2)">⚠️ Veredito pelos NÚMEROS. Sobreponha flood (SFHA), crime de quadra e rent control — qualquer red flag desses vira 🔴 mesmo com número bom.</div>`+
+    `</div>`;
+}
+// ---------- helpers de render ----------
+function statList(arr){ return arr.map(([k,v,c])=>`<div class="stat"><div class="k">${k}</div><div class="v ${c||''}">${v}</div></div>`).join(''); }
+function verdictBox(color,label,checks,extra){
+  return `<div style="padding:14px;border-radius:11px;border:2px solid var(--${color});background:var(--panel2)">`+
+    `<div style="font-size:1.1rem;font-weight:800;color:var(--${color})">${label}</div>`+
+    `<div style="margin-top:6px;font-size:.85rem;color:var(--tx2)">${checks}</div>${extra||''}</div>`;
+}
+// ---------- FLIP ----------
+function calcFlip(){
+  const price=num('fl_price'), arv=num('fl_arv'), rehab=num('fl_rehab');
+  const months=num('fl_months'), rate=num('fl_rate')/100, down=num('fl_down')/100;
+  const sell=num('fl_sell')/100, buy=num('fl_buy')/100, factor=num('fl_factor')/100;
+  const mao=arv*factor-rehab;
+  const loan=(price+rehab)*(1-down);
+  const holding=loan*rate*(months/12);
+  const sellCost=arv*sell, buyCost=price*buy;
+  const profit=arv-price-rehab-holding-sellCost-buyCost;
+  const cashIn=(price+rehab)*down + buyCost;
+  const roi=cashIn? profit/cashIn*100:0;
+  const margin=arv? profit/arv*100:0;
+  const green = price<=mao && profit>=30000 && margin>=10;
+  const red = profit<15000 || price>mao*1.05;
+  const v=green?'verde':(red?'vermelho':'amarelo'), color=green?'good':(red?'bad':'warn');
+  const label=green?'🟢 VERDE — flip com margem':(red?'🔴 VERMELHO — não fecha':'🟡 AMARELO — margem apertada');
+  const extra = v!=='verde'? `<div style="margin-top:8px;font-weight:700">🎯 Compre por ≤ ${money(mao)} (MAO, regra ${(factor*100).toFixed(0)}%) para mirar o lucro-alvo</div>`:'';
+  document.getElementById('fl_verdict').innerHTML=verdictBox(color,label,`Lucro ${money(profit)} · margem ${margin.toFixed(1)}% do ARV · ROI ${roi.toFixed(0)}% · MAO ${money(mao)}`,extra);
+  document.getElementById('fl_out').innerHTML=statList([
+    ['Lucro estimado', money(profit), profit>=30000?'good':(profit>=15000?'warn':'bad')],
+    ['Margem (% do ARV)', margin.toFixed(1)+'%', margin>=10?'good':(margin>=5?'warn':'bad')],
+    ['ROI (s/ seu caixa)', roi.toFixed(0)+'%', roi>=20?'good':(roi>=0?'warn':'bad')],
+    ['MAO (regra '+(factor*100).toFixed(0)+'%)', money(mao), price<=mao?'good':'bad'],
+    ['Holding ('+months+'m)', money(holding),''],
+    ['Custo de venda', money(sellCost),''],
+    ['Seu caixa no deal', money(cashIn),''],
+  ]);
+}
+// ---------- TAX LIEN ----------
+function calcLien(){
+  const lien=num('tl_lien'), rate=num('tl_rate')/100, prem=num('tl_prem');
+  const sub=num('tl_sub'), subrate=num('tl_subrate')/100, months=num('tl_months'), value=num('tl_value');
+  const yrs=Math.max(months/12, 0.01);
+  const penaltyPct = lien>10000?0.06:(lien>5000?0.04:(lien>200?0.02:0));
+  const penalty=lien*penaltyPct;
+  const interest = lien*rate*yrs + sub*subrate*yrs;
+  const gross = interest + penalty;
+  const capital = lien + prem + sub;
+  const totalYield = capital? gross/capital*100:0;
+  const annYield = totalYield/yrs;
+  const ltv = value>0? capital/value*100:999;
+  const green = annYield>=8 && ltv<=60;
+  const red = annYield<4 || value<=0 || capital>value;
+  const v=green?'verde':(red?'vermelho':'amarelo'), color=green?'good':(red?'bad':'warn');
+  const label=green?'🟢 VERDE — yield atrativo e lastro':(red?'🔴 VERMELHO — yield baixo / sem lastro':'🟡 AMARELO — checar premium/lastro');
+  document.getElementById('tl_verdict').innerHTML=verdictBox(color,label,
+    `Yield anualizado ~${annYield.toFixed(1)}% · penalty ${(penaltyPct*100).toFixed(0)}% · Lien-to-Value ${ltv.toFixed(1)}%`,
+    `<div style="margin-top:8px;font-size:.78rem;color:var(--tx2)">⚠️ Confirme posição do lien (1ª), sem IRS/ambiental. A maioria é resgatada — conte com o juro, não com o imóvel.</div>`);
+  document.getElementById('tl_out').innerHTML=statList([
+    ['Retorno na redenção', money(gross), 'good'],
+    ['Yield anualizado', annYield.toFixed(1)+'%', annYield>=8?'good':(annYield>=4?'warn':'bad')],
+    ['Yield total ('+months+'m)', totalYield.toFixed(1)+'%',''],
+    ['Penalty ('+(penaltyPct*100).toFixed(0)+'%)', money(penalty),''],
+    ['Juros no período', money(interest),''],
+    ['Capital imobilizado', money(capital),''],
+    ['Lien-to-Value', ltv>900?'n/d':ltv.toFixed(1)+'%', ltv<=60?'good':(ltv<=90?'warn':'bad')],
+  ]);
+}
+// ---------- WHOLESALE ----------
+function calcWholesale(){
+  const arv=num('w_arv'), rehab=num('w_rehab'), factor=num('w_factor')/100, contract=num('w_contract');
+  const mao=arv*factor-rehab;
+  const fee=mao-contract;
+  const green = fee>=10000, red = fee<5000;
+  const color=green?'good':(red?'bad':'warn');
+  const label=green?'🟢 VERDE — spread bom p/ repassar':(red?'🔴 VERMELHO — sem spread':'🟡 AMARELO — spread magro');
+  const extra = !green? `<div style="margin-top:8px;font-weight:700">🎯 Trave o contrato por ≤ ${money(mao-10000)} para uma fee de ~US$ 10k</div>`:'';
+  document.getElementById('w_verdict').innerHTML=verdictBox(color,label,`Assignment fee ${money(fee)} · MAO do comprador ${money(mao)}`,extra);
+  document.getElementById('w_out').innerHTML=statList([
+    ['Assignment fee (spread)', money(fee), fee>=10000?'good':(fee>=5000?'warn':'bad')],
+    ['MAO do comprador (regra)', money(mao),''],
+    ['Seu preço de contrato', money(contract),''],
+    ['ARV', money(arv),''],
+  ]);
+}
+calcU(); calcFlip(); calcLien(); calcWholesale();
+</script>
+</body>
+</html>

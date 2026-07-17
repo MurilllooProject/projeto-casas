@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Oportunidades</title>
+<style>
+  :root{
+    --bg:#0E1420; --surface:#161E2C; --surface2:#1E2838; --line:#2A3648;
+    --ink:#EAF0F8; --dim:#8DA0B8; --faint:#5E7086;
+    --accent:#33D3C2;               /* teal — só interativo */
+    --buy:#2FBF71; --watch:#F5B23F; --pass:#F0563E;  /* sinais — só status */
+    --buy-bg:rgba(47,191,113,.10); --watch-bg:rgba(245,178,63,.10); --pass-bg:rgba(240,86,62,.10);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  :root{ --faint:#5E7086; }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#EEF2F7; --surface:#FFFFFF; --surface2:#F4F7FB; --line:#DEE5EE;
+      --ink:#101826; --dim:#5B6B80; --faint:#8695A8; --accent:#0E9E90;
+      --buy-bg:rgba(47,191,113,.12); --watch-bg:rgba(214,146,20,.12); --pass-bg:rgba(216,60,40,.10);
+      --watch:#C98A12; --pass:#D53C28; --buy:#1E9E58; }
+  }
+  :root{ --dim:#8DA0B8; }
+  @media (prefers-color-scheme: light){ :root{ --dim:#5B6B80; } }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:26px 18px 60px}
+
+  /* header */
+  .eyebrow{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{margin:.25rem 0 .1rem;font-size:1.75rem;letter-spacing:-.02em}
+  .sub{color:var(--dim);font-size:.9rem;margin:0 0 20px}
+
+  /* triage bar */
+  .triage{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px}
+  .tbar{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:2px;margin-bottom:12px}
+  .tseg{height:100%}
+  .counts{display:flex;gap:20px;flex-wrap:wrap;font-size:.82rem}
+  .counts b{font-family:var(--mono);font-size:1.15rem;font-weight:700}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+
+  /* filters */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .chip{background:var(--surface2);border:1px solid var(--line);color:var(--dim);
+    padding:7px 13px;border-radius:999px;font-size:.8rem;cursor:pointer;font-weight:600;user-select:none}
+  .chip.on{background:var(--accent);color:#04201d;border-color:var(--accent)}
+
+  /* deal card */
+  .card{position:relative;background:var(--surface);border:1px solid var(--line);
+    border-radius:16px;padding:18px 20px 18px 24px;margin-bottom:12px;overflow:hidden}
+  .rail{position:absolute;left:0;top:0;bottom:0;width:6px}
+  .card.buy .rail{background:var(--buy)} .card.watch .rail{background:var(--watch)} .card.pass .rail{background:var(--pass)}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .status{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:800;
+    letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px}
+  .buy .status{color:var(--buy);background:var(--buy-bg)} .watch .status{color:var(--watch);background:var(--watch-bg)} .pass .status{color:var(--pass);background:var(--pass-bg)}
+  .pulse{width:8px;height:8px;border-radius:50%}
+  .buy .pulse{background:var(--buy)} .watch .pulse{background:var(--watch)} .pass .pulse{background:var(--pass)}
+  .strat{font-size:.72rem;color:var(--faint);font-weight:600;letter-spacing:.04em}
+  .addr{font-size:1.12rem;font-weight:700;margin:10px 0 2px;letter-spacing:-.01em}
+  .meta{color:var(--dim);font-size:.83rem}
+  .priceline{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:12px 0 4px}
+  .price{font-family:var(--mono);font-size:1.5rem;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .cut{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--pass);background:var(--pass-bg);
+    padding:3px 9px;border-radius:7px}
+  .spark{margin-left:auto}
+
+  .metrics{display:flex;gap:22px;flex-wrap:wrap;margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line)}
+  .m .k{font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+  .m .v{font-family:var(--mono);font-size:1.02rem;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
+  .v.g{color:var(--buy)} .v.w{color:var(--watch)} .v.r{color:var(--pass)}
+  .trigger{margin-top:14px;font-size:.85rem;font-weight:700;color:var(--watch);
+    background:var(--watch-bg);border-radius:9px;padding:9px 12px}
+  .flag{margin-top:12px;font-size:.8rem;color:var(--dim)}
+  .flag b{color:var(--ink)}
+  .src{margin-top:12px;font-size:.72rem;color:var(--faint)}
+  .src a{color:var(--accent);text-decoration:none}
+  .hide{display:none}
+  footer{margin-top:26px;color:var(--faint);font-size:.76rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Semáforo de deals · Buy &amp; Hold</div>
+    <h1>Painel de Oportunidades</h1>
+    <p class="sub">Cada imóvel entra classificado — 🟢 comprar · 🟡 observar (com preço-gatilho) · 🔴 passar. Triagem em segundos, decisão pelos números.</p>
+  </header>
+
+  <section class="triage">
+    <div class="tbar" id="tbar"></div>
+    <div class="counts" id="counts"></div>
+  </section>
+
+  <div class="filters" id="filters"></div>
+
+  <div id="board"></div>
+
+  <footer id="foot">Mockup do painel de visualização · 3 imóveis reais que você enviou + 1 analisado antes + 1 exemplo verde. Preços/impostos verificados; aluguéis são estimativa de mercado — reconfirme por endereço.</footer>
+</div>
+
+<script>
+/* ====== DADOS DOS DEALS (preenchidos após a pesquisa) ====== */
+const DEALS = [
+  { status:'buy', strat:'Exemplo ilustrativo · Newark 3-family', addr:'3-family a preço de leilão (exemplo)', city:'Newark, NJ',
+    specs:'3 unidades · compra ~$200k · aluguel $2.700',
+    price:200000, cut:null, hist:[],
+    metrics:{cap:9.5, cf:526, dscr:1.50, p2r:6.2}, trigger:null,
+    flag:'O que dispara 🟢 verde: preço baixo + 3 rendas + imposto real. Não é uma listagem real — mostra o alvo.',
+    source:'Exemplo do sistema', url:'' },
+
+  { status:'watch', strat:'Buy & Hold · analisado antes', addr:'575-577 Sandford Ave', city:'Newark, NJ 07106',
+    specs:'3-family · 8 bd · ~3.050 sqft · 1924',
+    price:745000, cut:null, hist:[539900,745000],
+    metrics:{cap:7.1, cf:501, dscr:1.13, p2r:9.4}, trigger:703000,
+    flag:'Só fecha pelo imposto baixo atual (~$4k). Reavaliação joga para o vermelho.',
+    source:'MLS 4008635 (já vendido)', url:'' },
+
+  { status:'pass', strat:'Buy & Hold · seu print', addr:'34 State Route 35 Hwy', city:'South Amboy, NJ 08879',
+    specs:'3 bd · 2 ba · 1.087 sqft · 1949 · single-family',
+    price:399000, cut:{amt:75900, date:'12/07'}, hist:[474900,399000],
+    metrics:{cap:4.2, cf:-686, dscr:0.67, p2r:10.7}, trigger:263279,
+    flag:'Sobre a Route 35 (rodovia) + ~2 anos no mercado. Corte grande = vendedor motivado → avaliar como FLIP, não aluguel.',
+    source:'Zillow / All Jersey MLS', url:'https://www.zillow.com/homedetails/34-State-Route-35-South-Amboy-NJ-08879/2134149038_zpid/' },
+
+  { status:'pass', strat:'Buy & Hold · seu link', addr:'28 Ferndale Rd', city:'Wayne, NJ 07470',
+    specs:'4 bd · 1.5 ba · 1955 · single-family',
+    price:599000, cut:null, hist:[296900,599000],
+    metrics:{cap:4.3, cf:-1000, dscr:0.68, p2r:12.5}, trigger:380842,
+    flag:'Bairro forte (escolas A, seguro), mas inviável como aluguel. É jogada de valorização, não cash flow.',
+    source:'Zillow / Howard Hanna', url:'https://www.zillow.com/homedetails/28-Ferndale-Rd-Wayne-NJ-07470/39788620_zpid/' },
+
+  { status:'pass', strat:'Buy & Hold · seu link', addr:'169 Southwood Dr', city:'Old Bridge, NJ 08857',
+    specs:'3 bd · 1.5 ba · 1.434 sqft · split-level',
+    price:600000, cut:null, hist:[],
+    metrics:{cap:3.9, cf:-1196, dscr:0.62, p2r:13.9}, trigger:349660,
+    flag:'Escolas nota C · pedido agressivo vs. imposto (valor implícito ~$389k). Já em pending.',
+    source:'Zillow / Coldwell Banker', url:'https://www.zillow.com/homedetails/169-Southwood-Dr-Old-Bridge-NJ-08857/39130967_zpid/' }
+];
+/* =========================================================== */
+
+const LABEL={buy:'Comprar', watch:'Observar', pass:'Passar'};
+const ORDER={buy:0, watch:1, pass:2};
+const money=n=>'$'+Math.round(n).toLocaleString('en-US');
+let filter='all';
+
+function sparkline(hist, status){
+  if(!hist || hist.length<2) return '';
+  const w=120,h=34,pad=3;
+  const mn=Math.min(...hist), mx=Math.max(...hist), sp=(mx-mn)||1;
+  const col = status==='buy'?getVar('--buy'):status==='watch'?getVar('--watch'):getVar('--pass');
+  const pts=hist.map((v,i)=>{
+    const x=pad+i/(hist.length-1)*(w-2*pad);
+    const y=h-pad-(v-mn)/sp*(h-2*pad);
+    return [x,y];
+  });
+  const d='M'+pts.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' L');
+  const last=pts[pts.length-1];
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="2.6" fill="${col}"/></svg>`;
+}
+function getVar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+function metricCell(k, v, cls){ return `<div class="m"><div class="k">${k}</div><div class="v ${cls||''}">${v}</div></div>`; }
+
+function card(d){
+  const m=d.metrics||{};
+  const cells=[];
+  if(m.cap!=null) cells.push(metricCell('Cap rate', m.cap.toFixed(1)+'%', m.cap>=6?'g':(m.cap>=4?'w':'r')));
+  if(m.cf!=null) cells.push(metricCell('Cash flow/mês', money(m.cf), m.cf>=100?'g':(m.cf>=-50?'w':'r')));
+  if(m.dscr!=null) cells.push(metricCell('DSCR', m.dscr.toFixed(2), m.dscr>=1.2?'g':(m.dscr>=1?'w':'r')));
+  if(m.p2r!=null) cells.push(metricCell('Price-to-Rent', m.p2r.toFixed(1), m.p2r<=15?'g':(m.p2r<=20?'w':'r')));
+  const cut = d.cut? `<span class="cut">▼ corte ${money(d.cut.amt)} (${d.cut.date})</span>`:'';
+  const trig = (d.status!=='buy' && d.trigger)? `<div class="trigger">🎯 Vira 🟢 verde se o preço ≤ ${money(d.trigger)}</div>`:'';
+  const flag = d.flag? `<div class="flag">⚠️ <b>${d.flag}</b></div>`:'';
+  const src = d.source? `<div class="src">${d.url?`<a href="${d.url}" target="_blank" rel="noopener">${d.source} ↗</a>`:d.source}</div>`:'';
+  return `<div class="card ${d.status}" data-status="${d.status}">
+    <div class="rail"></div>
+    <div class="top">
+      <span class="status"><span class="pulse"></span>${LABEL[d.status]}</span>
+      <span class="strat">${d.strat}</span>
+    </div>
+    <div class="addr">${d.addr}</div>
+    <div class="meta">${d.city}${d.specs?' · '+d.specs:''}</div>
+    <div class="priceline">
+      <span class="price">${money(d.price)}</span>${cut}${sparkline(d.hist,d.status)}
+    </div>
+    <div class="metrics">${cells.join('')}</div>
+    ${trig}${flag}${src}
+  </div>`;
+}
+
+function render(){
+  const list=[...DEALS].sort((a,b)=>ORDER[a.status]-ORDER[b.status]);
+  const shown=list.filter(d=>filter==='all'||d.status===filter);
+  document.getElementById('board').innerHTML=shown.map(card).join('') ||
+    '<p style="color:var(--dim)">Nenhum deal nesse filtro.</p>';
+  // triage
+  const c={buy:0,watch:0,pass:0}; DEALS.forEach(d=>{ if(c[d.status]!=null)c[d.status]++; });
+  const total=DEALS.length||1;
+  document.getElementById('tbar').innerHTML=
+    `<div class="tseg" style="width:${c.buy/total*100}%;background:var(--buy)"></div>`+
+    `<div class="tseg" style="width:${c.watch/total*100}%;background:var(--watch)"></div>`+
+    `<div class="tseg" style="width:${c.pass/total*100}%;background:var(--pass)"></div>`;
+  document.getElementById('counts').innerHTML=
+    `<span><span class="dot" style="background:var(--buy)"></span><b>${c.buy}</b> comprar</span>`+
+    `<span><span class="dot" style="background:var(--watch)"></span><b>${c.watch}</b> observar</span>`+
+    `<span><span class="dot" style="background:var(--pass)"></span><b>${c.pass}</b> passar</span>`;
+}
+function buildFilters(){
+  const opts=[['all','Todas'],['buy','🟢 Comprar'],['watch','🟡 Observar'],['pass','🔴 Passar']];
+  document.getElementById('filters').innerHTML=opts.map(([k,l])=>
+    `<span class="chip ${k===filter?'on':''}" data-f="${k}">${l}</span>`).join('');
+  document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{ filter=ch.dataset.f; buildFilters(); render(); });
+}
+buildFilters(); render();
+</script>
+</body>
+</html>
