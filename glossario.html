@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossário — Projeto Casas</title>
+<meta name="description" content="Glossário pesquisável de imóveis nos EUA: cap rate, DSCR, ARV, tax lien, BRRRR, foreclosure e ~50 termos, agrupados por tema.">
+<style>
+  :root{
+    --bg:#0E1420; --panel:#161E2C; --p2:#1E2838; --line:#2A3648;
+    --ink:#EAF0F8; --dim:#8DA0B8; --dimmer:#5E7089;
+    --accent:#33D3C2; --accent-ink:#04201d;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18);animation:pulse 2.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(51,211,194,.20)}50%{box-shadow:0 0 0 7px rgba(51,211,194,.03)}}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px;transition:color .12s,background .12s}
+  .tabs a:hover{color:var(--accent)}
+  .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+
+  .hero{padding:48px 0 22px}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+  h1{font-size:clamp(1.8rem,4.6vw,2.6rem);line-height:1.08;margin:0 0 14px;font-weight:800;letter-spacing:-.02em}
+  .lead{font-size:1.02rem;color:var(--dim);max-width:60ch;margin:0}
+
+  .search{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:1rem;
+    padding:14px 16px;border-radius:12px;margin-bottom:6px}
+  .search:focus{outline:none;border-color:var(--accent)}
+  .shint{font-size:.76rem;color:var(--dimmer);margin:0 0 18px}
+  .gtheme{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:24px 0 10px;display:flex;align-items:center;gap:10px}
+  .gtheme::after{content:"";flex:1;height:1px;background:var(--line)}
+  .term{border-bottom:1px solid var(--line);padding:12px 2px}
+  .term .t{font-weight:700} .term .t .sig{color:var(--accent);font-family:var(--mono);font-size:.8rem;font-weight:600;margin-left:6px;width:auto;height:auto;border-radius:0;background:none;box-shadow:none;animation:none;display:inline}
+  .term .d{color:var(--dim);font-size:.9rem;margin-top:3px}
+  .noresult{color:var(--dim);padding:18px 2px;display:none}
+
+  footer{border-top:1px solid var(--line);margin-top:28px;padding:26px 0 50px;color:var(--dimmer);font-size:.8rem}
+
+  @media(max-width:720px){ .brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem} }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html">Cidades</a>
+    <a href="glossario.html" class="on">Glossário</a>
+  </nav>
+</div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <p class="eyebrow">Glossário · o que cada nome significa</p>
+    <h1>Todos os termos, em português.</h1>
+    <p class="lead">Cada nome técnico do mercado americano explicado em uma linha. Digite para filtrar — busca por sigla, nome ou definição.</p>
+  </section>
+
+  <input class="search" id="q" type="search" placeholder="🔎 Buscar termo… (ex.: cap rate, DSCR, ARV, tax lien, BRRRR)" autocomplete="off">
+  <p class="shint">Digite para filtrar. <span id="qcount"></span></p>
+  <div id="glist"></div>
+  <div class="noresult" id="nores">Nenhum termo encontrado — tente outra palavra.</div>
+</div>
+
+<footer><div class="wrap">
+  As definições acompanham como usamos cada termo no projeto. Ver as fórmulas em <a href="buy-hold.html">Buy &amp; Hold</a> e <a href="estrategias.html">Estratégias</a>.
+</div></footer>
+
+<script>
+  const GLOSS = {
+    "Listagem e mercado":[
+      ["MLS","Multiple Listing Service","Banco de dados regional onde corretores listam imóveis. É a fonte 'oficial' — Zillow/Redfin puxam dela. Acesso pleno via corretor licenciado."],
+      ["DOM","Days on Market","Há quantos dias o imóvel está anunciado. DOM alto pode indicar espaço para negociar."],
+      ["FSBO","For Sale By Owner","Imóvel vendido direto pelo dono, sem corretor. Fonte de oportunidades off-market."],
+      ["Comps","Comparables","Imóveis semelhantes vendidos recentemente na região, usados para estimar valor de mercado."],
+      ["Under contract / Pending","","Imóvel com proposta aceita, aguardando o fechamento (closing)."],
+      ["Closing","","Fechamento: assinatura final e transferência da propriedade."],
+    ],
+    "Valores e análise financeira":[
+      ["ARV","After Repair Value","Valor do imóvel DEPOIS de reformado. Base do fix & flip e do wholesale."],
+      ["Cap Rate","Capitalization Rate","NOI ÷ preço de compra. Mede o retorno de um imóvel de aluguel independente de financiamento. Alvo verde: ≥ 6%."],
+      ["NOI","Net Operating Income","Receita de aluguel menos despesas operacionais (sem a parcela do financiamento)."],
+      ["Cash Flow","","Dinheiro que sobra por mês após todas as despesas E a parcela do banco. Alvo verde: ≥ +US$ 100/unidade/mês."],
+      ["CoC","Cash-on-Cash Return","Cash flow anual ÷ dinheiro que você colocou de fato. Retorno sobre o capital investido."],
+      ["GRM","Gross Rent Multiplier","Preço ÷ aluguel anual bruto. Comparação rápida entre imóveis de renda."],
+      ["DSCR","Debt Service Coverage Ratio","NOI ÷ parcela da dívida. 'DSCR loan' aprova pela renda do imóvel, não a sua. Alvo verde: ≥ 1,2 (abaixo de 1,0 = vermelho)."],
+      ["LTV","Loan-to-Value","Percentual financiado sobre o valor do imóvel. No tax lien: capital ÷ valor (alvo ≤ 60%)."],
+      ["PITI","","Principal + Interest + Taxes + Insurance = a parcela mensal completa."],
+      ["Regra dos 70%","70% Rule","No flip: pague no máx. 70% do ARV menos o custo da reforma (base do MAO)."],
+      ["MAO","Maximum Allowable Offer","Oferta máxima = ARV × fator − reforma. Acima disso, o deal não fecha."],
+      ["Regra do 1%","1% Rule","Regra de bolso: aluguel mensal ≥ 1% do preço sinaliza bom candidato a cash flow."],
+      ["Preço-gatilho","","O maior preço em que um amarelo vira verde. Sua watchlist ('compro se cair para X')."],
+    ],
+    "Impostos e leilões (tax sales)":[
+      ["Property Tax","","Imposto anual sobre a propriedade, cobrado pelo county. Não pagar gera a dívida dos leilões. Maior corrosor de cash flow."],
+      ["Tax Lien","","Certificado da DÍVIDA de imposto. Você paga o imposto atrasado e recebe juros quando o dono quita. Não leva o imóvel de imediato."],
+      ["Tax Deed","","Leilão em que o arremate transfere a PROPRIEDADE (a escritura). Não se aplica a NJ (que é lien)."],
+      ["Redemption Period","","Prazo em que o dono pode 'resgatar' pagando a dívida + juros. Em NJ, 2 anos (terceiro)."],
+      ["Redemption","","Ato de o dono quitar a dívida e cancelar o lien / recuperar o imóvel."],
+      ["OTC","Over-the-Counter","Liens/deeds que sobraram no leilão, disponíveis para compra direta no county, sem disputa."],
+      ["Quiet Title","","Ação judicial para 'limpar' o título após um tax deed e vender com título segurável."],
+      ["Assessed Value","","Valor calculado pelo county para fins de imposto (nem sempre igual ao de mercado)."],
+      ["Millage Rate","","Alíquota do imposto por US$ 1.000 de valor avaliado."],
+      ["Reavaliação","Revaluation / Reassessment","Recalibração dos assessed values ao valor de mercado. Redistribui a carga; imóveis subavaliados podem ver a conta subir."],
+    ],
+    "Distressed e execução (foreclosure)":[
+      ["Foreclosure","","Execução da hipoteca quando o dono deixa de pagar. Judicial (NJ) ou non-judicial conforme o estado."],
+      ["Pre-Foreclosure","","Fase antes do leilão, com o dono inadimplente. Janela para negociar direto."],
+      ["Sheriff's Sale","Auction / Trustee Sale","O leilão de foreclosure em si. Em NJ, pelo county sheriff; exige depósito de 20% no ato."],
+      ["REO / Bank-Owned","Real Estate Owned","Imóvel que não vendeu no leilão e voltou para o banco; costuma ir ao mercado via corretor."],
+      ["Short Sale","","Venda por valor menor que a dívida, com aprovação do banco."],
+      ["Lis Pendens","","Aviso público de ação judicial (foreclosure judicial) sobre o imóvel."],
+    ],
+    "Estratégias e atacado":[
+      ["Buy & Hold","","Comprar e manter para alugar (renda + valorização de longo prazo)."],
+      ["BRRRR","Buy, Rehab, Rent, Refinance, Repeat","Comprar, reformar, alugar, refinanciar e repetir — recuperando o capital a cada ciclo."],
+      ["Fix & Flip","","Comprar barato, reformar e revender rápido com lucro."],
+      ["House-hack","","Morar em uma unidade de um 2–4 family e alugar as outras — o inquilino cobre boa parte da parcela (FHA 3,5% de entrada)."],
+      ["Wholesale","","Garantir o imóvel em contrato e repassar (assign) a outro investidor por uma taxa, sem comprar de fato."],
+      ["Assignment","","Cessão do contrato de compra a um terceiro (base do wholesale)."],
+      ["Off-Market","","Imóvel não anunciado publicamente (marketing direto, driving for dollars, listas)."],
+      ["Motivated Seller","","Vendedor com urgência (divórcio, herança, dívida) — mais aberto a desconto."],
+      ["STR / MTR / LTR","","Short / Mid / Long-Term Rental — aluguel de curta (Airbnb), média e longa duração."],
+    ],
+    "Financiamento":[
+      ["Hard Money Loan","","Empréstimo rápido, curto prazo e juro alto, baseado no imóvel (não no seu crédito). Comum em flips."],
+      ["DSCR Loan","","Financiamento de investimento aprovado pela renda do próprio imóvel."],
+      ["Conventional Loan","","Financiamento tradicional (Fannie/Freddie); analisa sua renda e crédito."],
+      ["FHA","","Financiamento com seguro federal; 3,5% de entrada em 2–4 family owner-occupied (motor do house-hack)."],
+      ["Refi","Refinance","Trocar o empréstimo atual por outro (etapa do BRRRR para recuperar capital)."],
+      ["Points","","Taxa na originação: 1 point = 1% do empréstimo."],
+    ],
+  };
+  const glist=document.getElementById('glist');
+  function render(){
+    glist.innerHTML=Object.entries(GLOSS).map(([theme,terms])=>
+      `<div class="gblock" data-theme="${theme}"><div class="gtheme">${theme}</div>`+
+      terms.map(([t,sig,d])=>`<div class="term" data-text="${(t+' '+sig+' '+d).toLowerCase()}">`+
+        `<div class="t">${t}${sig?` <span class="sig">${sig}</span>`:''}</div><div class="d">${d}</div></div>`).join('')+
+      `</div>`).join('');
+  }
+  render();
+  const q=document.getElementById('q'), nores=document.getElementById('nores'), qc=document.getElementById('qcount');
+  const total=Object.values(GLOSS).reduce((s,a)=>s+a.length,0); qc.textContent=total+' termos.';
+  q.addEventListener('input',()=>{
+    const v=q.value.trim().toLowerCase(); let shown=0;
+    document.querySelectorAll('.term').forEach(el=>{const m=!v||el.dataset.text.includes(v);el.style.display=m?'':'none';if(m)shown++;});
+    document.querySelectorAll('.gblock').forEach(b=>{const any=[...b.querySelectorAll('.term')].some(t=>t.style.display!=='none');b.style.display=any?'':'none';});
+    nores.style.display=shown?'none':'block'; qc.textContent=v?(shown+' de '+total):(total+' termos.');
+  });
+</script>
+</body>
+</html>

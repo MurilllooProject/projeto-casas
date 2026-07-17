@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cidades — Projeto Casas</title>
+<meta name="description" content="As 12 cidades de New Jersey cobertas: imposto efetivo, tese, rent control e flood/reavaliação por cidade — Essex, Bergen e Hudson.">
+<style>
+  :root{
+    --bg:#0E1420; --panel:#161E2C; --p2:#1E2838; --line:#2A3648;
+    --ink:#EAF0F8; --dim:#8DA0B8; --dimmer:#5E7089;
+    --accent:#33D3C2; --accent-ink:#04201d;
+    --g:#3FB950; --y:#E3B341; --r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18);animation:pulse 2.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(51,211,194,.20)}50%{box-shadow:0 0 0 7px rgba(51,211,194,.03)}}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px;transition:color .12s,background .12s}
+  .tabs a:hover{color:var(--accent)}
+  .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+
+  .hero{padding:48px 0 6px}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+  h1{font-size:clamp(1.8rem,4.6vw,2.8rem);line-height:1.08;margin:0 0 16px;font-weight:800;letter-spacing:-.02em}
+  .lead{font-size:1.04rem;color:var(--dim);max-width:66ch;margin:0}
+
+  .keys{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px;font-size:.74rem}
+  .keys .k{border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--dim)}
+  .keys .k b{color:var(--accent)}
+
+  section{padding:22px 0}
+  .grouplab{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:14px 0 12px;display:flex;align-items:center;gap:10px}
+  .grouplab::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .city{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:17px 18px;transition:border-color .14s,background .14s}
+  .city:hover{border-color:var(--accent);background:var(--p2)}
+  .city .r1{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .city .nm{font-weight:800;font-size:1.12rem}
+  .city .co{font-size:.66rem;color:var(--dimmer);text-transform:uppercase;letter-spacing:.08em}
+  .city .r2{display:flex;align-items:center;gap:10px;margin:9px 0 12px}
+  .city .tax{font-family:var(--mono);font-size:.92rem} .city .tax b{color:var(--accent);font-weight:600}
+  .city .tese{font-size:.62rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
+  .city .tese[data-t="Cash-flow"]{color:var(--g);border-color:color-mix(in srgb,var(--g) 40%,var(--line))}
+  .city .tese[data-t="Appreciation"]{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+  .city .tese[data-t="House-hack"]{color:var(--y);border-color:color-mix(in srgb,var(--y) 40%,var(--line))}
+  .city .tese[data-t="Value-add"]{color:#C99BF5;border-color:#6D4A8F}
+  .city .fact{display:flex;gap:9px;font-size:.79rem;padding:6px 0;border-top:1px dashed var(--line)}
+  .city .fact .fl{color:var(--dimmer);flex-shrink:0;width:82px} .city .fact .fv{color:var(--ink)}
+  .city .note{font-size:.78rem;color:var(--dim);margin:10px 0 0;line-height:1.45;border-top:1px solid var(--line);padding-top:10px}
+
+  footer{border-top:1px solid var(--line);margin-top:24px;padding:26px 0 50px;color:var(--dimmer);font-size:.8rem}
+
+  @media(max-width:720px){ .cities{grid-template-columns:1fr} .brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem} }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+
+<div class="wrap">
+  <section class="hero" style="padding-bottom:0">
+    <p class="eyebrow">Cobertura · 12 cidades de NJ</p>
+    <h1>Onde estamos olhando em New Jersey.</h1>
+    <p class="lead">Hubs verificados por workflow (mercado, bairros, impostos e leilões). O <b>property tax é o fator nº 1</b> — por isso cada cidade traz o efetivo real, a tese, o <b>rent control</b> e o risco de <b>flood/reavaliação</b>, os 3 pontos que mais mexem no cash flow.</p>
+    <div class="keys">
+      <span class="k"><b>Cash-flow</b> · renda mensal</span>
+      <span class="k"><b>Appreciation</b> · valorização</span>
+      <span class="k"><b>House-hack</b> · morar numa e alugar as outras</span>
+      <span class="k"><b>Value-add</b> · reforma/reposicionar</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="grouplab">Essex &amp; vizinhas</p>
+    <div class="cities" id="essex"></div>
+  </section>
+
+  <section style="padding-top:6px">
+    <p class="grouplab">Fronteira NY · Gold Coast (Bergen + Hudson)</p>
+    <div class="cities" id="gold"></div>
+  </section>
+</div>
+
+<footer><div class="wrap">
+  Impostos efetivos e regras de rent control mudam por ano fiscal e por lote — reconfirme na fonte oficial (county / prefeitura) antes de decidir. Ver as casas dessas cidades no <a href="mapa.html">Mapa</a>.
+</div></footer>
+
+<script>
+  var ESSEX=[
+    {nm:'Newark',co:'Essex',tax:'1,845%',tese:'Appreciation',rc:'Teto menor(CPI,4%); owner-occ ≤4un isento',fl:'Reval só FY2027; South Ironbound com flood',note:'Menor imposto do grupo + momentum. Foco travado, hub completo (bairro a bairro).'},
+    {nm:'Irvington',co:'Essex',tax:'2,26%',tese:'Cash-flow',rc:'Chapter 472 (teto 4/3/2%)',fl:'Já reavaliada em 2025 → imposto assentado',note:'Muito 2–4 family, ~70% inquilinos. Sem choque de imposto à frente (reval feita).'},
+    {nm:'East Orange',co:'Essex',tax:'2,888%',tese:'Value-add',rc:'Sim (verificar por lote)',fl:'SEM reval — imposto previsível',note:'Imposto alto mas estável; trânsito Morris & Essex. Entrada por reforma/reposicionamento.'},
+    {nm:'Bloomfield',co:'Essex',tax:'2,603%',tese:'House-hack',rc:'1–4 family ISENTAS (aluguel a mercado)',fl:'Flood do Third River em pontos',note:'Isenção de rent control em 1–4 family favorece o house-hack; DD de flood por endereço.'},
+    {nm:'Elizabeth',co:'Union',tax:'2,072%',tese:'Cash-flow',rc:'Litígio + sunset em 2026 (instável)',fl:'Reval de 1977(!) + flood costeiro',note:'Perto do EWR/porto. 3 wildcards: rent control judicializado, reval antiquíssima e flood.'}
+  ];
+  var GOLD=[
+    {nm:'Fort Lee',co:'Bergen',tax:'1,891%',tese:'Appreciation',rc:'Teto 5% fixo; duplex isento',fl:'Reval FY2027; encosta (flood baixo)',note:'Vizinha da GWB/NYC. 2–4 family US$ 1M+; jogo de valorização, não de cash flow.'},
+    {nm:'Englewood',co:'Bergen',tax:'2,171%',tese:'Appreciation',rc:'Rent leveling — isenção estreita',fl:'Reval FY2026 ATIVA (risco de choque)',note:'Reavaliação em curso pode redistribuir a carga — subscrever com margem.'},
+    {nm:'Teaneck',co:'Bergen',tax:'2,250%',tese:'Appreciation',rc:'Sim',fl:'Reval feita (2024) = imposto assentado',note:'Demanda residencial forte (comunidade ortodoxa). Imposto já assentado.'},
+    {nm:'Hackensack',co:'Bergen',tax:'2,678%',tese:'Cash-flow',rc:'2-family FORA do rent control',fl:'Sede do county; sheriff Bergen aqui',note:'O cash-flow de Bergen. Downtown em requalificação; 2-family a mercado.'},
+    {nm:'Jersey City',co:'Hudson',tax:'1,919%',tese:'Appreciation',rc:'1–4 unidades ISENTO',fl:'~40% do território em flood; reval ~85%',note:'PATH para Manhattan. Preço alto; flood é o grande DD por endereço.'},
+    {nm:'Union City',co:'Hudson',tax:'1,997%',tese:'House-hack',rc:'2-family isento (3-family dentro)',fl:'Zone X (flood baixo); reassessment anual',note:'Densa e bem servida de transporte. Reavaliação todo ano mantém o imposto colado ao mercado.'},
+    {nm:'Bayonne',co:'Hudson',tax:'2,116%',tese:'House-hack',rc:'Só 5+ unidades no rent control',fl:'Flood da península; tax sale presencial',note:'Península entre NY e Newark Bay. 1–4 family a mercado; leilão de imposto é presencial.'}
+  ];
+  function card(c){ return '<div class="city">'+
+    '<div class="r1"><span class="nm">'+c.nm+'</span><span class="co">'+c.co+' County</span></div>'+
+    '<div class="r2"><span class="tax">eff&nbsp;<b>'+c.tax+'</b></span><span class="tese" data-t="'+c.tese+'">'+c.tese+'</span></div>'+
+    '<div class="fact"><span class="fl">Rent control</span><span class="fv">'+c.rc+'</span></div>'+
+    '<div class="fact"><span class="fl">Flood / reval</span><span class="fv">'+c.fl+'</span></div>'+
+    '<p class="note">'+c.note+'</p></div>'; }
+  document.getElementById('essex').innerHTML = ESSEX.map(card).join('');
+  document.getElementById('gold').innerHTML  = GOLD.map(card).join('');
+</script>
+</body>
+</html>

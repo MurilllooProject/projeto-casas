@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Projeto Casas — Torre de Controle</title>
-<meta name="description" content="Sistema de oportunidades de imóveis nos EUA (New Jersey): mapa, painel e analisador de deals com semáforo de decisão 🟢🟡🔴.">
+<meta name="description" content="Sistema de oportunidades de imóveis nos EUA (New Jersey): mapa, buy & hold, estratégias, cidades e glossário — com semáforo de decisão 🟢🟡🔴.">
 <style>
   :root{
     --bg:#0E1420; --panel:#161E2C; --p2:#1E2838; --line:#2A3648;
@@ -18,7 +18,6 @@
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
     -webkit-font-smoothing:antialiased;overflow-x:hidden}
-  /* radar-grid backdrop — the control-tower signature texture */
   body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
     background:
       radial-gradient(1200px 600px at 78% -8%, rgba(51,211,194,.10), transparent 60%),
@@ -29,39 +28,33 @@
   a{color:inherit;text-decoration:none}
   .mono{font-family:var(--mono)}
 
-  /* ---- top bar ---- */
-  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
-    background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
-  .bar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:14px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
-  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);
-    box-shadow:0 0 0 4px rgba(51,211,194,.18);animation:pulse 2.6s ease-in-out infinite}
+  /* ---- tab bar ---- */
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18);animation:pulse 2.6s ease-in-out infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(51,211,194,.20)}50%{box-shadow:0 0 0 7px rgba(51,211,194,.03)}}
-  .brand small{display:block;font-weight:500;font-size:.66rem;letter-spacing:.28em;
-    text-transform:uppercase;color:var(--dim);margin-top:1px}
-  .bar .meta{font-family:var(--mono);font-size:.72rem;color:var(--dimmer)}
-  .bar .meta b{color:var(--accent);font-weight:600}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px;transition:color .12s,background .12s}
+  .tabs a:hover{color:var(--accent)}
+  .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 
   /* ---- hero ---- */
-  .hero{padding:64px 0 34px}
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;
-    color:var(--accent);margin:0 0 18px}
-  h1{font-size:clamp(2rem,5.4vw,3.4rem);line-height:1.06;margin:0 0 18px;font-weight:800;letter-spacing:-.02em}
+  .hero{padding:56px 0 30px}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--accent);margin:0 0 18px}
+  h1{font-size:clamp(2rem,5.4vw,3.2rem);line-height:1.06;margin:0 0 18px;font-weight:800;letter-spacing:-.02em}
   h1 .u{color:var(--accent)}
   .lead{font-size:1.06rem;color:var(--dim);max-width:60ch;margin:0 0 30px}
 
   /* ---- mission readout (the signature) ---- */
-  .readout{border:1px solid var(--line);border-radius:18px;background:
-      linear-gradient(180deg,rgba(30,40,56,.55),rgba(22,30,44,.55));overflow:hidden}
-  .readout .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;
-    padding:16px 20px;border-bottom:1px solid var(--line)}
+  .readout{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(30,40,56,.55),rgba(22,30,44,.55));overflow:hidden}
+  .readout .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;padding:16px 20px;border-bottom:1px solid var(--line)}
   .readout .big{font-family:var(--mono);font-size:2.1rem;font-weight:700;line-height:1}
   .readout .top small{color:var(--dim);font-size:.8rem;letter-spacing:.02em}
-  .readout .top .live{margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--dimmer);
-    display:flex;align-items:center;gap:7px}
-  .readout .top .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--g);
-    box-shadow:0 0 8px var(--g)}
-  /* segmented gauge */
+  .readout .top .live{margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--dimmer);display:flex;align-items:center;gap:7px}
+  .readout .top .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g)}
   .gauge{display:flex;height:12px}
   .gauge span{display:block}
   .gauge .sg{background:var(--g)}.gauge .sy{background:var(--y)}.gauge .sr{background:var(--r)}
@@ -70,66 +63,39 @@
   .legend .n{font-family:var(--mono);font-size:1.5rem;font-weight:700;line-height:1;display:flex;align-items:center;gap:8px}
   .legend .l{font-size:.74rem;color:var(--dim);margin-top:5px}
   .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-  .dot.g{background:var(--g)}.dot.y{background:var(--y)}.dot.r{background:var(--r)}
-  .dot.a{background:var(--accent)}
+  .dot.g{background:var(--g)}.dot.y{background:var(--y)}.dot.r{background:var(--r)}.dot.a{background:var(--accent)}
 
   .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
-  .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 20px;border-radius:12px;font-weight:700;
-    font-size:.95rem;border:1px solid transparent;cursor:pointer;transition:transform .12s ease,background .12s}
-  .btn.primary{background:var(--accent);color:var(--accent-ink)}
-  .btn.primary:hover{transform:translateY(-2px)}
-  .btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 20px;border-radius:12px;font-weight:700;font-size:.95rem;border:1px solid transparent;cursor:pointer;transition:transform .12s ease,background .12s}
+  .btn.primary{background:var(--accent);color:var(--accent-ink)} .btn.primary:hover{transform:translateY(-2px)}
+  .btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)} .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
 
   /* ---- sections ---- */
-  section{padding:44px 0}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 22px}
+  section{padding:38px 0}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 20px}
   .sec-head .idx{font-family:var(--mono);font-size:.8rem;color:var(--accent);letter-spacing:.1em}
-  .sec-head h2{font-size:1.5rem;margin:0;font-weight:800;letter-spacing:-.01em}
-  .sec-head p{margin:0 0 0 auto;color:var(--dim);font-size:.85rem;max-width:38ch;text-align:right}
+  .sec-head h2{font-size:1.4rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  .sec-head p{margin:0 0 0 auto;color:var(--dim);font-size:.85rem;max-width:40ch;text-align:right}
 
-  /* tools */
+  /* launcher */
   .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .tool{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;
-    background:var(--panel);padding:22px;transition:transform .14s ease,border-color .14s,background .14s;overflow:hidden}
+  .tool{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:22px;transition:transform .14s ease,border-color .14s,background .14s;overflow:hidden}
   .tool:hover{transform:translateY(-4px);border-color:var(--accent);background:var(--p2)}
   .tool .ic{font-size:1.7rem;margin-bottom:14px}
-  .tool h3{margin:0 0 8px;font-size:1.12rem}
-  .tool p{margin:0 0 18px;color:var(--dim);font-size:.86rem;flex:1}
+  .tool h3{margin:0 0 8px;font-size:1.1rem}
+  .tool p{margin:0 0 18px;color:var(--dim);font-size:.85rem;flex:1}
   .tool .open{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:600}
   .tool .open::after{content:" →";transition:margin .14s} .tool:hover .open::after{margin-left:5px}
-  .tool .tag{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:.62rem;color:var(--dimmer);
-    border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+  .tool .tag{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:.62rem;color:var(--dimmer);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
 
-  /* coverage */
-  .grouplab{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--dim);margin:0 0 12px;display:flex;align-items:center;gap:10px}
-  .grouplab::after{content:"";flex:1;height:1px;background:var(--line)}
-  .cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;margin-bottom:26px}
-  .city{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:15px 16px;
-    transition:border-color .14s,background .14s}
-  .city:hover{border-color:var(--accent);background:var(--p2)}
-  .city .r1{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-  .city .nm{font-weight:700;font-size:1rem}
-  .city .co{font-size:.68rem;color:var(--dimmer);text-transform:uppercase;letter-spacing:.08em}
-  .city .tax{font-family:var(--mono);font-size:.82rem;margin:8px 0 6px}
-  .city .tax b{color:var(--accent);font-weight:600}
-  .city .tese{display:inline-block;font-size:.64rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-    padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
-  .city .note{font-size:.76rem;color:var(--dim);margin:9px 0 0;line-height:1.4}
-
-  /* strategies + semaforo */
+  /* semaforo primer */
   .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .strats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-  .strat{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:15px 16px}
-  .strat h4{margin:0 0 5px;font-size:.98rem;display:flex;align-items:center;gap:9px}
-  .strat p{margin:0;font-size:.78rem;color:var(--dim)}
   .sem{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--panel)}
   .sem .h{display:flex;align-items:center;gap:10px;font-weight:700;margin-bottom:8px}
   .sem p{margin:0;font-size:.82rem;color:var(--dim)}
   .sem .th{font-family:var(--mono);font-size:.72rem;color:var(--dimmer);margin-top:9px}
 
-  footer{border-top:1px solid var(--line);margin-top:30px;padding:30px 0 54px}
+  footer{border-top:1px solid var(--line);margin-top:20px;padding:30px 0 54px}
   footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
   footer p{margin:0;font-size:.78rem;color:var(--dimmer);max-width:60ch}
   footer .stat{font-family:var(--mono);font-size:.72rem;color:var(--dim);display:flex;gap:16px;flex-wrap:wrap}
@@ -137,106 +103,110 @@
 
   @media(max-width:820px){ .tools{grid-template-columns:1fr} .row3{grid-template-columns:1fr}
     .legend{grid-template-columns:repeat(2,1fr)} .sec-head p{display:none} }
+  @media(max-width:720px){ .brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem} }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
 <header class="bar"><div class="wrap">
-  <a class="brand" href="#top"><span class="sig"></span><span>Projeto Casas<small>Torre de Controle</small></span></a>
-  <div class="meta"><a href="metodologia.html" style="color:var(--accent);font-weight:700;text-decoration:none;margin-right:14px">📖 Metodologia</a>NJ · <b>jul/2026</b></div>
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html" class="on">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
 </div></header>
 
-<a id="top"></a>
 <div class="wrap">
 
   <!-- HERO -->
   <section class="hero">
     <p class="eyebrow">Sistema de oportunidades · imóveis US</p>
     <h1>Achar as melhores casas para<br><span class="u">comprar, alugar e arrematar</span> em New Jersey.</h1>
-    <p class="lead">Uma base de conhecimento + ferramentas de decisão para investimento próprio. Cada imóvel avaliado vira um veredito no <b>semáforo 🟢🟡🔴</b> — comprar, observar (com preço-gatilho) ou passar.</p>
+    <p class="lead">Base de conhecimento + ferramentas de decisão para investimento próprio. Cada imóvel vira um veredito no <b>semáforo 🟢🟡🔴</b> — comprar, observar (com preço-gatilho) ou passar. Navegue pelas abas acima.</p>
 
     <div class="readout" role="figure" aria-label="Situação atual dos deals mapeados">
       <div class="top">
-        <span class="big" data-count="93">93</span>
-        <small>casas mapeadas em <b>12 cidades</b> de NJ</small>
+        <span class="big">93</span>
+        <small>casas classificadas em <b>12 cidades</b> de NJ</small>
         <span class="live">SEMÁFORO AO VIVO</span>
       </div>
       <div class="gauge" aria-hidden="true">
         <span class="sg" style="width:7.5%"></span><span class="sy" style="width:7.5%"></span><span class="sr" style="width:85%"></span>
       </div>
       <div class="legend">
-        <div class="cell"><div class="n"><span class="dot g"></span><span data-count="7">7</span></div><div class="l">🟢 Comprar</div></div>
-        <div class="cell"><div class="n"><span class="dot y"></span><span data-count="7">7</span></div><div class="l">🟡 Observar (gatilho)</div></div>
-        <div class="cell"><div class="n"><span class="dot r"></span><span data-count="79">79</span></div><div class="l">🔴 Fora da estratégia</div></div>
-        <div class="cell"><div class="n"><span class="dot a"></span><span data-count="5">5</span></div><div class="l">✅ Mais promissoras</div></div>
+        <div class="cell"><div class="n"><span class="dot g"></span><span>7</span></div><div class="l">🟢 Comprar</div></div>
+        <div class="cell"><div class="n"><span class="dot y"></span><span>7</span></div><div class="l">🟡 Observar (gatilho)</div></div>
+        <div class="cell"><div class="n"><span class="dot r"></span><span>79</span></div><div class="l">🔴 Fora da estratégia</div></div>
+        <div class="cell"><div class="n"><span class="dot a"></span><span>5</span></div><div class="l">✅ Mais promissoras</div></div>
       </div>
     </div>
 
     <div class="cta">
       <a class="btn primary" href="mapa.html">🗺️ Abrir o Mapa das Casas</a>
-      <a class="btn ghost" href="#ferramentas">Ver as ferramentas</a>
+      <a class="btn ghost" href="buy-hold.html">🔑 Entender o Buy &amp; Hold</a>
     </div>
   </section>
 
-  <!-- FERRAMENTAS -->
-  <section id="ferramentas">
-    <div class="sec-head"><span class="idx">01</span><h2>Ferramentas</h2>
-      <p>O que já roda hoje — abra e clique.</p></div>
+  <!-- NAVEGUE -->
+  <section id="navegue">
+    <div class="sec-head"><span class="idx">01</span><h2>Navegue</h2>
+      <p>Cada aba é um tema — abra e clique.</p></div>
     <div class="tools">
       <a class="tool" href="mapa.html">
         <span class="tag">Leaflet · dark</span>
         <span class="ic">🗺️</span>
         <h3>Mapa das Casas</h3>
-        <p>Mapa escuro com as casas como pins coloridos pelo semáforo, em <b>12 cidades</b> (seletor de cidade + voo). Clique num pin: painel completo com métricas (cap, cash-flow, DSCR), bairro, criminalidade e flood. Filtros por cor e ✅ nas promissoras.</p>
+        <p>93 casas como pins coloridos pelo semáforo em <b>12 cidades</b> (seletor + voo). Clique num pin: cap, cash-flow, DSCR, bairro, crime e flood.</p>
         <span class="open mono">abrir mapa</span>
       </a>
-      <a class="tool" href="painel.html">
-        <span class="tag">HTML</span>
-        <span class="ic">📊</span>
-        <h3>Painel de Deals</h3>
-        <p>Triagem visual dos deals em cards agrupados por cor do semáforo — leitura rápida da carteira de oportunidades e da watchlist de amarelos com preço-gatilho.</p>
-        <span class="open mono">abrir painel</span>
+      <a class="tool" href="buy-hold.html">
+        <span class="tag">estratégia principal</span>
+        <span class="ic">🔑</span>
+        <h3>Buy &amp; Hold</h3>
+        <p>A tese central: comprar e alugar 2–4 famílias. O semáforo do aluguel passo a passo, 3 exemplos e a <b>calculadora de entrada × prestação</b>.</p>
+        <span class="open mono">abrir buy &amp; hold</span>
+      </a>
+      <a class="tool" href="estrategias.html">
+        <span class="tag">5 estratégias</span>
+        <span class="ic">🎯</span>
+        <h3>Estratégias</h3>
+        <p>Flip, Tax Lien, Tax Deed e Wholesale — a fórmula de cada uma e 3 exemplos (comprar · aguardar · passar) direto do motor.</p>
+        <span class="open mono">abrir estratégias</span>
+      </a>
+      <a class="tool" href="cidades.html">
+        <span class="tag">12 hubs</span>
+        <span class="ic">🏘️</span>
+        <h3>Cidades</h3>
+        <p>Imposto efetivo, tese, rent control e flood/reavaliação por cidade — Essex, Bergen e Hudson. Onde o cash flow fecha e onde é valorização.</p>
+        <span class="open mono">abrir cidades</span>
       </a>
       <a class="tool" href="analisador.html">
-        <span class="tag">5 estratégias</span>
+        <span class="tag">ferramenta</span>
         <span class="ic">🧮</span>
         <h3>Analisador de Deal</h3>
-        <p>Underwriting das 5 estratégias (aluguel, flip, tax lien, tax deed, wholesale) com gráfico de queda de preço e o veredito 🟢🟡🔴 + preço-gatilho por bisseção. Testado 37/37.</p>
+        <p>Underwriting das 5 estratégias com gráfico de queda de preço e o veredito 🟢🟡🔴 + preço-gatilho por bisseção. Cole o histórico de preços e rode.</p>
         <span class="open mono">abrir analisador</span>
       </a>
+      <a class="tool" href="glossario.html">
+        <span class="tag">~50 termos</span>
+        <span class="ic">📖</span>
+        <h3>Glossário</h3>
+        <p>Todo nome técnico do mercado americano explicado em uma linha, com busca — cap rate, DSCR, ARV, tax lien, BRRRR, foreclosure…</p>
+        <span class="open mono">abrir glossário</span>
+      </a>
     </div>
-  </section>
-
-  <!-- COBERTURA -->
-  <section id="cidades">
-    <div class="sec-head"><span class="idx">02</span><h2>Cobertura — 12 cidades</h2>
-      <p>Hubs verificados por workflow (mercado, bairros, impostos, leilões).</p></div>
-
-    <p class="grouplab">Essex &amp; vizinhas</p>
-    <div class="cities" id="essex"></div>
-
-    <p class="grouplab">Fronteira NY · Gold Coast (Bergen + Hudson)</p>
-    <div class="cities" id="gold"></div>
-  </section>
-
-  <!-- ESTRATÉGIAS -->
-  <section id="estrategias">
-    <div class="sec-head"><span class="idx">03</span><h2>Estratégias</h2>
-      <p><a href="metodologia.html#estrategias" style="color:var(--accent);font-weight:700">→ como cada uma é aplicada</a></p></div>
-    <div class="strats">
-      <div class="strat"><h4>🏠 Aluguel / BRRRR</h4><p>Buy &amp; hold e refinanciamento; cap rate, cash-flow, DSCR, house-hack.</p></div>
-      <div class="strat"><h4>🔨 Fix &amp; Flip</h4><p>ARV, regra dos 70%, MAO — margem de revenda pós-reforma.</p></div>
-      <div class="strat"><h4>🧾 Tax Lien</h4><p>Certificado de imposto NJ (juros até 18%, bid-down); redemption 2 anos.</p></div>
-      <div class="strat"><h4>🏛️ Tax Deed</h4><p>Aquisição via dívida de imposto; pós-reforma P.L. 2024 c.39 (surplus equity).</p></div>
-      <div class="strat"><h4>⚖️ Foreclosure / Wholesale</h4><p>Sheriff sales (salesweb) e atacado de contratos off-market.</p></div>
-    </div>
+    <p style="margin-top:16px;font-size:.85rem;color:var(--dim)">Ver também: <a href="painel.html" style="color:var(--accent);font-weight:700">📊 Painel de deals</a> — triagem visual dos deals por cor do semáforo.</p>
   </section>
 
   <!-- SEMÁFORO -->
   <section id="semaforo">
-    <div class="sec-head"><span class="idx">04</span><h2>Como funciona o semáforo</h2>
-      <p><a href="metodologia.html#semaforo" style="color:var(--accent);font-weight:700">→ as fórmulas e premissas</a></p></div>
+    <div class="sec-head"><span class="idx">02</span><h2>Como funciona o semáforo</h2>
+      <p><a href="buy-hold.html#semaforo" style="color:var(--accent);font-weight:700">→ as fórmulas e premissas</a></p></div>
     <div class="row3">
       <div class="sem"><div class="h"><span class="dot g"></span> Verde — comprar</div>
         <p>Fundamentos bons pelos números: cash-flow ≥ +US$100/unidade/mês, cap ≥ 6%, DSCR ≥ 1,2 e localização OK.</p>
@@ -257,29 +227,5 @@
   <div class="stat"><span><b>12</b> cidades</span><span><b>109</b> sites</span><span><b>5</b> estratégias</span><span><b>93</b> casas</span></div>
 </div></footer>
 
-<script>
-  // grid de cidades (dados verificados)
-  var ESSEX=[
-    {nm:'Newark',co:'Essex',tax:'1,845%',tese:'Appreciation',note:'Menor imposto do grupo + momentum; foco travado, hub completo.'},
-    {nm:'Irvington',co:'Essex',tax:'2,26%',tese:'Cash-flow',note:'Já reavaliada (2025) → imposto assentado, sem choque à frente.'},
-    {nm:'East Orange',co:'Essex',tax:'2,888%',tese:'Value-add',note:'Imposto alto mas SEM reval (previsível); trânsito Morris & Essex.'},
-    {nm:'Bloomfield',co:'Essex',tax:'2,603%',tese:'House-hack',note:'1–4 family isentas de rent control (aluguel a mercado); flood Third River.'},
-    {nm:'Elizabeth',co:'Union',tax:'2,072%',tese:'Cash-flow',note:'Perto do EWR/porto; 3 wildcards (RC litigado + reval 1977 + flood).'}
-  ];
-  var GOLD=[
-    {nm:'Fort Lee',co:'Bergen',tax:'1,891%',tese:'Appreciation',note:'GWB; 2–4 family US$ 1M+; teto 5% fixo, duplex isento; reval FY2027.'},
-    {nm:'Englewood',co:'Bergen',tax:'2,171%',tese:'Appreciation',note:'Reval FY2026 ativa; isenção de rent leveling estreita.'},
-    {nm:'Teaneck',co:'Bergen',tax:'2,250%',tese:'Appreciation',note:'Reval feita (2024) = imposto assentado; demanda ortodoxa.'},
-    {nm:'Hackensack',co:'Bergen',tax:'2,678%',tese:'Cash-flow',note:'O cash-flow de Bergen; 2-family fora do rent control.'},
-    {nm:'Jersey City',co:'Hudson',tax:'1,919%',tese:'Appreciation',note:'PATH; 1–4 un. isento de rent control; 40% em flood.'},
-    {nm:'Union City',co:'Hudson',tax:'1,997%',tese:'House-hack',note:'2-family isento (3-family dentro); reassessment anual; Zone X.'},
-    {nm:'Bayonne',co:'Hudson',tax:'2,116%',tese:'House-hack',note:'Só 5+ un. no rent control; tax sale presencial; flood da península.'}
-  ];
-  function card(c){ return '<div class="city"><div class="r1"><span class="nm">'+c.nm+'</span>'+
-    '<span class="co">'+c.co+'</span></div><div class="tax">eff&nbsp;<b>'+c.tax+'</b></div>'+
-    '<span class="tese">'+c.tese+'</span><p class="note">'+c.note+'</p></div>'; }
-  document.getElementById('essex').innerHTML = ESSEX.map(card).join('');
-  document.getElementById('gold').innerHTML  = GOLD.map(card).join('');
-</script>
 </body>
 </html>
