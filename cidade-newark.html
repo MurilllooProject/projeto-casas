@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Newark — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Newark, Essex County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Newark</h1>
+  <div class="facts">
+    <span class="fact">Essex County</span>
+    <span class="fact">imposto efetivo <b>1,845%</b></span>
+    <span class="fact tese" data-t="Appreciation">Appreciation</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Bairros & wards</a>
+    <a href="#s2">Underwriting</a>
+    <a href="#s3">Tax sale</a>
+    <a href="#s4">Foreclosure / Sheriff</a>
+    <a href="#s5">Compliance</a>
+    <a href="#s6">Puxar valores & dados</a>
+    <a href="#s7">Playbook do deal</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p>Central de tudo sobre investir em <strong>Newark</strong> (Essex County). Foco atual do projeto. A tese: <strong>valorização + buy-and-hold de multifamily (2–4 famílias, ótimo para house-hack/BRRRR)</strong> — não cash-flow puro, porque property tax alto e rent control comprimem o retorno de aluguel.</p>
+<blockquote>
+<p>✅ <strong>Por que Newark:</strong> maior cidade de NJ, ~45 min de Manhattan (PATH/NJ Transit/Newark Penn), <strong>menor conta média de property tax do Essex</strong> (~US$ 7,2–7,6k), valorização forte (Redfin +17% YoY) e estoque abundante de 2–4 famílias. Âncoras: Rutgers-Newark, NJIT, hospitais, aeroporto (EWR) e porto.</p>
+</blockquote>
+<h2>📊 Newark em números (2025–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Property tax — <strong>effective</strong></td>
+<td><strong>1,845%</strong> (a menor do grupo Essex; general rate ~$4,00/$100 sobre assessed, ratio ~46%)</td>
+</tr>
+<tr>
+<td>Conta média anual</td>
+<td>~US$ 7.238 (2024) / ~US$ 7.641 (2025) — <strong>a menor do Essex County</strong></td>
+</tr>
+<tr>
+<td>Preço mediano</td>
+<td>~US$ 479k (Zillow ZHVI) a ~US$ 615k (Redfin, mediana de venda, +17,1% YoY)</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>~US$ 2.100/mês (mediana geral); 2BR ~US$ 2.689 (Zumper)</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ Sim — teto ~4% (ou CPI), 5% p/ unidades novas; cobre ~70% dos imóveis</td>
+</tr>
+<tr>
+<td>Flood (FEMA)</td>
+<td>⚠️ ~40% da cidade em floodplain (Ironbound e sul/leste em risco de tidal flooding)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido para um deal em Newark</h2>
+<ol>
+<li><strong>Achar</strong> — Zillow/Redfin (venda), tax sale (Revenue Collections), sheriff sales (Essex). Veja tax-sale e foreclosure.</li>
+<li><strong>Puxar valores</strong> — assessment + comps + <strong>histórico de preço/quedas</strong>. Veja puxar-valores.</li>
+<li><strong>Localizar</strong> — checar <strong>ward/bairro</strong> (segurança) e <strong>flood zone</strong>. Veja bairros.</li>
+<li><strong>Analisar</strong> — rodar o número com a <strong>conta REAL de imposto</strong> e rent control. Use a ferramenta e o underwriting.</li>
+<li><strong>Due diligence</strong> — título/liens, ocupação, CO/inspeção, compliance.</li>
+<li><strong>Registrar</strong> no pipeline de deals.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ <strong>Status:</strong> hub completo e <strong>verificado na web</strong> (pesquisa de 11 agentes, jul/2026) — bairro a bairro, tax sale (online confirmado), sheriff, puxar valores e compliance. Pendências residuais (datas exatas do tax sale 2026, cotação real de flood insurance por imóvel, taxas de DSCR do ciclo) estão marcadas ⚠️ e se resolvem por telefone/cotação na hora do deal.</p>
+</blockquote></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Bairros & wards</h2></div><div class="prose"><p>Em Newark, <strong>segurança, preço e flood mudam por quadra</strong>, não por cidade. O ward certo (e o lado certo da rua) é metade do deal. Newark tem <strong>5 wards</strong>: North, East, Central, South, West. Dados verificados 2025–2026 (Redfin/Zillow/CrimeGrade); <strong>medianas de bairro divergem por fonte — triangule</strong> e cheque o endereço.</p>
+<h2>Visão por ward</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Ward</th>
+<th>Bairros-chave</th>
+<th>Perfil</th>
+<th>Segurança</th>
+<th>Flood</th>
+<th>Nota p/ investidor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>North</strong></td>
+<td><strong>Forest Hill</strong>, Roseville, Mt. Pleasant (ZIP 07104/07107)</td>
+<td>Histórico, arborizado; casas 1890–1930, muito 2–4 family. Branch Brook Park (cerejeiras) fica aqui</td>
+<td>🟢 Dos mais seguros (Forest Hill)</td>
+<td>🟡 Baixo (alto no leste, junto ao Passaic)</td>
+<td><strong>Melhor combo buy-and-hold seguro + value-add histórico</strong></td>
+</tr>
+<tr>
+<td><strong>East</strong></td>
+<td><strong>Ironbound</strong> (North + South), Down Neck</td>
+<td>Denso, comunidade portuguesa/brasileira; comércio forte, demanda de aluguel</td>
+<td>🟢 South Ironbound é <strong>o mais seguro de Newark</strong></td>
+<td>🔴 <strong>Alto — quase todo em SFHA</strong> (Passaic/Newark Bay)</td>
+<td>Ótima demanda, mas <strong>flood é eliminatório</strong> — cote o seguro e cheque BFE</td>
+</tr>
+<tr>
+<td><strong>Central</strong></td>
+<td><strong>Downtown</strong>, University Heights, <strong>Lincoln Park</strong></td>
+<td>Menor ward; coração econômico (NJPAC, Prudential, Rutgers-Newark/NJIT)</td>
+<td>🟡 Misto (risco à noite em Springfield Ave/MLK Blvd)</td>
+<td>🟡 Médio (leste junto ao rio)</td>
+<td>Jogada de <strong>condo/new construction</strong>; pouco 2–4 family clássico</td>
+</tr>
+<tr>
+<td><strong>South</strong></td>
+<td><strong>Weequahic</strong>, <strong>Clinton Hill</strong>, Dayton</td>
+<td>Baixo ticket, muito 2–4 family antigo; perto do aeroporto</td>
+<td>🔴 <strong>Crime mais alto</strong> de Newark</td>
+<td>🟡 Baixo/médio (Dayton/porto maior)</td>
+<td><strong>Maior cash flow bruto</strong>, mas DD quadra-a-quadra obrigatória</td>
+</tr>
+<tr>
+<td><strong>West</strong></td>
+<td><strong>Vailsburg / Upper Vailsburg</strong>, Ivy Hill, Fairmount</td>
+<td>Residencial, muitas 1–4 family; terreno elevado</td>
+<td>🟢 Upper Vailsburg/Ivy Hill estáveis (grade B-)</td>
+<td>🟢 Baixo (desprezível)</td>
+<td>Bom <strong>combo segurança-preço sem flood</strong> p/ house-hack</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Bairros — dados confirmados (2025–2026)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Bairro (ward)</th>
+<th>Preço mediano*</th>
+<th>Segurança</th>
+<th>Flood</th>
+<th>Observação de investidor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>South Ironbound</strong> (E)</td>
+<td>~US$ 423–625k</td>
+<td>🟢 <strong>Mais seguro</strong> (~1.760/100k)</td>
+<td>🔴 Maior exposição</td>
+<td>Priorize imóveis <strong>elevados</strong> / fora do 1º pente de quadras junto à água</td>
+</tr>
+<tr>
+<td><strong>North Ironbound</strong> (E)</td>
+<td>~US$ 560k</td>
+<td>🟢 Seguro</td>
+<td>🔴 Quase todo SFHA</td>
+<td>Aluguel ~US$ 2.300; rode com flood insurance</td>
+</tr>
+<tr>
+<td><strong>Forest Hill</strong> (N)</td>
+<td>~US$ 530k</td>
+<td>🟢 Dos melhores</td>
+<td>🟡 Baixo (leste = rio)</td>
+<td>Estoque histórico 2–4 family; apreciação melhor no ZHVI que na mediana</td>
+</tr>
+<tr>
+<td><strong>University Heights</strong> (C)</td>
+<td>~US$ 375k (+4,2%)</td>
+<td>🟡 Bolsões de risco</td>
+<td>🟢 Baixo</td>
+<td>Demanda de estudantes (Rutgers-Newark, NJIT)</td>
+</tr>
+<tr>
+<td><strong>Upper Vailsburg / Ivy Hill</strong> (W)</td>
+<td>~US$ 340–445k ⚠️ divergente</td>
+<td>🟢 ~11% abaixo da média de crime</td>
+<td>🟢 Baixo</td>
+<td>Bom 2–4 family sem flood; <strong>triangule o preço</strong></td>
+</tr>
+<tr>
+<td><strong>Weequahic</strong> (S)</td>
+<td>~US$ 391k</td>
+<td>🔴 Crime violento ~3.707/100k</td>
+<td>🟡 Baixo</td>
+<td>Barato e muito 2–4 family, mas <strong>risco alto</strong></td>
+</tr>
+<tr>
+<td><strong>Clinton Hill</strong> (S)</td>
+<td>~US$ 421k (grande dispersão)</td>
+<td>🔴 Corredor Clinton Ave = risco</td>
+<td>🟢 Baixo</td>
+<td>Entrada barata; precifique vacância/turnover</td>
+</tr>
+<tr>
+<td><strong>Downtown</strong> (C)</td>
+<td>~US$ 359k</td>
+<td>🟡 Risco à noite</td>
+<td>🟡 Médio</td>
+<td>Condo/apartamento, aluguel alto (spillover NYC)</td>
+</tr>
+<tr>
+<td><strong>Fairmount</strong> (W)</td>
+<td>~US$ 725k ⚠️ <strong>outlier</strong> (só US$ 156/sqft)</td>
+<td>🔴 Crime acima da média</td>
+<td>🟢 Baixo</td>
+<td><strong>Não usar como comp</strong> de 2–4 family antigo (amostra/new construction)</td>
+</tr>
+<tr>
+<td><strong>Lincoln Park</strong> (C)</td>
+<td>US$ 950k→535k ⚠️ <strong>outlier</strong></td>
+<td>🟡</td>
+<td>🟢 Baixo</td>
+<td><strong>Vetor de gentrificação:</strong> ~500 unidades novas (Fairstead, Paramount)</td>
+</tr>
+</tbody>
+</table></div>
+<p>* Medianas de amostra pequena oscilam muito; <strong>outliers (Fairmount, Lincoln Park) são new construction</strong> — não servem de comp para tijolo antigo.</p>
+<h2>Filtros dominantes</h2>
+<ul>
+<li>🌊 <strong>Flood no East Ward:</strong> ~<strong>32,9%</strong> dos imóveis de Newark têm risco de flood; o <strong>Ironbound é quase todo SFHA</strong>. Todo deal ali → puxe o <strong>FIRM no <a href="https://msc.fema.gov/portal/search">FEMA MSC</a></strong> (zona A/AE/VE, BFE) e <strong>cote flood insurance antes de fechar</strong>. Pode inviabilizar deal aparentemente barato.</li>
+<li>🚨 <strong>Crime no South Ward:</strong> evite os corredores <strong>Clinton Ave/Chancellor Ave</strong> e o entorno de <strong>Dayton–Weequahic Park</strong>. Cheque a nível de quadra em <a href="https://crimegrade.org/safest-places-in-newark-nj/">CrimeGrade</a> / <a href="https://www.neighborhoodscout.com/nj/newark">NeighborhoodScout</a>. "Seguro" aqui é <strong>relativo a Newark</strong> (que ainda tem crime acima da média nacional).</li>
+<li>🏗️ <strong>Gentrificação:</strong> o vetor <strong>atual</strong> é <strong>Lincoln Park</strong> (~500 unidades novas). <em>(Correção: Baxter Park é projeto de 2012–13, não atual.)</em></li>
+</ul>
+<h2>Como usar num deal</h2>
+<ol>
+<li>Identifique <strong>ward e bairro</strong> → 2. Cheque <strong>flood</strong> (FEMA MSC) e <strong>crime</strong> (quadra) → 3. Ajuste <strong>aluguel e vacância</strong> ao perfil → 4. Rode o underwriting com a <strong>conta real de imposto</strong> → 5. Registre no pipeline.</li>
+</ol>
+<h2>🔗 Ferramentas de bairro</h2>
+<ul>
+<li><a href="https://www.redfin.com/city/13136/NJ/Newark/housing-market">Redfin — por bairro</a> (preço + Flood Factor) · <a href="https://msc.fema.gov/portal/search">FEMA MSC</a> (flood oficial) · <a href="https://crimegrade.org/safest-places-in-newark-nj/">CrimeGrade</a> (crime por sub-área) · <a href="https://www.newarknj.gov/185/Newark-Housing-Tracker">Newark Housing Tracker</a> (pipeline oficial)</li>
+</ul>
+<p>⬅️ Hub de Newark</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Underwriting</h2></div><div class="prose"><p>Como rodar o número de um deal em Newark <strong>sem cair nas armadilhas locais</strong>. Use junto com a ferramenta (aba "Underwriting") e a base geral de cap rate/cash flow.</p>
+<h2>Os 3 ajustes que mudam tudo em Newark</h2>
+<h3>1. 🏛️ Property tax — use a conta REAL, nunca a média</h3>
+<ul>
+<li>Effective rate ~<strong>1,845%</strong>; general rate ~<strong>$4,00/$100</strong> sobre o <strong>assessed value</strong> (ratio ~46%).</li>
+<li>Na ferramenta, o imposto vem estimado como <strong>preço × 1,845%</strong> — <strong>substitua</strong> pela conta real do lote (NJ Property Explorer, ver puxar valores).</li>
+<li>Cuidado com <strong>reavaliação/reassessment</strong>: comprar e ver o imposto subir destrói o cash flow projetado.</li>
+</ul>
+<h3>2. 🏘️ Rent control — sem reversão a mercado</h3>
+<ul>
+<li>~<strong>70% dos imóveis</strong> de Newark estão sob rent control; reajuste anual limitado a <strong>~4%</strong> (ou CPI, o menor); <strong>5%</strong> para unidades novas.</li>
+<li><strong>Modele o aluguel crescendo travado no CPI</strong>, nunca "levo a mercado depois da reforma".</li>
+<li>Confirme se a unidade é <strong>isenta</strong> (pequenas owner-occupied / construção muito recente) — isso muda a tese. Detalhes: compliance.</li>
+</ul>
+<h3>3. 🌊 Flood insurance — cote antes de fechar</h3>
+<ul>
+<li>~40% da cidade em floodplain; lote em <strong>zona AE/VE</strong> exige <strong>flood insurance</strong> (caro, às vezes obrigatório).</li>
+<li>Suba o <strong>seguro</strong> no modelo para lotes de risco (Ironbound, sul/leste). Ver bairros.</li>
+</ul>
+<h2>Números de referência de Newark</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Referência</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço mediano</td>
+<td>~US$ 479k–615k (varia por fonte/tipo)</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>~US$ 2.100/mês geral; 2BR ~US$ 2.689</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td>effective ~1,845% (conta média ~US$ 7,2–7,6k)</td>
+</tr>
+<tr>
+<td>Cap rate realista</td>
+<td>frequentemente <strong>comprimido</strong> (aluguel vs preço + imposto)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>📌 Realidade: com aluguel ~US$ 2,1k e preço US$ 480k+, <strong>cash flow positivo alavancado é difícil</strong> em single-family. A tese vence com <strong>2–4 famílias (house-hack)</strong>, <strong>BRRRR</strong> e <strong>valorização</strong> — não cash-flow puro.</p>
+</blockquote>
+<h2>Passo a passo</h2>
+<ol>
+<li>Puxe <strong>preço/comps</strong>, <strong>aluguel</strong> e a <strong>conta real de imposto</strong> (puxar valores).</li>
+<li>Abra a <strong>ferramenta</strong> → aba Underwriting.</li>
+<li>Preencha e olhe: <strong>cap rate, cash flow, CoC, DSCR, regra do 1%</strong>.</li>
+<li>Para flip: preencha <strong>ARV</strong> → veja a <strong>oferta máx (regra 70%)</strong>.</li>
+<li>Estresse: suba o imposto e o seguro (flood), trave o aluguel no CPI. Se ainda fecha, é um bom deal.</li>
+<li>Registre no pipeline com a ficha.</li>
+</ol>
+<h2>Metas de bolso (ajuste ao seu apetite)</h2>
+<ul>
+<li><strong>Cash flow</strong> ≥ US$ 100–200/unidade/mês (difícil em Newark single-family).</li>
+<li><strong>DSCR</strong> ≥ 1,2 (para DSCR loan).</li>
+<li><strong>Flip:</strong> lucro que pague o risco/tempo depois de imposto, holding e flood.</li>
+</ul>
+<p>⬅️ Hub de Newark · Ferramenta</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Tax sale</h2></div><div class="prose"><p>Newark, como todo município de NJ, vende <strong>Tax Sale Certificates (TSC)</strong> das dívidas de property tax. Você compra a <strong>dívida</strong> (lien), não o imóvel — e ganha <strong>juros</strong> quando o dono resgata. (Base da estratégia: tax lien e guia do estado.)</p>
+<h2>Quem conduz</h2>
+<ul>
+<li><strong>Division of Revenue Collections / Finance Department</strong> da Prefeitura de Newark.</li>
+<li>📞 <strong>973-733-8098</strong> · 47-63 Green St / 920 Broad St, Room 104, Newark 07102 · 🔗 <a href="https://www.newarknj.gov/departments/finance">newarknj.gov/departments/finance</a></li>
+<li><strong>É ONLINE ✅:</strong> o leilão roda na plataforma <strong>RealAuction</strong> (produto <em>RealTaxLien</em>), no endereço <strong><a href="https://newark.newjerseytaxsale.com">newark.newjerseytaxsale.com</a></strong> (padrão <code>[município].newjerseytaxsale.com</code>). Suporte RealAuction: <strong>1-877-361-7325</strong>.</li>
+</ul>
+<h2>Mecânica (resumo — detalhes no guia do estado)</h2>
+<ul>
+<li><strong>Juros:</strong> teto de <strong>18%/ano</strong>, leiloado por <em>bid-down</em> até 0%; depois <strong>premium</strong> (dinheiro acima da dívida, que não rende juros).</li>
+<li><strong>Redemption penalty:</strong> 2% / 4% / 6% conforme o valor do TSC.</li>
+<li><strong>Subsequent taxes:</strong> pague os impostos seguintes para não ser <em>leapfrogged</em>.</li>
+<li><strong>Foreclosure:</strong> investidor terceiro pode executar após <strong>2 anos</strong> (imóvel abandonado, imediato).</li>
+<li><strong>Recording:</strong> grave o TSC no County Clerk em até <strong>90 dias</strong>.</li>
+</ul>
+<h2>Standard vs. Accelerated</h2>
+<ul>
+<li><strong>Standard sale:</strong> dívidas de <strong>anos anteriores</strong>.</li>
+<li><strong>Accelerated sale:</strong> dívidas do <strong>ano corrente</strong> que persistem após a data estatutária de <strong>10 de novembro (November 10th)</strong> — Newark pode leiloar o lien ainda no mesmo ano fiscal.</li>
+</ul>
+<h2>Passo a passo para participar</h2>
+<ol>
+<li><strong>Ache o edital:</strong> a <em>tax sale list</em> é publicada como edital em <strong>jornal</strong> (padrão NJ: 4 semanas antes) e centralizada em <a href="https://www.njpublicnotices.com/">njpublicnotices.com</a>; os parcels também ficam na plataforma online.</li>
+<li><strong>Registre-se na <a href="https://newark.newjerseytaxsale.com">newark.newjerseytaxsale.com</a>:</strong> o bidder informa <strong>endereço, Federal Tax ID e assinatura</strong>, e faz o <strong>depósito (pré-financiamento ACH)</strong> com antecedência (~1 semana é típico; valor exato varia por sale).</li>
+<li><strong>Due diligence:</strong> para cada parcel, cruze o <strong>block/lot</strong> com o assessment (puxar valores), cheque <strong>flood</strong> (bairros), outros liens e ocupação.</li>
+<li><strong>Dê o lance</strong> (bid-down do juro a partir de 18% → premium após 0%).</li>
+<li><strong>Pague</strong> e <strong>grave</strong> o certificado no County Clerk em <strong>90 dias</strong>.</li>
+<li><strong>Acompanhe</strong> o redemption; pague subsequent taxes; após <strong>2 anos</strong>, avalie foreclosure (com <strong>advogado de NJ</strong> — obrigatório para LLC).</li>
+</ol>
+<h2>⚠️ A confirmar por telefone (973-733-8098)</h2>
+<ul>
+<li><strong>Datas exatas</strong> do próximo Standard e Accelerated sale de 2026.</li>
+<li><strong>Valor do depósito</strong> e <strong>prazo de registro</strong> deste ciclo.</li>
+</ul>
+<blockquote>
+<p>Plataforma e órgão <strong>confirmados</strong>; faltam apenas as datas/valores do ciclo de 2026 (variam por sale). RealAuction: 1-877-361-7325.</p>
+</blockquote>
+<p>⬅️ Hub de Newark · Estratégia tax lien</p></div></section>
+<section id="s4"><div class="sec-head"><span class="idx">05</span><h2>Foreclosure / Sheriff</h2></div><div class="prose"><p>Além do tax lien, Newark tem o fluxo de <strong>mortgage foreclosure</strong> que termina no <strong>sheriff sale</strong> (e, se não vende, vira <strong>REO</strong>). Aqui você acha imóvel com desconto — mas com pagamento à vista rápido e due diligence pesada.</p>
+<blockquote>
+<p><strong>Sheriff sale ≠ tax lien foreclosure.</strong> O sheriff sale é a execução de <strong>hipoteca</strong> (mortgage). O tax lien tem processo próprio (tax-sale).</p>
+</blockquote>
+<h2>Onde achar (Essex County)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Fonte</th>
+<th>O que tem</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Essex County Sheriff</strong></td>
+<td>Listas oficiais de foreclosure sales</td>
+<td><a href="https://essexsheriff.com/foreclosure-listings">essexsheriff.com/foreclosure-listings</a></td>
+</tr>
+<tr>
+<td><strong>SalesWeb / CivilView</strong></td>
+<td>Portal com as vendas do county (Essex = <code>countyId=2</code>)</td>
+<td><a href="https://salesweb.civilview.com/">salesweb.civilview.com</a></td>
+</tr>
+<tr>
+<td><strong>NJ Courts — Foreclosure Public Access</strong></td>
+<td>Casos de foreclosure do Superior Court</td>
+<td><a href="https://www.njcourts.gov/public/find-a-case/civil-and-foreclosure-public-access">njcourts.gov</a></td>
+</tr>
+<tr>
+<td><strong>Auction.com / Bid4Assets</strong></td>
+<td>Alguns leilões online</td>
+<td>ver foreclosure-reo</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como funciona (Essex County Sheriff) — confirmado 2026</h2>
+<ul>
+<li>📞 <strong>Foreclosure Sales: 973-621-2848</strong> (número específico; o 973-621-4111 é o geral do Sheriff).</li>
+<li><strong>Quando:</strong> <strong>quinzenal</strong> (bi-weekly desde 02/08/2022), <strong>terças alternadas às 13h30</strong>.</li>
+<li><strong>Onde:</strong> Leroy F. Smith Jr. Public Safety Building, <strong>60 West Market Street, 14º andar (Conference Room), Newark 07102</strong>.</li>
+<li><strong>Registro:</strong> <strong>só no dia</strong>, <strong>12h30–13h30</strong> (não aceito após 13h30), sem pré-registro — com o cheque em mãos.</li>
+<li><strong>Lance:</strong> abertura de <strong>US$ 100</strong> (plaintiff), incrementos de <strong>US$ 1.000</strong>.</li>
+<li><strong>Depósito:</strong> <strong>20% do lance imediatamente</strong> em <em>money order / certified check / bank check</em> nominal a "Essex County Sheriff". ❌ <strong>Não aceita cash, personal, company ou agency checks.</strong></li>
+<li><strong>Saldo:</strong> 80% em <strong>30 dias</strong> — com <strong>juros de 7,5% a partir do 11º dia</strong>.</li>
+<li><strong>Redemption:</strong> o devedor mantém <strong>10 dias</strong> para resgatar após o sale (mortgage foreclosure).</li>
+<li><strong>Adiamentos:</strong> o devedor tem direito a <strong>2 adjournments</strong> (~28 dias cada, taxa US$ 28) — a data listada <strong>pode ser adiada</strong>.</li>
+<li><strong>Avisos:</strong> <strong>Star-Ledger</strong> toda quarta + jornal local, por 4 semanas antes.</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>Sempre reconfirme data e status no <a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=2">SalesWeb (countyId=2)</a></strong> antes de comparecer (atualiza a cada 30 min, 9h–16h) — há adiamentos e cancelamentos frequentes. O <strong>upset price</strong> (piso por ordem judicial) não aparece na grade: abra os <em>Details</em> ou ligue para 973-621-2848.</p>
+</blockquote>
+<h2>Cuidados de due diligence</h2>
+<ul>
+<li><strong>Upset price</strong> e o que sobra de dívida.</li>
+<li><strong>Liens sênior</strong> que podem sobreviver (1st vs 2nd position).</li>
+<li><strong>Ocupação</strong> (pode precisar de eviction) e condição <em>as-is</em> (sem inspeção interna).</li>
+<li><strong>Título</strong> — faça title search; imóvel de sheriff sale pode ter surpresas.</li>
+<li><strong>Flood/bairro</strong> — ver bairros-e-wards.</li>
+</ul>
+<p>Use o checklist de due diligence antes de dar lance.</p>
+<h2>Também: imóveis do governo / REO</h2>
+<p>O que não vende no leilão vira <strong>REO</strong> (bank-owned) e vai ao mercado; e há programas federais. Veja o catálogo: foreclosure-reo.md (HUD Home Store, Fannie HomePath, etc.).</p>
+<p>⬅️ Hub de Newark</p></div></section>
+<section id="s5"><div class="sec-head"><span class="idx">06</span><h2>Compliance</h2></div><div class="prose"><p>Custos e obrigações de quem compra para <strong>alugar</strong> em Newark. Verificado nas fontes oficiais (2025–2026). Ignorar isto vira multa, atraso no fechamento e cash flow furado.</p>
+<h2>1. 🏘️ Rent Control (Newark)</h2>
+<ul>
+<li><strong>Órgão:</strong> Division of Rent Control / Rent Control Board — <strong>920 Mayor Kenneth A. Gibson Blvd, Room 111, Newark 07102</strong>, 📞 <strong>973-733-3675</strong>.</li>
+<li><strong>Teto de aumento anual:</strong> o <strong>menor</strong> entre o <strong>CPI</strong> (área NY-Newark-JC) e <strong>4%</strong> — nunca acima de <strong>4%</strong> (§19:2-3.1). <em>(O "5%" de fontes antigas é regra pré-2014, revogada.)</em></li>
+<li><strong>Registro obrigatório de TODAS as unidades</strong> no Board (§19:2-9.8). O Board pode <strong>negar o aumento</strong> se o imóvel não estiver registrado ou em <em>substantial compliance</em>.</li>
+<li><strong>Isenções (confirmadas no ordinance):</strong></li>
+<li>✅ <strong>Owner-occupied até 4 unidades</strong> (§19:2-2) — base do <strong>house-hack</strong>.</li>
+<li>✅ <strong>Nova construção: isenta por até 30 anos</strong> (§19:2-18.1) — <em>(correção: não são 5 anos)</em>.</li>
+<li>✅ Reabilitação de imóvel <strong>vago 18+ meses</strong> (custo &gt; 50%): isenta por <strong>5 anos</strong>.</li>
+<li>✅ Public housing; hotéis/motéis; uso comercial; unidades Section 8/HUD durante o subsídio.</li>
+</ul>
+<h2>2. 📝 Registros de locação</h2>
+<h3>Municipal (Newark, Ch. 18:17)</h3>
+<ul>
+<li>Registro <strong>anual</strong> de todas as unidades alugadas no Dept. of Economic &amp; Housing Development.</li>
+<li><strong>Sem registro não se aluga</strong> nem se emite o <strong>Certificate of Habitability</strong>.</li>
+<li><strong>Taxa:</strong> US$ 50 + US$ 10/unidade. Multa por atraso: US$ 100 + US$ 20/unidade.</li>
+</ul>
+<h3>Estadual (N.J.S.A. 46:8-27 — Landlord Registration)</h3>
+<ul>
+<li><strong>3+ unidades</strong> → registrar no <strong>DCA</strong> (Bureau of Housing Inspection, 📞 609-633-6229).</li>
+<li><strong>1–2 unidades</strong> → registrar no <strong>Municipal Clerk</strong> (obrigatório p/ 1 unid. e p/ 2 não owner-occupied).</li>
+<li>⚠️ <strong>Sem registro, o landlord não consegue <em>judgment for possession</em></strong> (não consegue despejar).</li>
+</ul>
+<h2>3. 🏠 Certificate of Code Compliance (CCC) — na venda/transferência</h2>
+<p>Antes de transferir imóvel residencial/misto em Newark, exige-se <strong>CCC</strong> (Code + Zoning) + <strong>Fire Certificate</strong>:</p>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Unidades</th>
+<th>CCC</th>
+<th>Fire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1–2</td>
+<td>US$ 400</td>
+<td>US$ 35</td>
+</tr>
+<tr>
+<td>3–10</td>
+<td>US$ 500</td>
+<td>US$ 50</td>
+</tr>
+<tr>
+<td>11–20</td>
+<td>US$ 1.000</td>
+<td>—</td>
+</tr>
+<tr>
+<td>21–40</td>
+<td>US$ 2.000</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>CCC válido por 90 dias</strong>; <strong>Fire Certificate expira em 6 meses</strong>.</li>
+<li>Taxa <strong>reembolsável antes</strong> da inspeção, não depois. Portal: <a href="https://newarkportal.us/Home/CCC">newarkportal.us/Home/CCC</a>.</li>
+<li>⚠️ Pode <strong>travar o fechamento</strong> e exigir reparos — orce no deal.</li>
+</ul>
+<h2>4. 🎨 Lead Paint (crítico em imóveis pré-1978)</h2>
+<ul>
+<li><strong>Lei:</strong> P.L. 2021 c.182 / <strong>N.J.A.C. 5:28A</strong>, em vigor desde <strong>22/jul/2022</strong>.</li>
+<li><strong>Escopo:</strong> locações single/two-family e multiple dwellings <strong>construídas antes de 1978</strong>.</li>
+<li><strong>Frequência:</strong> inspeção <strong>a cada 3 anos ou na troca de inquilino</strong> (o que vier antes). 1ª inspeção era até 22/jul/2024.</li>
+<li><strong>Lead-safe certificate válido por 2 anos.</strong></li>
+<li><strong>Surcharge de US$ 20/unidade</strong> ao DCA (além do custo da inspeção).</li>
+<li><strong>Isenções:</strong> construído em/após 1978; sazonal &lt; 6 meses; <em>lead-free certification</em>; multiple dwelling registrado no DCA há 10+ anos sem violações.</li>
+</ul>
+<h2>5. ⚖️ Tax Appeal — alavanca de valorização</h2>
+<p>Property tax alto? Conteste o assessment no <strong>Essex County Board of Taxation</strong> — <strong>495 Dr. MLK Jr. Blvd, Room 230, Newark 07102</strong>, 📞 973-395-8525.</p>
+<ul>
+<li><strong>Prazo:</strong> <strong>1º de abril</strong> (1º de maio em ano de revaluation); fim de semana → segunda seguinte.</li>
+<li><strong>Form A-1</strong> (Petition of Appeal). Taxas: US$ 5 (até US$ 150k de assessment); US$ 25 (150k–500k); US$ 100 (500k–1M); US$ 150 (&gt;1M).</li>
+<li><strong>Provas:</strong> <strong>3–5 comparable sales</strong> com data-base <strong>1º/out do ano anterior</strong>.</li>
+<li>⚠️ <strong>Todos os impostos e água/esgoto</strong> devem estar <strong>pagos até o 1º trimestre</strong> — senão a apelação não é ouvida.</li>
+<li>Recurso ao <strong>NJ Tax Court</strong> em até <strong>45 dias</strong> da decisão.</li>
+</ul>
+<h2>6. 💵 Financiamento (verificar taxas caso a caso)</h2>
+<ul>
+<li><strong>DSCR loan</strong> (qualifica pela renda do aluguel, sem comprovação de renda pessoal): faixas de mercado LTV até ~80%, DSCR mín. ~0,8, score ~680+.</li>
+<li><strong>Hard money</strong> para compra+reforma/BRRRR.</li>
+<li>Exemplos de lenders ativos em NJ (não é recomendação; cote): Easy Street Capital, CoreVest, Longleaf, Griffin, HouseMax. Catálogo: financiamento.md.</li>
+</ul>
+<hr />
+<h2>✅ Checklist de compliance</h2>
+<ul>
+<li>[ ] Unidade <strong>registrada no Rent Control Board</strong> e em substantial compliance?</li>
+<li>[ ] Isenção aplicável? (owner-occupied ≤4 un. / nova constr. até 30 anos / vago-reabilitado 5 anos)</li>
+<li>[ ] <strong>Registro municipal</strong> (US$ 50 + US$ 10/un.) e <strong>estadual</strong> (DCA 3+ / Clerk 1–2)?</li>
+<li>[ ] Imóvel <strong>pré-1978</strong> → <strong>lead paint</strong> inspecionado (cert. 2 anos, surcharge US$ 20/un.)?</li>
+<li>[ ] Na compra: <strong>CCC</strong> (US$ 400 + Fire US$ 35 p/ 1–2 un.) providenciado?</li>
+<li>[ ] Vale abrir <strong>tax appeal</strong> (prazo 1º/abril, impostos pagos até Q1)?</li>
+<li>[ ] <strong>DSCR/hard money</strong> pré-cotado em vários lenders?</li>
+</ul>
+<p>⬅️ Hub de Newark</p></div></section>
+<section id="s6"><div class="sec-head"><span class="idx">07</span><h2>Puxar valores & dados</h2></div><div class="prose"><p>Como levantar o <strong>valor</strong>, o <strong>assessment</strong>, os <strong>comps</strong> e — o que você pediu — o <strong>histórico de quedas de preço (price drops)</strong> de um imóvel específico em Newark. Do gratuito ao pago, e o que dá para automatizar depois.</p>
+<hr />
+<h2>1. 🏛️ Valor oficial (assessment / MOD-IV) — grátis</h2>
+<p>O ponto de partida legal é o <strong>assessment</strong> do município (base do property tax).</p>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Fonte</th>
+<th>O que puxa</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NJ Property Explorer</strong> (estado)</td>
+<td>Owner, block/lot, <strong>assessed value</strong> (land + building), imposto do ano anterior, classificação (dados congelados em jan/ano)</td>
+<td><a href="https://www.nj.gov/transparency/property/">nj.gov/transparency/property</a></td>
+</tr>
+<tr>
+<td>⭐ <strong>Essex County PROS</strong></td>
+<td>Assessment + property inventory + <strong>comparable sales</strong> de Newark/Essex (a fonte oficial mais completa do county)</td>
+<td><a href="https://essexcounty.prosgar.com/">essexcounty.prosgar.com</a></td>
+</tr>
+<tr>
+<td><strong>Essex taxdatahub</strong></td>
+<td>Busca por <strong>B.L.Q. (Block/Lot/Qualifier)</strong>, sale date/price, sqft, year built — <strong>exporta p/ Excel</strong></td>
+<td><a href="https://www.taxdatahub.com/6229fbf0ce4aef911f9de7bc/Essex%20County">taxdatahub — Essex</a></td>
+</tr>
+<tr>
+<td><strong>Essex Register of Deeds / PRESS</strong></td>
+<td><strong>Deed e sale price oficial</strong> (grantor/grantee, data) — a fonte de verdade</td>
+<td><a href="https://press.essexregister.com/">press.essexregister.com</a></td>
+</tr>
+<tr>
+<td><strong>NJ Division of Taxation — tabelas</strong></td>
+<td><strong>General/Effective tax rate</strong> de Newark p/ calcular o imposto</td>
+<td><a href="https://www.nj.gov/treasury/taxation/lpt/statdata.shtml">nj.gov/treasury/taxation/lpt</a></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ O assessed value <strong>não é</strong> o valor de mercado (o assessment ratio de Newark é ~46%). Use o assessment para conferir o <strong>imposto real</strong>; use comps para o <strong>valor de mercado</strong>. O <strong>PRESS</strong> online cobre transações de ~2001 em diante; o acervo desde 1637 é físico (Hall of Records, 465 MLK Jr Blvd, Room 130).
+🔒 <strong>Daniel's Law</strong> (desde 01/01/2023) removeu <strong>nomes de proprietário</strong> de portais gratuitos (NJACTB, NJParcels) — para owner names, use PRESS (deed) ou portal pago.</p>
+</blockquote>
+<h2>2. 📉 Histórico de preço e quedas (price drops) — o que você quer</h2>
+<p>Cada anúncio guarda a <strong>linha do tempo de preços</strong>. É onde você lê a "dor" do vendedor.</p>
+<h3>Onde encontrar</h3>
+<ul>
+<li><strong>Zillow</strong> → página do imóvel → seção <strong>"Price history"</strong> (eventos <em>Listed / Price change / Pending / Sold</em>, cada um com data e valor). Também mostra "Public tax history".</li>
+<li><strong>Redfin</strong> → <strong>"Property history"</strong> (Listed, Price Changed, Pending, Sold) + preço/sqft.</li>
+<li><strong>Realtor.com</strong> → "Property history".</li>
+<li><strong>PropStream</strong> (pago) → histórico consolidado + MLS listing history + comps num lugar só.</li>
+</ul>
+<h3>Como usar no projeto</h3>
+<ol>
+<li>Copie os eventos (data + preço + tipo).</li>
+<li>Cole na <strong>ferramenta do projeto</strong> (aba "Histórico de preços") no formato:
+   <code>2024-08-12, 359000, Listed
+   2024-09-20, 349000, Price cut
+   2025-01-10, 319000, Price cut</code></li>
+<li>Ela gera o <strong>gráfico</strong>, calcula <strong>nº de cortes, queda desde o pico, DOM</strong> e dá um <strong>"read" de negociação</strong>.</li>
+</ol>
+<blockquote>
+<p>💡 <strong>Leitura de negociação:</strong> muitos cortes + DOM alto = <strong>vendedor motivado</strong> → margem para oferta agressiva. Preço firme e recém-listado = pouca alavancagem.</p>
+</blockquote>
+<h2>3. 📐 Comps (valor de mercado) — grátis e pago</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Fonte</th>
+<th>O que puxa</th>
+<th>Preço</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NJParcels.com</strong></td>
+<td>Sales history, comps por block/lot, 3M+ parcels</td>
+<td>🆓</td>
+</tr>
+<tr>
+<td><strong>Redfin</strong> (sold)</td>
+<td>Vendas <strong>fechadas</strong> recentes com preço/sqft</td>
+<td>🆓</td>
+</tr>
+<tr>
+<td><strong>Zillow</strong></td>
+<td>Recently sold + Zestimate (referência, não comp)</td>
+<td>🆓</td>
+</tr>
+<tr>
+<td><strong>PropStream</strong></td>
+<td>Comps ajustados, ARV, filtros de investidor</td>
+<td>💲</td>
+</tr>
+<tr>
+<td><strong>Essex County Register of Deeds</strong></td>
+<td><strong>Deeds e vendas oficiais</strong> (fonte legal)</td>
+<td>🆓</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Regra do comp bom:</strong> venda <strong>fechada</strong> &lt; 3–6 meses, ≤ 1 milha (ou mesmo bairro/ward), ±20% de metragem, mesmo tipo (atenção: 2–4 famílias vs single-family mudam muito o valor). Modelo: comparativo de comps.</p>
+<h2>4. 🔑 Aluguel de mercado — para o underwriting</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Fonte</th>
+<th>O que puxa</th>
+<th>Preço</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rentometer</strong></td>
+<td>Aluguel comparável por endereço/quartos</td>
+<td>🆓/💲</td>
+</tr>
+<tr>
+<td><strong>Zillow Rent Zestimate</strong></td>
+<td>Estimativa de aluguel</td>
+<td>🆓</td>
+</tr>
+<tr>
+<td><strong>Zumper / Apartments.com</strong></td>
+<td>Aluguel anunciado por tipologia (studio/1BR/2BR)</td>
+<td>🆓</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Em Newark, o aluguel mediano gira ~US$ 2.100/mês; 2BR ~US$ 2.689 (Zumper). <strong>Lembre do rent control</strong> ao projetar reajustes.</p>
+</blockquote>
+<h2>5. 🤖 Automação / APIs — para evoluir depois (Fase 5)</h2>
+<p>Quando quiser sair do manual e <strong>puxar valores em escala</strong> (ex.: alimentar uma planilha/app):</p>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>API / serviço</th>
+<th>Puxa</th>
+<th>Nota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ATTOM Data</strong></td>
+<td>Assessment, deed/sales, AVM, tax</td>
+<td>Cobertura nacional, pago</td>
+</tr>
+<tr>
+<td><strong>Rentcast (ex-Realty Mole)</strong></td>
+<td>Valor + aluguel estimado + comps</td>
+<td>API acessível, bom p/ começar</td>
+</tr>
+<tr>
+<td><strong>Estated / Regrid</strong></td>
+<td>Dados de parcel/propriedade</td>
+<td>Regrid tem cobertura de parcels forte</td>
+</tr>
+<tr>
+<td><strong>Zillow via RapidAPI</strong> (não oficial)</td>
+<td>Listing + price history</td>
+<td>Termos/uso variáveis — cuidado</td>
+</tr>
+<tr>
+<td><strong>PropStream</strong></td>
+<td>Base de investidor (bulk, listas)</td>
+<td>Mais produto que API</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Isso conecta com o roadmap: a <strong>Fase 5</strong> do projeto (automação/scraper) pode usar uma dessas APIs para montar alertas e um banco de deals de Newark. Por ora, o fluxo é <strong>manual</strong> com as fontes acima.</p>
+</blockquote>
+<hr />
+<h2>✅ Checklist "puxar valores" de um imóvel</h2>
+<ul>
+<li>[ ] Assessment + imposto real no <strong>NJ Property Explorer</strong></li>
+<li>[ ] <strong>Price history</strong> (Zillow/Redfin) → colar na ferramenta</li>
+<li>[ ] <strong>3–5 comps</strong> fechados (NJParcels/Redfin) do mesmo bairro/tipo</li>
+<li>[ ] <strong>Aluguel</strong> de mercado (Rentometer/Zumper)</li>
+<li>[ ] Conferir <strong>block/lot</strong> e <strong>deed</strong> no Register of Deeds</li>
+<li>[ ] Rodar o <strong>underwriting</strong> com a conta real → underwriting-newark</li>
+</ul>
+<p>⬅️ Hub de Newark</p></div></section>
+<section id="s7"><div class="sec-head"><span class="idx">08</span><h2>Playbook do deal</h2></div><div class="prose"><p>Passo a passo prático (verificado) para achar, puxar valores e analisar um deal em Newark. Cada passo aponta para o doc/ferramenta que o executa.</p>
+<h2>Fase 1 — Estratégia e busca</h2>
+<p><strong>1. Defina a tese e o ward-alvo.</strong>
+- Buy-and-hold seguro de 2–4 family → <strong>North Ward</strong> (Forest Hill/Roseville, ZIP 07104/07107) e <strong>Ironbound elevado</strong>.
+- Cash flow com risco → <strong>South Ward</strong> (Weequahic/Clinton Hill) com <strong>seleção quadra-a-quadra</strong>.
+- Combo segurança-preço sem flood → <strong>West Ward</strong> (Upper Vailsburg/Ivy Hill).
+- Fixe critérios: tipologia, ticket máx, <strong>cap rate / cash-on-cash alvo</strong>. Ver bairros.</p>
+<p><strong>2. Escolha o canal de aquisição.</strong>
+- <strong>Mercado:</strong> Zillow/Redfin filtrando por ZIP + "multi-family".
+- <strong>Tax Lien:</strong> edital em <a href="https://www.njpublicnotices.com/">njpublicnotices.com</a> + plataforma <a href="https://newark.newjerseytaxsale.com">newark.newjerseytaxsale.com</a> (registre-se, Federal Tax ID, depósito ACH antecipado). Ver tax-sale.
+- <strong>Sheriff Sale:</strong> lista em <a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=2">salesweb.civilview.com (countyId=2)</a>; registro só no dia (12h30–13h30) com certified check. Ver foreclosure.</p>
+<p><strong>3. Screening de risco (antes de aprofundar).</strong>
+- <strong>Flood:</strong> <a href="https://msc.fema.gov/portal/search">FEMA MSC</a> — SFHA? BFE? elevação. <strong>No East Ward é eliminatório.</strong>
+- <strong>Crime:</strong> <a href="https://crimegrade.org/safest-places-in-newark-nj/">CrimeGrade</a> a nível de quadra — no South Ward evite Clinton Ave/Chancellor Ave e Dayton–Weequahic Park.</p>
+<h2>Fase 2 — Puxar valores (detalhe)</h2>
+<p><strong>4. Assessment oficial.</strong> Busque a parcela no <a href="https://www.nj.gov/transparency/property/">NJ Property Explorer</a> e no <a href="https://essexcounty.prosgar.com/">Essex PROS</a> / <a href="https://www.taxdatahub.com/6229fbf0ce4aef911f9de7bc/Essex%20County">taxdatahub</a> por <strong>B.L.Q. (Block/Lot/Qualifier)</strong> → assessed value, class, imposto do ano anterior (export Excel). <strong>Anote o Block/Lot</strong> para as consultas seguintes.</p>
+<p><strong>5. Price history e quedas.</strong> No Zillow leia <strong>"Price and tax history"</strong> evento a evento (Listed → Price change → Pending → Sold); um <em>Pending</em> que volta a <em>Active</em> = deal que caiu. Cole na <strong>ferramenta</strong> para o gráfico de quedas.</p>
+<p><strong>6. Deed/sale price oficial.</strong> Valide grantor/grantee, data e preço real no <a href="https://press.essexregister.com/">Essex Register of Deeds / PRESS</a> — fonte de verdade contra os portais.</p>
+<p><strong>7. Comps.</strong> Base grátis: "nearby recently sold homes" do Redfin. Sério: <strong>PropStream</strong> ou APIs (ATTOM <code>/SalesComparables</code>, Rentcast free tier). <strong>3–5 comps</strong> da mesma tipologia; <strong>descarte outliers</strong> de new construction (Fairmount, Lincoln Park).</p>
+<p><strong>8. Aluguel.</strong> <a href="https://www.rentometer.com/">Rentometer</a> (Average/Median/percentis) + Zillow Rent Zestimate. <strong>Ancore no menor/mediana</strong> e lembre do teto de rent control (menor entre CPI e 4%).</p>
+<h2>Fase 3 — Underwriting e execução</h2>
+<p><strong>9. Modelo de despesas</strong> (underwriting). Inclua: <strong>property tax real</strong> (effective ~1,845% — recalcule pelo lote), <strong>seguro + flood</strong> (se SFHA), vacância, CapEx, management, e os <strong>custos de compliance</strong> (detalhe): registro municipal (US$ 50 + US$ 10/un.), estadual (DCA 3+ / Clerk 1–2), lead paint pré-1978 (surcharge US$ 20/un.), e na compra o <strong>CCC</strong> (US$ 400 + Fire US$ 35 p/ 1–2 un.).</p>
+<p><strong>10. Rent control e isenções.</strong> Confirme registro no Board (920 Mayor Kenneth A. Gibson Blvd, Room 111, 973-733-3675) e as isenções: <strong>owner-occupied ≤4 un.</strong>, nova construção (até 30 anos), vago-reabilitado (5 anos).</p>
+<p><strong>11. Financiamento.</strong> Cote <strong>DSCR loan</strong> (qualifica pela renda do aluguel) em vários lenders; rode o deal em <strong>múltiplos cenários de juros</strong> e confirme que o <strong>DSCR fecha</strong> com o aluguel do passo 8.</p>
+<p><strong>12. Execute conforme o canal.</strong>
+- <strong>Mercado:</strong> oferta com contingência de inspeção <strong>e de flood</strong>.
+- <strong>Tax Lien:</strong> bid-down dos 18% (premium se chegar a 0%); retorno = <strong>juros + penalty de redenção (2/4/6%)</strong>; foreclosure só após <strong>2 anos</strong> (terceiro).
+- <strong>Sheriff Sale:</strong> tenha <strong>20% em certified check</strong> para depósito imediato; saldo em <strong>30 dias</strong> (juros 7,5% do 11º dia); ciente do <strong>redemption de 10 dias</strong> e de <strong>adiamentos</strong>.</p>
+<p><strong>13. Pós-compra: value-add + compliance.</strong> Programe o <strong>tax appeal</strong> se o assessed value &gt; mercado (prazo <strong>1º/abril</strong>, Form A-1, 3–5 comps data-base 1º/out, impostos pagos até Q1). Faça a reforma, obtenha <strong>Certificate of Habitability</strong>, os <strong>registros de locação</strong> e o <strong>lead-safe certificate</strong>, e alugue <strong>respeitando o teto de rent control</strong>.</p>
+<hr />
+<blockquote>
+<p>🧭 <strong>Regra de ouro:</strong> os três killers do retorno em Newark, na ordem — <strong>property tax</strong> (use a conta real), <strong>flood insurance</strong> (no Ironbound) e <strong>rent control</strong> (aluguel travado no CPI). Se o deal fecha com os três estressados, é bom.</p>
+</blockquote>
+<p>⬅️ Hub de Newark · Ferramenta de análise</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

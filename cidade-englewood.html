@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Englewood — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Englewood, Bergen County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Englewood</h1>
+  <div class="facts">
+    <span class="fact">Bergen County</span>
+    <span class="fact">imposto efetivo <b>2,171%</b></span>
+    <span class="fact tese" data-t="Appreciation">Appreciation</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>Fronteira com NY</strong> (Bergen County, a poucos minutos da <strong>George Washington Bridge</strong>). A tese: <strong>appreciation + house-hack</strong> — cidade suburbana densa, escolas e comércio consolidado (Palisade Ave), forte demanda de commuters. Ticket alto (~US$ 650–800k), aluguel caro (~US$ 2,9–3,0k), imposto pesado (~US$ 14,5k/ano) e <strong>rent control</strong> ("Rent Leveling"). Cap rate comprimido → <strong>patrimônio, não yield</strong>.</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> a isenção de rent control de Englewood é <strong>estreita e atípica</strong>. A ordinance (Cap. 325) isenta apenas <em>"a única unidade alugada que seja a ÚNICA que o dono possui na cidade"</em> — <strong>não</strong> adota a clássica isenção NJ de 2–4 family owner-occupied. Consequência decisiva para house-hack: um <strong>2-family</strong> em que o dono mora numa unidade e aluga <strong>uma</strong> = ISENTO; já um <strong>3–4 family owner-occupied</strong> (aluga 2–3) <strong>NÃO</strong> se qualifica e fica <strong>sujeito ao Rent Leveling</strong>. E há outro alerta: a cidade está <strong>em reavaliação AGORA (FY2026)</strong> — não confie no tax bill antigo.</p>
+</blockquote>
+<h2>📊 Englewood em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>ZHVI ~US$ 608k (+0,5% YoY) · median sale ~US$ 678k (+5,7%) · 2–4 family US$ 559k–1,08M (estoque escasso)</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>geral ~US$ 2,9–3,0k · 2BR ~US$ 2,3–2,8k/unidade · 3BR ~US$ 2,9–3,3k</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td>🔴 <strong>effective ~2,171%</strong> (general 3,073) · conta média ~US$ 14,5k (2–4 family US$ 16–22k)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>🔴 <strong>ATIVA FY2026</strong> (Appraisal Systems Inc.; valor 1/out/2025; appeal ~1/mai) — exija o novo assessment</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ Rent Leveling (Cap. 325) — <strong>isenção estreita</strong>: só o 2-family owner-occupied (aluga 1) escapa; 3–4 <strong>não</strong></td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🟢 Maioria Zone X · 🔴 <strong>SE / Overpeck Creek</strong> em zona AE (seguro obrigatório)</td>
+</tr>
+<tr>
+<td>Segurança</td>
+<td>🟢 NW (~1 em 60) → 🔴 Centro (~1 em 22) — varia MUITO por setor</td>
+</tr>
+<tr>
+<td>Acesso NYC</td>
+<td>🚌 Ônibus 178 → GWB Bus Station ~30–40 min · <strong>sem trem/PATH</strong> · GWB de carro ~10–15 min</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li>Para house-hack <strong>isento</strong>, mire <strong>2-family owner-occupied</strong> (aluga 1 unidade) — 3–4 family cai no Rent Leveling.</li>
+<li><strong>Reavaliação FY2026:</strong> peça o <strong>novo assessment</strong> e simule a conta; não use o tax bill antigo.</li>
+<li>Estoque de 2–4 family é <strong>escasso</strong> (DOM ~114 dias) — pouca liquidez de entrada/saída.</li>
+<li><strong>Exija do vendedor a prova documental da isenção/notice</strong> (jurisprudência Willow Ridge: sem notice, o prédio perde a isenção).</li>
+<li>Classifique 🟢🟡🔴 (cap comprimido → provável 🟡) e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026). Correção material: a isenção de Rent Leveling é <strong>estreita</strong> (só a única unidade alugada do dono) — muda a tese de house-hack (2-family isento × 3–4 family não). Reval FY2026 confirmada (ASI, distrito 547). Sheriff Bergen countyId=7. Tax sale: plataforma a confirmar com a coletoria. Cap/cash-flow ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Fronteira NY/Gold Coast · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Englewood é um <strong>appreciation play</strong> suburbano a minutos da GWB: demanda de commuters de alta renda, escolas e comércio consolidado. Ticket alto e imposto pesado <strong>comprimem o cap</strong> → a tese é <strong>patrimônio + house-hack de qualidade</strong>, não yield.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zillow ZHVI (valor típico)</td>
+<td><strong>~US$ 608k</strong> (+0,5% YoY)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td>Redfin median sale</td>
+<td><strong>~US$ 678k</strong> (+5,7% YoY, US$ 406/sqft)</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td>2–4 family</td>
+<td>US$ 559k–1,08M (estoque <strong>escasso</strong>)</td>
+<td>listagens jul/2026</td>
+</tr>
+<tr>
+<td>Aluguel geral</td>
+<td>~US$ 2,9–3,0k (Zumper mediana ~US$ 3.002)</td>
+<td>Zumper/RentCafe</td>
+</tr>
+<tr>
+<td>Por unidade em 2–4 family</td>
+<td>2BR ~US$ 2,3–2,8k · 3BR ~US$ 2,9–3,3k</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Divergência de portais:</strong> ZHVI (~$608k, valor típico do estoque) &lt; median sale (~$678k, vendas do mês, puxada por casas maiores). Estoque de 2–4 family é <strong>escasso</strong> e o <strong>DOM subiu para ~114 dias</strong> (poder de barganha do comprador melhorando, mas pouca liquidez).</p>
+</blockquote>
+<h2>Cap rate / cash flow (comprimido)</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (2-family US$ 650k, 2× US$ 2.600 = US$ 62,4k/ano bruto): menos vacância/reserva ~10% e OpEx (<strong>IPTU ~US$ 16–20k</strong>, seguro, água/esgoto, manutenção, gestão) → <strong>NOI ~US$ 22–26k</strong> → cap <strong>~3,4–4,0%</strong> — comprimido, típico de mercado de appreciation cara.</li>
+<li>Com <strong>FHA 3,5% morando em uma unidade</strong>, o proprietário abate boa parte da própria moradia, mas o cash-flow financiado cheio a juros de 2026 tende a <strong>negativo/break-even fino</strong>. O produto se justifica por <strong>patrimônio + moradia subsidiada</strong>, não por yield.</li>
+<li>⚠️ <strong>Modele com o assessment PÓS-reval (FY2026)</strong>, não o antigo — o IPTU pode subir para 2–4 family reformado.</li>
+</ul>
+<h2>🆚 Englewood × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Englewood</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ticket 2–4 family</td>
+<td>🔴 US$ 650–800k+</td>
+<td>~US$ 450–650k</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>~2,171% (conta média ~US$ 14,5k)</td>
+<td>~1,85–2,8%</td>
+</tr>
+<tr>
+<td>Tese</td>
+<td>Appreciation / house-hack de qualidade</td>
+<td>Cash-flow / value-add urbano</td>
+</tr>
+<tr>
+<td>Cap rate</td>
+<td>🔴 Comprimido (~3,4–4%)</td>
+<td>Maior</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>Rent Leveling <strong>isenção estreita</strong></td>
+<td>Ordinance mais abrangente</td>
+</tr>
+<tr>
+<td>Estoque 2–4 family</td>
+<td>🔴 Escasso, DOM ~114 dias</td>
+<td>Muito volume</td>
+</tr>
+<tr>
+<td>Inquilino</td>
+<td>Renda maior, mais estável</td>
+<td>Mais turnover</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> Newark entrega <strong>cash-flow e volume de deals</strong>; Englewood entrega <strong>appreciation, inquilino de renda maior e proximidade premium da GWB</strong> — mas com cap comprimido, estoque escasso e imposto pesado. Escolha Englewood para <strong>preservação de capital + house-hack de qualidade</strong>, não para yield.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>House-hack em 2-family owner-occupied</strong> (aluga 1 unidade → <strong>isento</strong> do Rent Leveling; ver impostos-e-leiloes).</li>
+<li>🟡 <strong>Buy &amp; hold patrimonial</strong> de longo prazo (appreciation), aceitando cap comprimido.</li>
+<li>🔴 <strong>3–4 family para renda pura</strong> (cai no Rent Leveling + cap baixo) e <strong>flip de alto ticket</strong> (mansion tax + margem apertada).</li>
+</ul>
+<p>⬅️ Hub de Englewood · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>Aqui a <strong>localização dentro da cidade é decisiva</strong>: o crime varia de <strong>~1 em 60</strong> (noroeste) a <strong>~1 em 22</strong> (centro), e os melhores "números" de 2–4 family estão justamente no <strong>Centro</strong> (mais barato, mais gestão). O flood é pontual, concentrado no <strong>SE / Overpeck Creek</strong>.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li>🟢 <strong>Noroeste</strong> (junto a Englewood Cliffs) e <strong>East Hill</strong> são os mais seguros e valorizados — appreciation, ticket alto, pouco 2–4 family.</li>
+<li>🔴 <strong>Centro / Downtown (4th Ward)</strong> é o mais fraco (~1 em 22), mas é onde está a <strong>maior parte do estoque 2–4 family</strong> e os melhores caps — troca segurança por yield/gestão.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Misto</th>
+<th>🔴 Atenção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Northwest · East Hill / Palisade Ave</td>
+<td>West Englewood (varia por quadra)</td>
+<td>Central / Downtown (4th Ward) · SE/Overpeck</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados qualitativos (CrimeGrade — grade geral ~C). <strong>Crime varia muito por setor</strong> — meça por endereço.</p>
+</blockquote>
+<h2>🌊 Flood</h2>
+<ul>
+<li>🟢 <strong>Maioria em Zone X</strong> (baixo risco; seguro não obrigatório na maior parte).</li>
+<li>🔴 <strong>SE / proximidade do Overpeck Creek</strong> pode colocar lotes em <strong>zona AE</strong> (seguro obrigatório) — o principal red flag de flood; <strong>West Englewood</strong> também tem trechos perto de córregos/drenagem.</li>
+<li>Cheque <strong>os dois por endereço</strong>: <a href="https://msc.fema.gov/portal/search">FEMA MSC</a> · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Northwest</strong> (junto a Englewood Cliffs)</td>
+<td>Mais seguro (~1 em 60), inquilino premium; <strong>appreciation</strong>, ticket alto, pouco 2–4 family. Flood baixo.</td>
+</tr>
+<tr>
+<td><strong>East Hill / Palisade Ave</strong></td>
+<td>Setor nobre, preços altos; <strong>patrimônio puro</strong>, cap muito comprimido. Zone X.</td>
+</tr>
+<tr>
+<td><strong>Central / Downtown (4th Ward)</strong></td>
+<td>Onde estão os <strong>2–4 family e os melhores números</strong>; risco/gestão maiores. DD de inquilino + Rent Leveling.</td>
+</tr>
+<tr>
+<td><strong>West Englewood</strong> (rota 178)</td>
+<td>Mais acessível, bom para buy-hold de renda relativa; conferir flood perto de córregos.</td>
+</tr>
+<tr>
+<td><strong>Southeast / Overpeck &amp; I-95</strong></td>
+<td>Entrada mais barata, mas 🔴 <strong>red flag de flood (AE)</strong> — só com laudo FEMA/First Street favorável.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li><strong>Patrimônio/appreciation</strong> → NW/East Hill; <strong>melhores números de 2–4 family</strong> → Central (com DD de crime e gestão).</li>
+<li><strong>Fuja do SE/Overpeck</strong> salvo laudo de flood favorável.</li>
+<li>Confirme <strong>crime da quadra</strong> (varia muito) e <strong>flood do endereço</strong>.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Englewood · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><h2>1. 🏛️ Property tax + reavaliação FY2026 (red flag ATIVO)</h2>
+<ul>
+<li><strong>Effective rate 2024: 2,171%</strong> (general rate <strong>3,073</strong> por US$ 100 de assessed) — confirmado no PDF oficial da NJ Division of Taxation. Use <strong>~2,17%</strong> como métrica comparável.</li>
+<li><strong>Conta média (2024):</strong> ~US$ 14.476/ano (dispersão grande: p25 ~US$ 7,4k a p90 ~US$ 27,5k). Para <strong>2–4 family</strong>, tipicamente <strong>US$ 16–22k/ano</strong> (ex.: US$ 700k × 2,17% ≈ US$ 15,2k; US$ 850k ≈ US$ 18,4k).</li>
+<li>🔴 <strong>Reavaliação ATIVA (FY2026):</strong> a cidade está revaluando todo o imóvel tributável, contratada à <strong>Appraisal Systems Inc.</strong> (distrito 547), <strong>data de valor 1/out/2025</strong>, notificação por correio, <strong>appeal ~1/mai/2026</strong> (ASI: 201-493-8530 / englewood@asinj.com). Os assessments serão alinhados a mercado e o <strong>general rate cai proporcionalmente</strong> — <strong>não use o 3,073 para projetar a conta pós-reval; recalcule sobre o novo assessed value.</strong> <strong>DD obrigatória:</strong> peça o novo assessment e simule antes de fechar.</li>
+</ul>
+<h2>2. 🏘️ Rent Control ("Rent Leveling", Cap. 325) — <strong>isenção estreita</strong></h2>
+<ul>
+<li><strong>Rent Leveling</strong> (Municipal Code Cap. 325, eCode360 #13859839), administrado por <strong>Rent Leveling Board / Hearing Officer</strong>.</li>
+<li>⚠️ <strong>Isenção atípica (correção material):</strong> o texto isenta apenas <em>"a única unidade alugada que seja a ÚNICA unidade de aluguel possuída pelo dono na cidade"</em> (exceto condos/coops). Efeito prático <strong>decisivo</strong>:</li>
+<li><strong>2-family owner-occupied</strong> (dono mora numa, aluga <strong>uma</strong>) → <strong>ISENTO</strong> ✅</li>
+<li><strong>3–4 family owner-occupied</strong> (aluga 2–3) → <strong>NÃO isento</strong>, sujeito ao Rent Leveling 🔴</li>
+<li>Outras isenções: unidades novas pós-1/jul/1983 (com base rent), unidades retiradas do mercado por ≥1 ano, redevelopment. Teto de reajuste atrelado a <strong>CPI/COLA</strong> (ordem ~4%; <strong>confirmar o percentual exato</strong> com o Rent Leveling Board).</li>
+<li>⚠️ <strong>Jurisprudência NJ (Willow Ridge v. Union City):</strong> isenções de rent control dependem de <strong>notice statutório</strong> entregue corretamente pelo proprietário <strong>anterior</strong> — <strong>exija do vendedor a prova documental da isenção</strong> ou o prédio pode perdê-la.</li>
+</ul>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>plataforma a confirmar</strong></h2>
+<ul>
+<li><strong>Órgão:</strong> City of Englewood Tax Collector — 2-11 N Van Brunt St, Englewood 07631 (Deputy: Aretha Dolphy). Portal de pagamento/consulta: <strong><a href="https://www.cit-e.net/englewood-nj/cn/TaxBill_Std/">cit-e.net/englewood-nj</a></strong>. Página oficial: cityofenglewood.org/1288/Tax-Collector.</li>
+<li>NJ vende o <strong>Tax Sale Certificate</strong> (bid-down dos juros a partir de <strong>18%</strong>, depois premium; redemption; foreclosure após 2 anos). ⚠️ <strong>NÃO assuma a plataforma:</strong> o portal de <strong>pagamento</strong> é cit-e.net, mas o <strong>leilão de lien</strong> pode ser presencial ou via provedor online (newjerseytaxsale.com/RealAuction) — <strong>ligue para a coletoria</strong> para confirmar formato e data. Ver também NJ Division of Taxation Public Auctions.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>Bergen County (countyId=7)</strong></h2>
+<ul>
+<li><strong>Bergen County Sheriff</strong> — salesweb <strong>countyId=7</strong> (⚠️ Hudson = 10). Leilões no <strong>2 Bergen County Plaza, Hackensack</strong>, às 13h; depósito <strong>20%</strong> no ato; leilão "open". Foreclosure Unit <strong>201-336-3500 x4453</strong>.</li>
+<li>📄 <strong>Detalhe completo (compartilhado pelas 4 cidades de Bergen):</strong> ver hub de Hackensack — §4 Sheriff. Listas: <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=7">salesweb.civilview.com (countyId=7)</a></strong> · bcsd.us/sheriff-sales.</li>
+</ul>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978) e <strong>registro estadual</strong> (N.J.S.A. 46:8-27): estaduais, ver compliance-newark.</li>
+<li><strong>Financiamento:</strong> Bergen é <strong>high-cost</strong> (conforming 2026 1-unit US$ 1.209.750; 2-fam US$ 1.548.975; FHA 1-unit US$ 1.249.125). <strong>House-hack FHA 3,5%</strong> owner-occupied viabiliza 2–4 family com pouco capital. Investidor puro: DSCR/conventional 20–25%. Maioria <strong>Zone X</strong> (flood não obrigatório na maior parte, mas confira perto do Overpeck). <strong>Mansion tax</strong> 1% acima de US$ 1M.</li>
+</ul>
+<p>⬅️ Hub de Englewood · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

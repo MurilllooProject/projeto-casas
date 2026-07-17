@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jersey City — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Jersey City, Hudson County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Jersey City</h1>
+  <div class="facts">
+    <span class="fact">Hudson County</span>
+    <span class="fact">imposto efetivo <b>1,919%</b></span>
+    <span class="fact tese" data-t="Appreciation">Appreciation</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>A "6ª Boro" de NY</strong> (county seat de Hudson, de frente para Lower Manhattan). O mercado <strong>mais caro e líquido</strong> de NJ na fronteira — <strong>PATH</strong> direto, waterfront e gentrificação contínua (Downtown, Journal Square, Bergen-Lafayette). A tese: <strong>appreciation + house-hack</strong>, não cash-flow puro — preços altos comprimem o cap.</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> em Jersey City, <strong>imóveis de 1 a 4 unidades são ISENTOS do rent control</strong> (Chapter 260), <strong>independentemente de owner-occupancy</strong> — o controle só atinge <strong>5+ unidades</strong>. Ou seja, o <strong>produto-alvo do investidor opera FORA do teto de aluguel</strong> (uma tentativa de 2025 de mirar LLCs com múltiplas unidades foi <strong>derrotada</strong>). Isso corrige a premissa de "rent control SIM". <strong>Os dois freios:</strong> (1) <strong>40% da cidade em zona de flood FEMA</strong> (Downtown/waterfront severo); (2) <strong>reavaliação ~85% concluída</strong> e ratio despencando (72,82%, última reval 2018) → <strong>risco de salto no imposto</strong> pós-compra/pós-reval.</p>
+</blockquote>
+<h2>📊 Jersey City em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>Redfin median sale ~US$ 720k (−1,4% YoY) · ZHVI ~US$ 578k · 2–4 family US$ 415k–3,3M (Downtown ~US$ 865k)</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>geral ~US$ 2,8k · fora do Downtown 2–3BR ~US$ 2,4–3,2k/un. · triplex bruto ~US$ 7–9k</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td><strong>effective ~1,919%</strong> (general 2,233) · conta média ~US$ 8,2k (07310 ~6,2k → 07302 ~13,3k)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>🔴 <strong>~85% concluída</strong> · ratio 72,82% (última reval 2018) — <strong>modele o imposto pós-reval</strong></td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ Chapter 260 — <strong>1–4 unidades ISENTAS</strong> (independe de owner-occupancy); controle só em <strong>5+</strong></td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🔴 <strong>~40% da cidade em SFHA</strong> (Downtown/waterfront AE/VE severo; The Heights seco)</td>
+</tr>
+<tr>
+<td>Acesso NYC</td>
+<td>🚆 <strong>PATH</strong> WTC ~10 min · Journal Square → 33rd St ~20–25 min · ferry ~8–12 min · STR <strong>restrito</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li>Compre <strong>2–4 family</strong> (fora do rent control) — priorize <strong>The Heights (seco)</strong> ou <strong>Journal Square/Bergen-Lafayette</strong> (gentrificação + PATH).</li>
+<li><strong>Flood:</strong> nunca feche sem cotar flood + FEMA/First Street <strong>lote a lote</strong> — 40% da cidade em SFHA; VE pode inviabilizar.</li>
+<li><strong>Reavaliação:</strong> modele o imposto <strong>PÓS-reval</strong> (ratio 72,82%), não o atual — risco de salto.</li>
+<li><strong>Analise</strong> ciente de que o cash-on-cash é magro fora de Greenville; a tese é <strong>appreciation via PATH + house-hack</strong>.</li>
+<li>Classifique 🟢🟡🔴 e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026, confiança alta). Confirmados: tax 1,919% (general 2,233), <strong>1–4 un. isento</strong> (Ord. 25-125 derrotada), reval 72,82%/2018 (~85% completa), Sheriff Hudson countyId=10. Correção: sala oficial do sheriff sale = <strong>Room 712</strong> (não 400 — salas variam por edição). Tax sale (tipicamente dez): plataforma a confirmar com a coletoria. Cap/cash-flow ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Fronteira NY/Gold Coast · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Jersey City é o mercado <strong>mais líquido e caro</strong> de Hudson: PATH direto para Manhattan e gentrificação contínua. A tese é <strong>appreciation + house-hack</strong>; o cash-flow puro é difícil (preços altos + cap comprimido), mas o <strong>2–4 family fora do rent control</strong> dá liberdade de reajuste que a maioria das cidades não oferece.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redfin median sale</td>
+<td><strong>~US$ 720k</strong> (−1,4% YoY; MLS jun/2026 ~US$ 760k)</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td>Zillow ZHVI (todos os tipos)</td>
+<td>~US$ 578k (+2,5% YoY, puxado por condos)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td>2–4 family</td>
+<td>US$ 415k–3,3M · average sale ~US$ 788k (Downtown ~US$ 865k, Greenville bem abaixo)</td>
+<td>listagens</td>
+</tr>
+<tr>
+<td>Aluguel geral</td>
+<td>~US$ 2,8k (Zumper; RentCafe marca bem acima) · vacância ~2,8%</td>
+<td>Zumper</td>
+</tr>
+<tr>
+<td>Por unidade fora do Downtown</td>
+<td>2–3BR ~US$ 2,4–3,2k · triplex bruto ~US$ 7–9k/mês</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Dispersão enorme por bairro:</strong> Downtown (07302/07310) é premium (~$865k); Greenville/West Side entram muito abaixo (o produto-alvo de 2–4 family acessível). ZHVI (índice do estoque) &lt; median sale (casas) por metodologia. <strong>Como 1–4 unidades são isentas de rent control, o reajuste não tem teto de 4%/CPI</strong> — vantagem operacional grande.</p>
+</blockquote>
+<h2>Cap rate / cash flow</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (triplex US$ 750k, 3× US$ 2.800 = US$ 8.400/mês = US$ 100,8k/ano bruto): menos property tax ~US$ 13–15k, seguro (+flood se aplicável) ~US$ 4–7k, vacância/manutenção/gestão ~25–30% → NOI ~US$ 50–58k → <strong>cap ~6,7–7,7% bruto</strong> sobre o preço.</li>
+<li><strong>Cash-on-cash real</strong> com financiamento a juros de 2026 fica <strong>magro/negativo no Downtown</strong> e <strong>melhor em Greenville</strong>. <strong>House-hack</strong> (FHA 3,5%, morar 1 unidade) é o que fecha a conta. A tese é <strong>appreciation via PATH</strong>, não yield.</li>
+<li>⚠️ <strong>Modele o imposto PÓS-reval</strong> (ratio 72,82%, reval ~85% concluída) — imóveis vendidos podem sofrer salto na conta.</li>
+</ul>
+<h2>🆚 Jersey City × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Jersey City</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entrada</td>
+<td>🔴 Mais cara (median ~US$ 720k)</td>
+<td>Bem abaixo</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>~1,919% (Hudson ~2,12% médio)</td>
+<td>~1,85–2,8%</td>
+</tr>
+<tr>
+<td><strong>Rent control</strong></td>
+<td>✅ <strong>1–4 un. ISENTO</strong> (liberdade de reajuste)</td>
+<td>Ordinance mais abrangente/agressiva</td>
+</tr>
+<tr>
+<td>Tese</td>
+<td>Appreciation / house-hack (PATH)</td>
+<td>Cash-flow / value-add</td>
+</tr>
+<tr>
+<td>Liquidez/exit</td>
+<td>🟢 Muito líquido (demanda ligada ao PATH)</td>
+<td>Concentrada em investidores</td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🔴 40% em SFHA</td>
+<td>~40% em floodplain (também alto)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> ambas têm imposto alto e flood alto, mas a diferença operacional é o <strong>rent control</strong>: em JC o <strong>2–4 family é isento</strong> (reajuste livre), enquanto Newark tem ordinance mais abrangente. JC entrega <strong>liquidez e appreciation via PATH</strong>; Newark entrega <strong>cap maior e entrada menor</strong>. Para quem prioriza <strong>valorização + liberdade de aluguel perto de Manhattan</strong>, JC; para <strong>yield/entrada</strong>, Newark.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>House-hack em 2–4 family</strong> (isento de rent control) em setores secos/gentrificação (The Heights, Journal Square).</li>
+<li>🟡 <strong>Value-add / entrada em Greenville-West Side</strong> (cap melhor, mais gestão/risco) e <strong>appreciation</strong> de médio prazo.</li>
+<li>🔴 <strong>STR/Airbnb</strong> (ordinance restritiva) e ignorar <strong>flood</strong> (40% da cidade) ou o <strong>assessment pós-reval</strong>.</li>
+</ul>
+<p>⬅️ Hub de Jersey City · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>JC é um mosaico de bairros com <strong>dispersão enorme</strong> de preço, segurança e flood. O eixo que mais importa para o investidor: <strong>flood</strong> (40% da cidade em SFHA, waterfront severo) <strong>× estágio de gentrificação</strong> (Downtown maduro/caro × Greenville/West Side entrada barata).</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li>🟢 <strong>Downtown</strong> (Paulus Hook, Hamilton Park) é o mais seguro; <strong>The Heights</strong> é majoritariamente residencial/familiar.</li>
+<li>🟡 <strong>Journal Square</strong> é misto (hub de transporte, furtos no entorno) mas em forte transformação; <strong>Bergen-Lafayette</strong> em transição.</li>
+<li>🔴 <strong>Greenville</strong> e partes do <strong>West Side</strong> têm crime acima da média — o produto barato vem com mais gestão.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Transição</th>
+<th>🔴 Atenção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Downtown · The Heights</td>
+<td>Journal Square · Bergen-Lafayette</td>
+<td>West Side · Greenville</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados qualitativos (grades B a B− no topo). Cheque o percentil da quadra antes de aprofundar.</p>
+</blockquote>
+<h2>🌊 Flood (o red flag central — 40% da cidade)</h2>
+<ul>
+<li>🔴 <strong>Downtown / waterfront:</strong> ~<strong>80% das propriedades</strong> com risco em 30 anos; zonas <strong>AE/VE</strong>, impacto severo pós-Sandy. Prêmio de seguro alto; <strong>VE pode inviabilizar</strong>.</li>
+<li>🟡 <strong>Bergen-Lafayette</strong> (Mill Creek) e partes do <strong>West Side</strong> (perto do Hackensack River) têm trechos em SFHA — checar lote a lote.</li>
+<li>🟢 <strong>The Heights</strong> (bluff elevado) e <strong>Journal Square</strong> (mais alto/interior) têm <strong>vantagem de flood</strong>.</li>
+<li>Cheque <strong>os dois por endereço</strong>: <a href="https://msc.fema.gov/portal/search">FEMA MSC</a> · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Downtown</strong> (07302/07310)</td>
+<td>Premium, já valorizado, <strong>flood ALTO</strong>; yield baixíssimo. Appreciation madura, não entrada de valor.</td>
+</tr>
+<tr>
+<td><strong>Journal Square</strong> (07306)</td>
+<td>Gentrificação com torres novas + <strong>PATH direto</strong>; <strong>melhor risco/appreciation</strong> para 2–4 family. Flood menor.</td>
+</tr>
+<tr>
+<td><strong>The Heights</strong> (07307)</td>
+<td>2–4 family clássicos, <strong>flood BAIXO</strong> (bluff); acesso a Hoboken/HBLR. <strong>House-hack seco</strong> ideal.</td>
+</tr>
+<tr>
+<td><strong>Bergen-Lafayette</strong> (07304/05)</td>
+<td>Gentrificação em curso perto do Downtown; upside com risco de execução + flood parcial.</td>
+</tr>
+<tr>
+<td><strong>West Side</strong> (07305)</td>
+<td>Entrada acessível, 2–4 family, aposta em valorização/transito; flood variável.</td>
+</tr>
+<tr>
+<td><strong>Greenville</strong> (07305)</td>
+<td>Preços mais baixos, <strong>maior yield bruto</strong>; gestão/risco maiores, checar flood perto de Newark Bay.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li><strong>House-hack seco:</strong> The Heights; <strong>appreciation + PATH:</strong> Journal Square; <strong>yield/entrada:</strong> Greenville/West Side (com DD).</li>
+<li><strong>Flood primeiro:</strong> 40% da cidade em SFHA — nunca feche sem cotação NFIP e FEMA/First Street lote a lote.</li>
+<li>Confirme <strong>1–4 unidades</strong> (isento de rent control) e o <strong>assessment pós-reval</strong>.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Jersey City · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><blockquote>
+<p>🏛️ <strong>Este doc é o hub-âncora de Hudson:</strong> a §4 (Sheriff) traz o <strong>detalhe completo do Hudson County Sheriff</strong>, referenciado por Union City e Bayonne.</p>
+</blockquote>
+<h2>1. 🏛️ Property tax + reavaliação (o wildcard de assessment)</h2>
+<ul>
+<li><strong>Effective rate 2024: 1,919%</strong> (general rate <strong>2,233</strong> por US$ 100 de assessed) — confirmado no PDF oficial da NJ Division of Taxation (Hudson County avg effective ~2,12%).</li>
+<li><strong>Conta média:</strong> ~US$ 8,2k, mas <strong>varia MUITO por ZIP</strong> (07310 ~US$ 6,2k → 07302 ~US$ 13,3k). Para 2–4 family: ~US$ 10–16k/ano. Muitos prédios novos operam sob <strong>PILOT/tax abatement</strong> (regime distinto que pode expirar e elevar a carga).</li>
+<li>🔴 <strong>Reavaliação — ponto crítico:</strong> última reval completa em <strong>2018</strong>; ratio de equalização caiu para <strong>72,82%</strong> (assessments ~27% abaixo do mercado) e uma <strong>citywide revaluation está ~85% concluída</strong>. Impacto: (1) oportunidade de <strong>appeal</strong> em assessment defasado, mas (2) <strong>risco de salto no imposto</strong> quando a reval concluir ou após uma venda. <strong>Modele a conta PÓS-reval</strong>, não a atual. Confirme o cronograma com o Tax Assessor (One Jackson Square / 364 MLK Dr).</li>
+</ul>
+<h2>2. 🏘️ Rent Control (Chapter 260) — <strong>1–4 unidades ISENTAS</strong></h2>
+<ul>
+<li><strong>Chapter 260</strong> (Municode), Office of Landlord Tenant Relations (Rent Control Board 201-547-5127).</li>
+<li>✅ <strong>O maior insight para 2–4 family:</strong> imóveis de <strong>4 unidades ou MENOS são ISENTOS</strong> do rent control — <strong>independentemente de owner-occupancy</strong>. O controle atinge <strong>5+ unidades</strong>. Comprando o produto-alvo, você está <strong>praticamente fora do rent control</strong>.</li>
+<li><strong>Unidades cobertas (5+):</strong> teto = <strong>menor entre 4% e o CPI</strong> (região NY-Newark-Jersey City). New construction pós-25/jun/1987 isenta por até 30 anos.</li>
+<li>✅ <strong>Robustez:</strong> uma ordinance de 2025 (25-125) que miraria non-owner-occupied via LLCs/entidades foi <strong>DERROTADA</strong> — a isenção 1–4 unidades permanece integral. <strong>Sem</strong> metodologia declarada inconstitucional em JC (diferente de Union City). STR fortemente restrito por ordinance própria.</li>
+</ul>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>plataforma a confirmar</strong></h2>
+<ul>
+<li><strong>Órgão:</strong> Jersey City Tax Collector — City Hall, 280 Grove St., Room 101, Jersey City 07302 · 📞 <strong>(201) 547-5124/5125</strong>. Portal de pagamento: taxes.cityofjerseycity.com · inquiry: apps.hlssystems.com/JerseyCity.</li>
+<li>NJ exige tax sale anual das delinquências (após 11/nov); o de JC ocorre <strong>tipicamente em dezembro</strong>. ⚠️ <strong>Plataforma específica não confirmada</strong> — vários municípios de Hudson usam RealAuction/newjerseytaxsale.com/mytaxbill ou portal próprio; <strong>confirme com o Tax Collector</strong> a plataforma e a data.</li>
+<li><strong>Mecânica NJ:</strong> arremata-se o <strong>tax lien certificate</strong> (não o imóvel), juros até <strong>18%</strong> + penalidades; redemption; foreclosure após 2 anos. Detalhes: guia do estado e estratégia.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>Hudson County (countyId=10)</strong> 📌 <em>detalhe compartilhado</em></h2>
+<blockquote>
+<p>Vale para <strong>Jersey City, Union City e Bayonne</strong> (todas Hudson).</p>
+</blockquote>
+<ul>
+<li><strong>Hudson County Sheriff</strong> — leilões no <strong>William J. Brennan Courthouse / Hudson County Administration Building, 595 Newark Avenue, Jersey City 07306</strong>. ⚠️ <strong>O número da sala varia por edição</strong> (já vistos <strong>Room 712</strong>, Jury Room 400, 201B) — <strong>confirme no edital de cada sale</strong>.</li>
+<li><strong>Plataforma:</strong> <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=10">salesweb.civilview.com — countyId=10</a></strong> (⚠️ <strong>Bergen = 7, Essex = 2</strong> — não confundir). Listas também em <strong>hudsoncountysheriff.com/foreclosures-sales</strong>.</li>
+<li><strong>Quando:</strong> <strong>quintas-feiras, 2× por mês, 14h</strong> (registro 13h–14h).</li>
+<li><strong>Depósito:</strong> <strong>mínimo 20% do lance</strong> em certified/cashier's check <strong>imediatamente</strong> após o sale; <strong>saldo entre o 11º e o 30º dia</strong>; <strong>juros legais 2026 = 6,5%</strong> sobre saldo não pago a partir do 11º dia.</li>
+<li><strong>Contato:</strong> Sheriff's Foreclosure Business Office — 257 Cornelison Avenue, Room 2001, Jersey City 07302 (seg–sex 8h–16h) · 201-795-6300 x7233/7312.</li>
+</ul>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978) e <strong>registro estadual</strong> (N.J.S.A. 46:8-27): estaduais, ver compliance-newark.</li>
+<li><strong>Financiamento:</strong> Hudson é <strong>high-cost</strong> (conforming 2026: 2-unit US$ 1.548.975; 3-unit US$ 1.872.225; 4-unit US$ 2.326.875; FHA 1-unit US$ 1.249.125). <strong>House-hack FHA 3,5%</strong> é a estratégia dominante. Investidor puro: <strong>DSCR</strong>. <strong>Flood insurance obrigatório</strong> em SFHA (40% da cidade) — VE pode ser proibitivo; <strong>cote antes de fechar</strong>.</li>
+</ul>
+<p>⬅️ Hub de Jersey City · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fort Lee — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Fort Lee, Bergen County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Fort Lee</h1>
+  <div class="facts">
+    <span class="fact">Bergen County</span>
+    <span class="fact">imposto efetivo <b>1,891%</b></span>
+    <span class="fact tese" data-t="Appreciation">Appreciation</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>Fronteira com NY</strong> (Bergen County, na cabeceira NJ da <strong>George Washington Bridge</strong>). A tese: <strong>appreciation / preservação de patrimônio</strong> — 5–10 min de Manhattan pela ponte, estoque dominado por <strong>condos/torres de luxo</strong> e alguns <strong>2–4 family walk-up</strong>. <strong>Não é cash-flow:</strong> aos preços atuais o 2–4 family dá cash-on-cash ≈ zero ou negativo; o jogo é valorização + house-hack + amortização.</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> a mediana "de US$ 390–463k" que aparece nos portais é uma <strong>miragem de condo</strong> — o <strong>2–4 family que você compraria custa US$ 1M–3,8M</strong> (só ~6 listagens ativas). Modele o produto-alvo por essa faixa, nunca pela mediana blended. E o <strong>rent control de Fort Lee é peculiar</strong>: teto <strong>fixo de 5%</strong> (não CPI → <strong>não</strong> exposto à contestação que derrubou Union City) e cobre só <strong>3+ unidades</strong> — ou seja, <strong>o DUPLEX (2 unidades) é ISENTO</strong>. Quer liberdade de reajuste? Compre 2-unidades. Risco fiscal de médio prazo: <strong>reavaliação no ciclo FY2027</strong> (Bergen ordenou; ratio já ~67%).</p>
+</blockquote>
+<h2>📊 Fort Lee em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>ZHVI ~US$ 623k (+3,5% YoY) · median sale volátil US$ 390–463k (mix de condos) · <strong>2–4 family US$ 1M–3,8M</strong></td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>geral ~US$ 2,9k (torres) · unidade 2BR walk-up ~US$ 2,5–3,2k · fourplex bruto ~US$ 8–11k/mês</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td><strong>effective ~1,891%</strong> (oficial; modele <strong>1,9–2,3%</strong> real) · conta média ~US$ 12,5k (puxada por condos; 2–4 family US$ 19–34k)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>⚠️ <strong>Agendada FY2027</strong> (Bergen ordenou; ratio ~67%) — risco de alta no assessment</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ Chapter 324: teto <strong>5% fixo</strong> (3,5% idoso) · cobre <strong>3+ un.</strong> → <strong>duplex ISENTO</strong></td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🟢 Palisades elevado (baixo) · 🔴 <strong>waterfront do Hudson (Bluff Rd)</strong> em SFHA</td>
+</tr>
+<tr>
+<td>Acesso NYC</td>
+<td>🌉 <strong>GWB 5–10 min</strong> · ônibus NJ Transit p/ Port Authority/GWB Bus Station · <strong>sem PATH/HBLR</strong></td>
+</tr>
+<tr>
+<td>Perfil</td>
+<td>Appreciation/patrimônio · condos + poucos 2–4 family · <strong>liquidez baixa</strong> de multifamily (DOM ~108–122 dias)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li>Se busca <strong>yield</strong>, Fort Lee é a cidade errada (veja Newark/Hackensack). Se busca <strong>âncora patrimonial perto de Manhattan</strong>, siga.</li>
+<li>Modele o 2–4 family pela <strong>faixa real (US$ 1M+)</strong>, imposto a <strong>1,9–2,3%</strong> e cenário <strong>pós-reval 2027</strong>.</li>
+<li><strong>Duplex</strong> para liberdade de reajuste (isento); <strong>triplex/fourplex</strong> cai no teto de 5%.</li>
+<li><strong>Flood:</strong> cote NFIP/privado <strong>antes de ofertar</strong> em qualquer imóvel perto do Hudson ou em cota baixa.</li>
+<li>Classifique 🟢🟡🔴 (provável 🟡/🔴 por cash-flow) e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (14 agentes, jul/2026). Confirmados: tax 1,891% (general 2,607), rent control 5% fixo/duplex isento, reval FY2027, Sheriff Bergen countyId=7, tax sale fortlee.newjerseytaxsale.com, Tax Collector Matthew Rutch. Números de cap/cash-flow são ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Fronteira NY/Gold Coast · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Fort Lee é um <strong>appreciation play</strong> puro na cabeceira da GWB: proximidade extrema com Manhattan sustenta valor e demanda de aluguel de alta renda. O produto do investidor (<strong>2–4 family walk-up</strong>) é caro e ilíquido; a tese é <strong>patrimônio + valorização</strong>, não renda.</p>
+<h2>Preço e aluguel (verificado) — cuidado com a mediana</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zillow ZHVI (valor típico)</td>
+<td><strong>~US$ 623k</strong> (+3,5% YoY)</td>
+<td>Zillow (jul/2026)</td>
+</tr>
+<tr>
+<td>Redfin median sale</td>
+<td><strong>US$ 390–463k</strong> — volátil, puxada por condos 1BR</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td><strong>2–4 family (produto-alvo)</strong></td>
+<td><strong>US$ 1M–3,8M</strong> (só ~6 listagens ativas)</td>
+<td>listagens jul/2026</td>
+</tr>
+<tr>
+<td>Aluguel geral</td>
+<td>~US$ 2,9k (dominado por torres de luxo)</td>
+<td>RentCafe</td>
+</tr>
+<tr>
+<td>Unidade em 2–4 family walk-up</td>
+<td>2BR ~US$ 2,5–3,2k · 3BR ~US$ 3,0–3,8k</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>A mediana engana.</strong> ZHVI (~$623k) e median sale (~$390–463k) refletem o <strong>enorme estoque de condos</strong>, não a casa de 2–4 famílias — que roda <strong>US$ 1M+</strong>. Nunca subscreva o produto-alvo pela manchete. DOM alto (~108–122 dias) e pouquíssimas listagens = <strong>liquidez baixa</strong> para entrar e sair.</p>
+</blockquote>
+<h2>Cap rate / cash flow — a verdade incômoda</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (fourplex ~US$ 1,1M, bruto ~US$ 9,5k/mês = ~US$ 114k/ano): menos vacância 5%, <strong>IPTU ~US$ 20–24k</strong>, seguro+flood ~US$ 6–10k, manutenção/reserva ~US$ 10k, água/gestão ~US$ 8k → <strong>NOI ~US$ 55–60k</strong> → cap <strong>~5,0–5,4%</strong> sobre o preço.</li>
+<li>Com financiamento a ~6,5–7%, o <strong>cash-on-cash tende a ZERO ou NEGATIVO</strong> nos primeiros anos. <strong>O 2–4 family de Fort Lee não fecha em cash-flow aos preços atuais.</strong></li>
+<li><strong>House-hack</strong> (FHA 3,5%, morar em 1 unidade) melhora muito a <strong>matemática pessoal</strong> (subsidia a própria moradia), mas não vira renda passiva positiva no dia 1. A tese é <strong>appreciation + amortização</strong>.</li>
+</ul>
+<h2>🆚 Fort Lee × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Fort Lee</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2–4 family</td>
+<td>🔴 US$ 1M+</td>
+<td>~US$ 450–750k</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>~1,891% (baixa p/ NJ; conta absoluta alta pelo valor)</td>
+<td>~1,85–2,8%</td>
+</tr>
+<tr>
+<td>Tese</td>
+<td>Appreciation / preservação</td>
+<td>Cash-flow / value-add</td>
+</tr>
+<tr>
+<td>Yield</td>
+<td>Fino ou negativo</td>
+<td>Maior (cap real melhor)</td>
+</tr>
+<tr>
+<td>Deals distressed</td>
+<td>Poucos</td>
+<td>Muitos (sheriff/tax sale, volume)</td>
+</tr>
+<tr>
+<td>Liquidez</td>
+<td>🔴 Nicho ilíquido</td>
+<td>Muito volume</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>5% <strong>fixo</strong>, isenta duplex</td>
+<td>CPI, mais abrangente/agressivo</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> Fort Lee é o <strong>oposto operacional de Newark</strong>. Newark entrega <strong>yield e volume de deals</strong>; Fort Lee entrega <strong>âncora patrimonial colada em Manhattan</strong>, com yield fino/negativo e pouquíssimos deals distressed. Para quem busca renda, é a cidade errada; para quem quer <strong>valorização e preservação de capital perto da GWB</strong>, faz sentido — desde que o comprador seja bem capitalizado e aceite o horizonte longo.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>House-hack em duplex</strong> (FHA 3,5%, morar numa unidade) — o <strong>duplex escapa do rent control</strong> e subsidia a moradia.</li>
+<li>🟡 <strong>Buy &amp; hold patrimonial</strong> de longo prazo (appreciation), aceitando cash-flow neutro/negativo.</li>
+<li>🔴 <strong>Cash-flow puro / flip rápido</strong> — não fecha (preço alto, cap fino, liquidez baixa, reval 2027 à frente).</li>
+</ul>
+<p>⬅️ Hub de Fort Lee · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>Cidade pequena e segura para o padrão da região; a seleção é mais por <strong>tipologia (condo × 2–4 family)</strong> e por <strong>flood</strong> do que por crime. O eixo crítico é a <strong>cornija elevada dos Palisades (seca) × a faixa ribeirinha do Hudson (Bluff Rd, risco de flood)</strong>.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li>Cidade <strong>afluente e de baixa criminalidade</strong> para o padrão regional. Variação interna modesta: o <strong>sul</strong> (Whiteman/Intervale) tende ao menor crime violento; o <strong>noroeste</strong> (Coytesville) tem a maior incidência relativa, ainda assim abaixo da média nacional.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Intermediário</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Whiteman/Intervale (SO) · The Hill/Palisade Ave (L) · Linwood/Central</td>
+<td>Coytesville (NO) · Main St/Downtown (comercial)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados qualitativos (CrimeGrade/NeighborhoodScout). Cheque o percentil da quadra antes de aprofundar.</p>
+</blockquote>
+<h2>🌊 Flood (o filtro que mais importa aqui)</h2>
+<ul>
+<li>🟢 <strong>Baixo na maior parte</strong> — a cidade fica <strong>elevada nos Palisades</strong> (Zone X), longe do 100-year.</li>
+<li>🔴 <strong>Alto na faixa do Hudson:</strong> <strong>Bluff Road / waterfront</strong> e as <strong>encostas leste</strong> que descem para o rio têm <strong>tidal flood hazard</strong> (SFHA); NJ proíbe novas construções no floodway. <strong>Flood insurance caro/obrigatório.</strong></li>
+<li><strong>Zona FEMA</strong> (exige seguro no financiamento) e <strong>Flood Factor</strong> são independentes → cheque <strong>os dois por endereço</strong>:</li>
+<li><a href="https://msc.fema.gov/portal/search">FEMA MSC</a> · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Linwood / Central</strong> (miolo, O de Lemoine Ave)</td>
+<td>Coração do estoque de SFH e <strong>2–4 family walk-up</strong>; melhor equilíbrio para house-hack tradicional. Flood baixo.</td>
+</tr>
+<tr>
+<td><strong>The Hill / Palisade Ave</strong> (L, torres)</td>
+<td>High-rise/condo de luxo com vista de Manhattan — <strong>appreciation puro</strong>, quase nada de 2–4 family.</td>
+</tr>
+<tr>
+<td><strong>Coytesville</strong> (NO)</td>
+<td>Bolso mais <strong>acessível</strong> para SFH/2–4 family; melhor custo por unidade, menor prestígio, crime relativo maior. Flood baixo.</td>
+</tr>
+<tr>
+<td><strong>Whiteman / Intervale</strong> (SO)</td>
+<td>Residencial tranquilo, mais seguro; bom para <strong>buy-hold conservador de duplex</strong> (isento de rent control).</td>
+</tr>
+<tr>
+<td><strong>Main Street / Downtown</strong></td>
+<td>Mixed-use e multifamily perto de comércio/ônibus; <strong>rent control incide (3+ un.)</strong>.</td>
+</tr>
+<tr>
+<td><strong>Bluff Road / Waterfront</strong> (base do Palisade)</td>
+<td>🔴 <strong>Flood — evitar</strong> 2–4 family em cota baixa salvo desconto que compense o prêmio de seguro e o risco climático.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li>Para house-hack, mire <strong>Linwood/Central</strong> ou um <strong>duplex</strong> em Coytesville/Whiteman (isento de rent control).</li>
+<li><strong>Fuja da faixa ribeirinha</strong> (Bluff Rd, encostas leste) salvo desconto forte — cote NFIP/privado <strong>antes de ofertar</strong>.</li>
+<li>Confirme <strong>tipologia legal</strong> (condo × 2–4 family), crime da quadra e flood do endereço.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Fort Lee · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><h2>1. 🏛️ Property tax + reavaliação 2027 (o risco fiscal)</h2>
+<ul>
+<li><strong>Effective rate 2024: 1,891%</strong> (general rate <strong>2,607</strong> por US$ 100 de assessed) — <strong>confirmado</strong> no PDF oficial da NJ Division of Taxation. É <strong>relativamente baixa</strong> para o padrão NJ (base tributária rica em condos de alto valor).</li>
+<li>⚠️ <strong>Para modelar 2–4 family, use 1,9–2,3%</strong> (não só 1,891%): terceiros medem burden efetivo ~2,1–2,5% e o <strong>ratio de equalização está caindo (~67%)</strong>, então a conta real tende ao teto da faixa. <strong>Não use a média da cidade (~US$ 12,5k)</strong> para 2–4 family — ela é puxada por condos; um <strong>fourplex de US$ 1,1M ≈ US$ 21–25k/ano</strong>.</li>
+<li>⚠️ <strong>Reavaliação FY2027:</strong> em dez/2024 o Bergen County Board of Taxation ordenou reval para ~10 municípios, <strong>incluindo Fort Lee</strong> (ratio ~67,44%), mirando o ano fiscal 2027 (trabalho começa ~2026). <strong>Imóveis que valorizaram acima da média</strong> (tipicamente SFH/2–4 family) tendem a <strong>ver aumento de IPTU pós-reval</strong> — modele esse cenário. Deadline de appeal anual: <strong>1º/abril</strong>.</li>
+</ul>
+<h2>2. 🏘️ Rent Control (Chapter 324) — teto fixo, <strong>duplex isento</strong></h2>
+<ul>
+<li><strong>Chapter 324</strong>, administrado pela <strong>Rent Leveling Board</strong>. Teto de reajuste anual: <strong>5% fixo</strong> do base rent após 12 meses (<strong>3,5%</strong> para idosos/deficientes qualificados).</li>
+<li><strong>Cobertura: estruturas com 3+ unidades.</strong> <strong>Duplex (2 unidades) é ISENTO</strong>, assim como hotéis/motéis. Ou seja: <strong>triplex/fourplex caem no teto de 5%; o 2-unidades escapa</strong> — priorize duplex se quer liberdade de reajuste.</li>
+<li>✅ <strong>Robustez jurídica:</strong> o teto é <strong>percentual fixo (não CPI)</strong>, então <strong>não</strong> está exposto ao vício de metodologia/pre-deprivation notice que tornou a ordinance de <strong>Union City</strong> inconstitucional. Base: <em>Helmsley v. Borough of Fort Lee</em> (NJ Supreme Court, 1978, ordinance sustentada). Nenhum litígio/sunset conhecido. Confirme a redação vigente no eCode360 (Chapter 324 / #10069189).</li>
+</ul>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>online</strong></h2>
+<ul>
+<li><strong>É ONLINE ✅:</strong> <strong><a href="https://fortlee.newjerseytaxsale.com/">fortlee.newjerseytaxsale.com</a></strong> (link oficial na página do Tax Collector; hospeda a "Borough of Fort Lee Tax Sale List"). <strong>Não</strong> é RealAuction nem mytaxbill. Sale mais recente identificado: <strong>5/nov/2025</strong>.</li>
+<li><strong>Órgão:</strong> Tax Collector <strong>Matthew Rutch</strong> — 309 Main Street, Room 208, Fort Lee 07024 · 📞 <strong>201-592-3500 x1504</strong> · taxcollector@fortleenj.org. <em>(Fontes de terceiros listam "Angela Napolitano" — desatualizado, ignore.)</em> Portal de consulta: cit-e.net (fortlee-nj).</li>
+<li><strong>Mecânica NJ:</strong> arremata-se o <strong>Tax Sale Certificate</strong> por <strong>bid-down</strong> dos juros a partir de <strong>18%</strong>, depois premium; redemption pelo dono; foreclosure só após <strong>2 anos</strong>. Confirme calendário 2026 e lista de liens no portal. Detalhes: guia do estado e estratégia.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>Bergen County (countyId=7)</strong></h2>
+<ul>
+<li><strong>Bergen County Sheriff</strong> — salesweb <strong>countyId=7</strong> (⚠️ Hudson = 10, não confundir). Leilões no <strong>2 Bergen County Plaza, Hackensack</strong>; depósito <strong>20%</strong> do maior lance no ato (fundos certificados), saldo em 30 dias; leilão "open". Foreclosure Unit <strong>201-336-3500</strong>.</li>
+<li>📄 <strong>Detalhe completo (compartilhado pelas 4 cidades de Bergen):</strong> ver o hub de Hackensack — §4 Sheriff (county seat). Listas: <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=7">salesweb.civilview.com (countyId=7)</a></strong> · bcsd.us/sheriff-sales.</li>
+</ul>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978) e <strong>registro estadual</strong> (N.J.S.A. 46:8-27): estaduais, ver compliance-newark.</li>
+<li><strong>Financiamento:</strong> Bergen é <strong>high-cost</strong> (FHA 2026 1-unit US$ 1.249.125; multi-unit sobe a US$ 1,5–2,3M+). <strong>House-hack FHA 3,5%</strong> em 2–4 family owner-occupied é a chave dado o preço alto. Investidor puro: <strong>DSCR</strong> (difícil com cash-flow negativo). <strong>Mansion tax</strong> de 1% em compras acima de US$ 1M — relevante aqui. Flood insurance obrigatório em SFHA (waterfront).</li>
+</ul>
+<p>⬅️ Hub de Fort Lee · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

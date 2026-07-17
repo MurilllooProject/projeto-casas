@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teaneck — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Teaneck, Bergen County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Teaneck</h1>
+  <div class="facts">
+    <span class="fact">Bergen County</span>
+    <span class="fact">imposto efetivo <b>2,250%</b></span>
+    <span class="fact tese" data-t="Appreciation">Appreciation</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>Fronteira com NY</strong> (Bergen County, ~15–20 min da <strong>George Washington Bridge</strong>). A tese: <strong>appreciation + estabilidade de inquilino</strong> — subúrbio maduro ancorado por uma <strong>grande comunidade ortodoxa judaica</strong> que sustenta demanda estável de compra e locação (walk-to-shul, escolas e comércio kosher em Cedar Lane pesam na locabilidade). Preços altos, imposto pesado, cap <strong>3–4%</strong> → patrimônio, não yield.</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> Teaneck <strong>já concluiu a reavaliação (fev/2024)</strong> — assessments a ~100% do mercado, cidade <strong>em conformidade</strong>. Isso significa <strong>imposto assentado, sem choque de reassessment à frente</strong> e o comprador novo <strong>não sofre "welcome stamp"</strong> pós-venda — vantagem real sobre <strong>Fort Lee e Hackensack, que ainda vão reavaliar (FY2027)</strong>. Em compensação, há <strong>pouco upside de appeal</strong>. Segunda nuance: a demanda de aluguel é <strong>muito ligada à comunidade ortodoxa</strong> — um imóvel longe da sinagoga a pé ("fora do eruv") aluga pior do que a média sugere.</p>
+</blockquote>
+<h2>📊 Teaneck em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>median sale (07666) <strong>~US$ 705k</strong> (+11% YoY) · ZHVI ~US$ 576k · 2–4 family US$ 750k–1,4M</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>geral ~US$ 2,7–2,9k · 2BR ~US$ 3,0k · unidade em 2–4 family US$ 2,4–3,0k</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td>🔴 <strong>effective ~2,250%</strong> (general 2,184) · conta média ~US$ 13,7–14,4k (2–4 family US$ 16–22k)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>✅ <strong>Concluída (fev/2024)</strong> — assessments ~100% do mercado, <strong>em conformidade</strong> (imposto assentado)</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ Cap. 29C — teto por <strong>CPI</strong> (12 meses anteriores) · nova construção pós-1973 isenta</td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🟢 Norte/East Hill elevado · 🔴 <strong>SE (Overpeck)</strong> e <strong>oeste (Hackensack River)</strong> em zona AE</td>
+</tr>
+<tr>
+<td>Acesso NYC</td>
+<td>🚌 Ônibus 167/168/175 → Port Authority ~40–50 min · <strong>sem trem</strong> · GWB de carro ~15–20 min</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li>Priorize <strong>locabilidade ortodoxa</strong> (perto de Cedar Lane / dentro do eruv) — sustenta ocupação e aluguel.</li>
+<li><strong>Imposto assentado</strong> (pós-reval 2024): confira o assessment vs. preço pago; pouco upside de appeal.</li>
+<li><strong>Flood:</strong> puxe FEMA + First Street perto do <strong>Overpeck (SE)</strong> e do <strong>Hackensack River (oeste)</strong> — zonas AE.</li>
+<li><strong>Analise</strong> ciente do cap 3–4% e do teto de rent control por CPI (Cap. 29C) — house-hack raramente fecha positivo.</li>
+<li>Classifique 🟢🟡🔴 (provável 🟡 por cap comprimido) e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026). Confirmados: tax 2,250% (general 2,184), reval concluída (ASI, valor 1/out/2023), rent control Cap. 29C por CPI, Sheriff Bergen countyId=7, tax sale teaneck.newjerseytaxsale.com. Correções: median corrente ~US$ 705k (+11%); <strong>DOM real ~84 dias</strong> (não ~18). Cap/cash-flow ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Fronteira NY/Gold Coast · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Teaneck é um <strong>appreciation play</strong> suburbano estável: preços altos, imposto pesado e cap <strong>3–4%</strong>. O diferencial é a <strong>demanda resiliente</strong> ancorada na comunidade ortodoxa (walkability para sinagoga/kosher) e o <strong>assessment assentado</strong> pós-reval 2024.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redfin median sale (07666)</td>
+<td><strong>~US$ 705k</strong> (+11% YoY, US$ 424/sqft)</td>
+<td>Redfin (jul/2026)</td>
+</tr>
+<tr>
+<td>Zillow ZHVI (todos os tipos)</td>
+<td>~US$ 576k (+1,7% YoY)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td>2–4 family</td>
+<td>US$ 750k–1,4M (estoque fino)</td>
+<td>listagens</td>
+</tr>
+<tr>
+<td>Aluguel geral</td>
+<td>~US$ 2,7–2,9k · 2BR ~US$ 3,0k</td>
+<td>RentCafe</td>
+</tr>
+<tr>
+<td>Por unidade em 2–4 family</td>
+<td>2–3BR reformado ~US$ 2,4–3,0k · antigo ~US$ 1,9–2,3k</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Não confunda métricas:</strong> median de VENDA ~$705k (casas) ≫ ZHVI ~$576k (índice do estoque todo). Para 2–4 family use <strong>US$ 750k–1,4M</strong>, não o ZHVI. <strong>Liquidez:</strong> o mercado é firme e valoriza, mas o <strong>DOM real é ~84 dias</strong> (não os ~18 de leituras antigas) — vendedor ainda no controle, sem ser ultra-quente.</p>
+</blockquote>
+<h2>Cap rate / cash flow (comprimido)</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (2-family US$ 850k, bruto ~US$ 5.700/mês = US$ 68,4k/ano): menos vacância/manutenção/admin ~25% → NOI ~US$ 51k; <strong>IPTU ~US$ 18–20k</strong>, seguro ~US$ 3–4k (mais se flood), água ~US$ 2k → <strong>cap ~3,1–3,3%</strong>.</li>
+<li>Com <strong>FHA 3,5% house-hack</strong>, o cash-flow tende a <strong>negativo/break-even</strong> nos primeiros anos. <strong>Cap de 3–4% é a norma</strong> — a tese é <strong>amortização + appreciation</strong>, não yield.</li>
+<li>⚠️ <strong>FHA self-sufficiency test</strong> derruba muitos <strong>3–4 family</strong> aqui (o aluguel projetado precisa cobrir o PITI, difícil com IPTU alto). Tenha plano B (conventional 5% owner-occupied).</li>
+</ul>
+<h2>🆚 Teaneck × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Teaneck</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2–4 family</td>
+<td>🔴 US$ 750k–1,4M</td>
+<td>~US$ 450–650k</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>~2,25% (conta absoluta ~2–3× Newark pelo valor)</td>
+<td>~1,85–2,0%</td>
+</tr>
+<tr>
+<td><strong>Reavaliação</strong></td>
+<td>✅ <strong>Concluída (2024)</strong> — assentado, em conformidade</td>
+<td>⚠️ <strong>1ª desde 2013 (FY2027)</strong> → risco de choque</td>
+</tr>
+<tr>
+<td>Tese</td>
+<td>Appreciation + inquilino estável (ortodoxo)</td>
+<td>Cash-flow / gentrificação (transit)</td>
+</tr>
+<tr>
+<td>Cap rate</td>
+<td>🔴 3–4%</td>
+<td>Maior</td>
+</tr>
+<tr>
+<td>Escolas/segurança</td>
+<td>Melhores</td>
+<td>Mais desafiadoras</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> as duas têm effective tax parecido, mas <strong>Teaneck já reavaliou (imposto previsível)</strong> enquanto <strong>Newark ainda vai (FY2027)</strong>. Newark é para <strong>cash-flow/valor de entrada</strong>; Teaneck é para <strong>preservação de capital + appreciation com inquilino estável</strong>. A demanda de Teaneck é peculiar: depende muito da <strong>proximidade da comunidade ortodoxa</strong> — modele a locabilidade pela <strong>distância a pé de sinagoga/Cedar Lane</strong>, não pela média da cidade.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>Buy &amp; hold patrimonial</strong> perto de Cedar Lane / dentro do eruv (locabilidade + valorização + inquilino estável).</li>
+<li>🟡 <strong>House-hack em 2-family</strong> (aceitar cash-flow neutro/negativo; 3–4 family esbarra no self-sufficiency test).</li>
+<li>🔴 <strong>Cash-flow puro</strong> (cap 3–4%) e <strong>imóvel longe do eruv</strong> (locabilidade abaixo da média).</li>
+</ul>
+<p>⬅️ Hub de Teaneck · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>Teaneck é segura e madura; a seleção combina <strong>locabilidade ortodoxa</strong> (proximidade de shul/kosher/Cedar Lane) com <strong>flood</strong> — dois corredores de água (Hackensack River a oeste, Overpeck Creek a sudeste) criam zonas AE.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li>🟢 <strong>Norte / West Englewood / East Hill</strong> são os mais seguros (CrimeGrade A no NE), perfil familiar e premium.</li>
+<li>🟡 <strong>Sul</strong> (borda com Hackensack) tem criminalidade ligeiramente maior — ainda grau B geral da cidade.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Intermediário</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>West Englewood (NE) · East Hill · Corredor Cedar Lane</td>
+<td>NW/Teaneck Rd &amp; Route 4 · Sul (borda Hackensack)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados qualitativos (CrimeGrade). Cidade estável; a diferença de retorno está mais em <strong>flood</strong> e <strong>locabilidade</strong> do que em crime.</p>
+</blockquote>
+<h2>🌊 Flood</h2>
+<ul>
+<li>🟢 <strong>Baixo no norte e East Hill</strong> (planalto elevado).</li>
+<li>🔴 <strong>SE — Overpeck Creek:</strong> zonas FEMA <strong>AE</strong>; seguro caro, <strong>elevation certificate essencial</strong>.</li>
+<li>🔴 <strong>Oeste — Hackensack River:</strong> trechos em risco moderado-alto.</li>
+<li>Cheque <strong>os dois por endereço</strong>: <a href="https://msc.fema.gov/portal/search">FEMA MSC</a> · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>West Englewood (NE)</strong></td>
+<td>Premium/appreciation; forte demanda ortodoxa, perto de Cedar Lane. Yield baixo, capital estável. Flood baixo.</td>
+</tr>
+<tr>
+<td><strong>East Hill / borda Englewood</strong></td>
+<td>Casas grandes, luxo; <strong>appreciation puro</strong>, cap mínimo. Flood baixo.</td>
+</tr>
+<tr>
+<td><strong>Corredor Cedar Lane / West Englewood Ave</strong></td>
+<td>Melhor <strong>locabilidade</strong> (walk-to-shul); estoque de 2–4 family antigo sob rent control (3+ un.).</td>
+</tr>
+<tr>
+<td><strong>NW / Teaneck Rd &amp; Route 4</strong></td>
+<td>Entrada mais acessível em multifamily; bom para commuter/aluguel de custo médio. Flood moderado.</td>
+</tr>
+<tr>
+<td><strong>SE / Overpeck Creek</strong></td>
+<td>🔴 <strong>Flood AE</strong> — preços menores refletem o risco; só com desconto forte + elevation certificate.</td>
+</tr>
+<tr>
+<td><strong>Sul (borda Hackensack)</strong></td>
+<td>Ponto de entrada mais barato em 2–4 family; yield relativamente melhor, confirmar flood/segurança por quadra.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li><strong>Locabilidade primeiro:</strong> mire perto de <strong>Cedar Lane / dentro do eruv</strong> — sustenta ocupação e aluguel.</li>
+<li><strong>Fuja das faixas do Overpeck (SE) e do Hackensack River (oeste)</strong> salvo desconto que cubra o seguro de cheia.</li>
+<li>Confirme <strong>flood do endereço</strong> (AE ⇒ elevation certificate) e <strong>rent control</strong> da tipologia.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Teaneck · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><h2>1. 🏛️ Property tax (alto, mas <strong>assentado</strong> pós-reval 2024)</h2>
+<ul>
+<li><strong>Effective rate 2024: 2,250%</strong> (general rate <strong>2,184</strong> por US$ 100 de assessed) — confirmado no PDF oficial da NJ Division of Taxation.</li>
+<li><strong>Conta média:</strong> ~US$ 13.718 (2024) → ~US$ 14,4k (2025, +4,8%). Para <strong>2–4 family</strong> (assessment US$ 750k–1M a 2,184%): <strong>IPTU ~US$ 16,4–21,8k/ano</strong>; um triplex/fourplex de US$ 1M+ passa de US$ 22k. É o <strong>maior dreno de cash-flow</strong> do mercado.</li>
+<li>✅ <strong>Reavaliação concluída (fev/2024):</strong> conduzida pela <strong>Appraisal Systems Inc.</strong>, data de valor <strong>1/out/2023</strong>; assessments a ~100% do mercado → <strong>cidade em conformidade</strong>. Implicações: (1) <strong>pouco upside de appeal</strong>; (2) comprador novo <strong>não sofre "welcome stamp"</strong> (já está a mercado); (3) <strong>imposto previsível, sem choque à frente</strong> — vantagem sobre Fort Lee/Hackensack (reval FY2027). Appeal ao Bergen County Board of Taxation: <strong>~1/mai</strong> anual.</li>
+</ul>
+<h2>2. 🏘️ Rent Control (Cap. 29C) — teto por <strong>CPI</strong></h2>
+<ul>
+<li><strong>Cap. 29C</strong> ("Rent Leveling Ordinance"), administrado pelo Rent Leveling Office. Teto de reajuste = <strong>variação do CPI</strong> dos 12 meses anteriores à notificação (ciclo 2025–26 usa dez/2023–nov/2024). Exige <strong>lease mínimo de 1 ano</strong> e o aviso "Notice to Teaneck Tenants" anexo a todo contrato.</li>
+<li><strong>Isenções confirmadas:</strong> construção nova com CO <strong>pós-31/mai/1973</strong>; condo/coop onde ≤2 unidades são do mesmo dono. Aplica-se a <strong>"multiple dwellings"</strong> (tipicamente 3+ unidades) — ⚠️ <strong>confirmar</strong> com o Rent Leveling Office se o <strong>2-family owner-occupied</strong> fica fora do escopo e o status de <strong>vacancy decontrol</strong> (Sec. 29C-8).</li>
+<li>⚠️ <strong>Risco jurídico do método CPI:</strong> a metodologia de rent control de <strong>Union City</strong> foi declarada <strong>inconstitucional</strong> em litígio recente (falta de pre-deprivation notice) — verifique se o teto por CPI de Teaneck é robusto e se há desafios em curso. Texto integral no eCode360 (Cap. 29C).</li>
+</ul>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>online</strong></h2>
+<ul>
+<li><strong>É ONLINE ✅:</strong> <strong><a href="https://teaneck.newjerseytaxsale.com/">teaneck.newjerseytaxsale.com</a></strong> (portal próprio via newjerseytaxsale.com; <strong>não</strong> RealAuction nem mytaxbill). Edital no <em>The Record</em> 4 semanas antes; sale mais recente <strong>21/jan/2026 às 8h</strong>.</li>
+<li><strong>Órgão:</strong> Tax Collector <strong>Natalie B. Huttinot, CTC</strong> — Municipal Building, 818 Teaneck Road, Teaneck 07666 · 📞 <strong>201-837-1600</strong>. Listas em teanecknj.gov/living-in-teaneck/property-taxes/.</li>
+<li><strong>Mecânica NJ:</strong> vende-se o <strong>Tax Sale Certificate</strong> ao menor juro (bid-down a partir de <strong>18%</strong>, depois premium); redemption pelo dono (o retorno usual é <strong>o juro do lien</strong>, não a posse). Detalhes: guia do estado e estratégia.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>Bergen County (countyId=7)</strong></h2>
+<ul>
+<li><strong>Bergen County Sheriff</strong> — salesweb <strong>countyId=7</strong> (⚠️ Hudson = 10). Leilões no <strong>Bergen County Justice Center, Hackensack</strong>; leilão "open", lance mínimo US$ 100; depósito <strong>20%</strong> no ato. Foreclosure Unit <strong>201-336-3500</strong> (civil@bcsd.us).</li>
+<li>📄 <strong>Detalhe completo (compartilhado pelas 4 cidades de Bergen):</strong> ver hub de Hackensack — §4 Sheriff. Listas: <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=7">salesweb.civilview.com (countyId=7)</a></strong> · bcsd.us/sheriff-sales.</li>
+</ul>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978) e <strong>registro estadual</strong> (N.J.S.A. 46:8-27): estaduais, ver compliance-newark.</li>
+<li><strong>Financiamento:</strong> Bergen é <strong>high-cost</strong> (conforming 2026 1-unit US$ 1.209.750; 2-unit US$ 1.548.975; FHA 1-unit US$ 1.249.125). <strong>FHA 3,5% house-hack</strong> viável, mas <strong>3–4 unidades exigem o self-sufficiency test</strong> (difícil com IPTU alto). Alternativas: conventional 15–25% ou DSCR (cap ~3% aperta o DSCR). <strong>Flood insurance obrigatório</strong> em zonas AE (Hackensack River/Overpeck) — orce US$ 1,5–5k+/ano.</li>
+</ul>
+<p>⬅️ Hub de Teaneck · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

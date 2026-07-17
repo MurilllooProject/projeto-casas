@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>East Orange — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de East Orange, Essex County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>East Orange</h1>
+  <div class="facts">
+    <span class="fact">Essex County</span>
+    <span class="fact">imposto efetivo <b>2,888%</b></span>
+    <span class="fact tese" data-t="Value-add">Value-add</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>3ª cidade</strong> do projeto (Essex County, colada em Newark). A tese: <strong>cash-flow / value-add</strong> — cidade densa e walkable, estoque dominado por <strong>2–4 family de tijolo pré-guerra</strong>, forte demanda de aluguel puxada por <strong>trânsito</strong> (Morris &amp; Essex Line → Penn Station NYC em ~25–30 min). É o clássico deal de fluxo do norte de NJ, com dois freios: <strong>imposto altíssimo</strong> e <strong>rent control</strong>.</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> East Orange tem o <strong>effective tax mais alto do trio de Essex (~2,888%, dos piores do estado)</strong> — MAS está <strong>em conformidade de assessment e SEM reavaliação à frente</strong> (Director's Ratio 2025 ~89,86%, acima do piso de 85%). Ou seja: você paga imposto caro, porém <strong>previsível</strong> — como Irvington (já reavaliada) e <strong>ao contrário de Newark</strong> (que reavalia em FY2027 → risco de choque). Não subscreva East Orange pelo yield; subscreva pelo <strong>piso de aluguel do trânsito + assessment estável</strong>, precificando o imposto a ~2,7–3,2% com rigor.</p>
+</blockquote>
+<h2>📊 East Orange em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>ZHVI ~US$ 394k (+11,6% YoY) · median sold ~US$ 523k (Redfin, +4,0%) · 2–4 family ~US$ 450–800k+</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>~US$ 1.769 (média geral RentCafe) · 2BR ~US$ 2.189 (929 sqft) · ~US$ 1.700–2.300/unidade em 2–4 family</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td>🔴 <strong>effective ~2,888%</strong> (2024, general 3,141 — dos piores de NJ) · conta média ~US$ 10.299 (2–4 family US$ 12–18k+)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>✅ <strong>Em conformidade, SEM reval agendada</strong> (Director's Ratio ~89,86%) — imposto previsível</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ <strong>Sim</strong> (Rent Leveling): teto <strong>CPI ~4,6%</strong> (2025–26) · <strong>2%</strong> idosos/deficientes · cobre <strong>4+ unidades</strong></td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🟡 Misto — <strong>baixo</strong> no NW/Downtown (Zone X); <strong>moderado</strong> no SE (corredor do Second River)</td>
+</tr>
+<tr>
+<td>Segurança</td>
+<td>🟡→🔴 Gradiente <strong>NW seguro → SE desafiador</strong>; validar por quadra</td>
+</tr>
+<tr>
+<td>Perfil</td>
+<td>Denso/walkable · muito <strong>2–4 family</strong> pré-guerra · trânsito Morris &amp; Essex (Brick Church/East Orange/Ampere)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li>Ache 2–4 family nos <strong>setores NW / Downtown (Brick Church)</strong> — mais seguros e com boa liquidez de aluguel.</li>
+<li><strong>Screening:</strong> crime por quadra (CrimeGrade) + flood por endereço (FEMA MSC / First Street — atenção ao Second River no SE).</li>
+<li><strong>Puxe valores</strong> (Essex PROS/PRESS — puxar-valores-dados) e o <strong>imposto real do lote</strong> (modele a ~2,7–3,2%).</li>
+<li><strong>Analise</strong> na ferramenta com o imposto cheio e o teto de rent control (CPI ~4,6%) — o net cai rápido; a tese vive no <strong>value-add + troca de inquilino</strong>.</li>
+<li>Classifique 🟢🟡🔴 e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026). Correção aplicada: East Orange <strong>NÃO</strong> tem reavaliação ordenada (perfil original errava) — está <strong>em conformidade</strong>; o cronograma de reval até ~2028 é de outras cidades de Essex (Newark, Montclair, Bloomfield). Números de cap/cash-flow são ilustrativos — rode a proforma real.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Guia do estado · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>East Orange é um <strong>cash-flow / value-add play</strong> de Essex: cidade pequena (~4 mi²), densa e walkable, com estoque muito concentrado em <strong>2–4 family de tijolo pré-guerra</strong> e prédios de apartamentos. O gross yield é decente; o <strong>imposto (o mais alto do trio)</strong> é que define o net.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZHVI (valor típico)</td>
+<td><strong>~US$ 394k</strong> (+11,6% YoY)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td>Median sale</td>
+<td><strong>~US$ 523k</strong> (+4,0% YoY) · ZIP 07017 ~US$ 481k</td>
+<td>Redfin / Prop-Metrics</td>
+</tr>
+<tr>
+<td>Aluguel médio geral</td>
+<td><strong>~US$ 1.769</strong> · apartamento em listagens recentes ~US$ 2.167</td>
+<td>RentCafe</td>
+</tr>
+<tr>
+<td>Por tipologia</td>
+<td>2BR ~US$ 2.189 (929 sqft) · 3BR/single-family ~US$ 2.200–2.300</td>
+<td>RentCafe</td>
+</tr>
+<tr>
+<td>Em 2–4 family</td>
+<td>~US$ 1.700–2.300/unidade conforme reforma e bairro</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Divergência de portais é real:</strong> ZHVI (~$394k, inclui condos/unidades menores) &lt; median sale de casas/2–4 family (~$470–525k). Faixa prática: <strong>2-family US$ 450–600k, 3–4 family US$ 550–800k+</strong> conforme bairro e condição. Puxe comps do ZIP e da tipologia (07017/07018 variam por quadra) — não use um número único.</p>
+</blockquote>
+<h2>Cap rate / cash flow</h2>
+<ul>
+<li>Numeros <strong>ilustrativos</strong> (2-family ~US$ 500k, 2× US$ 2.000 = US$ 4.000/mês = US$ 48k/ano bruto): menos <strong>IPTU ~US$ 12–15k</strong> (o freio), vacância, seguro, manutenção e management → <strong>NOI ~US$ 24–30k</strong>, cap <strong>~5–6,5%</strong> no preço cheio.</li>
+<li>Melhora para <strong>7%+</strong> em compras value-add abaixo do mercado (sheriff / tax lien / off-market) e no <strong>aumento de aluguel pós-reforma</strong> (respeitando o rent leveling e a cobertura de 4+ unidades).</li>
+<li><strong>Subscreva o imposto a ~2,7–3,2% do valor de mercado</strong> e lance seguro + vacância + management <strong>cheios</strong> (mercado denso de aluguel, inquilino de baixa/média renda). Rode na ferramenta com o imposto real do lote.</li>
+</ul>
+<h2>🆚 East Orange × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>East Orange</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entrada (ZHVI)</td>
+<td>~$394k</td>
+<td>~$479k</td>
+</tr>
+<tr>
+<td>Effective tax (2024)</td>
+<td>🔴 <strong>~2,888%</strong> (bem mais alto)</td>
+<td>~1,85–2,0%</td>
+</tr>
+<tr>
+<td><strong>Reavaliação</strong></td>
+<td>✅ <strong>Em conformidade — sem reval</strong> (imposto previsível)</td>
+<td>⚠️ <strong>1ª desde 2013, alvo FY2027</strong> → risco de choque</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>~$1.769–2.189</td>
+<td>~$1.700–2.150 (≈ igual)</td>
+</tr>
+<tr>
+<td>Liquidez / exit</td>
+<td>Menor (cidade pequena)</td>
+<td>Muito maior / momentum de valorização</td>
+</tr>
+<tr>
+<td>Estoque</td>
+<td><strong>Concentrado em 2–4 family</strong> (value-add)</td>
+<td>Mix maior (2–3 family + institucional)</td>
+</tr>
+<tr>
+<td>Trânsito</td>
+<td>Morris &amp; Essex (Brick Church/EO/Ampere) → NYC</td>
+<td>Diverso (NEC, PATH, Newark Penn)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> East Orange <strong>paga imposto bem mais alto</strong> que Newark (~2,89% vs ~1,85–2,0%), o que derruba o cash-flow — MAS o assessment é <strong>estável</strong> (sem reval), enquanto <strong>Newark vai reavaliar (FY2027)</strong> e sua conta de imposto pode subir. Newark ganha em <strong>escala, liquidez e valorização</strong>; East Orange ganha em <strong>estoque 2–4 family barato por unidade + trânsito direto + previsibilidade do imposto</strong>. Escolha East Orange quando a tese for <strong>value-add com imposto subscrito com folga</strong>, não yield puro.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>Value-add buy &amp; hold</strong> em 2–4 family (reforma + aumento na troca de inquilino) e <strong>house-hack</strong> (owner-occupied escapa do rent leveling em prédios menores).</li>
+<li>🟡 <strong>BRRRR</strong> (estoque antigo barato + reforma), ciente do <strong>capex pesado</strong> (telhado, boiler, elétrica, lead paint).</li>
+<li>🔴 Não conte com <strong>flip rápido de alto ticket</strong> (liquidez menor) nem ignore o imposto — ele, e não o preço, decide o deal aqui.</li>
+</ul>
+<p>⬅️ Hub de East Orange · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>Cidade densa e pequena; a seleção é <strong>quadra-a-quadra</strong>. O eixo que mais importa é o <strong>gradiente noroeste (mais seguro) → sudeste (mais desafiador)</strong> — o SE compensa com trânsito, mas exige gestão mais intensiva.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li><strong>Gradiente NW → SE:</strong> o <strong>noroeste</strong> (Presidential Estates) tem o melhor perfil; o <strong>sudeste</strong> (Ampere/Elmwood, junto a Newark/Bloomfield) é a parte mais desafiadora. Corredores comerciais concentram mais incidentes totais.</li>
+<li><strong>Downtown/Brick Church</strong> (centro) é considerado mais seguro para <strong>property crime</strong> e tem boa liquidez de aluguel.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Setores mais seguros</th>
+<th>🔴 Setores mais desafiadores</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Presidential Estates (NW) · Greenwood/Central/Downtown (Brick Church) · Doddtown (borda)</td>
+<td>Ampere (SE) · Elmwood (SE) · corredores comerciais</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados de bairro são <strong>qualitativos</strong> (CrimeGrade / Wikipedia) e <strong>não verificados oficialmente</strong> — cheque o <strong>percentil da quadra</strong> em <a href="https://crimegrade.org/safest-places-in-east-orange-nj/">CrimeGrade</a> antes de aprofundar. Crime mais alto → <strong>suba vacância e management</strong> no modelo e endureça o screening (respeitando fair housing).</p>
+</blockquote>
+<h2>🌊 Flood</h2>
+<ul>
+<li><strong>Baixo no NW e no Downtown</strong> (Presidential Estates e Brick Church são majoritariamente <strong>FEMA Zone X</strong>; risco principal é <strong>pluvial/stormwater</strong> pontual).</li>
+<li><strong>Moderado no SE:</strong> corredor do <strong>Second River</strong> e limite com Newark–Bloomfield (Ampere/Elmwood ficam na parte mais baixa da cidade).</li>
+<li><strong>Zona FEMA</strong> (exige flood insurance no financiamento) e <strong>Flood Factor</strong> são independentes → cheque <strong>os dois por endereço</strong>:</li>
+<li><a href="https://msc.fema.gov/portal/search">FEMA MSC</a> (zona X/A/AE + BFE) · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Presidential Estates</strong> (NW)</td>
+<td>Mais seguro; Tudor/Colonial/Victorian, owner-occupier. <strong>Hold de qualidade</strong>, ticket alto, cap menor. Value-add premium.</td>
+</tr>
+<tr>
+<td><strong>Greenwood / Central / Downtown</strong> (Brick Church)</td>
+<td>Corredor de trânsito Brick Church; mix de multifamily/apartamentos, <strong>boa liquidez de aluguel</strong>. Flood baixo.</td>
+</tr>
+<tr>
+<td><strong>Doddtown</strong> (SW / Watsessing)</td>
+<td>Estoque antigo de 2–4 family com <strong>upside de reforma</strong>; trânsito bom. Clássico value-add.</td>
+</tr>
+<tr>
+<td><strong>Ampere</strong> (SE, junto à estação)</td>
+<td><strong>Transit-oriented</strong> (Ampere Morris &amp; Essex); forte demanda locatícia, <strong>melhor cap</strong>, gestão mais intensiva. Flood moderado (Second River).</td>
+</tr>
+<tr>
+<td><strong>Elmwood</strong> (SE, Elmwood Park)</td>
+<td>Multifamily denso, aluguel resiliente por parque + trânsito; <strong>DD de flood/idade do prédio</strong> essencial.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li>Priorize <strong>2–4 family no NW / Downtown (Brick Church)</strong> — segurança + liquidez de aluguel.</li>
+<li>Se for atrás de <strong>cap mais alto no SE</strong> (Ampere/Elmwood), suba vacância/management e confirme <strong>flood do endereço</strong> (Second River).</li>
+<li>Confirme <strong>crime da quadra</strong> e <strong>flood por lote</strong> antes de aprofundar.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de East Orange · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><h2>1. 🏛️ Property tax (o fator crítico — alto, mas <strong>assentado</strong>)</h2>
+<ul>
+<li><strong>Effective rate 2024: ~2,888%</strong> (general rate <strong>3,141</strong> por US$ 100 de assessed) — <strong>um dos mais altos de NJ</strong> e o principal freio de retorno. Modele o imposto entre <strong>2,7% e 3,2% do valor de mercado</strong> ao subscrever.</li>
+<li><strong>Conta média (2024):</strong> ~US$ 10.299/ano; para <strong>2–4 family</strong> (assessment maior), esperar <strong>US$ 12–18k+/ano</strong>. Cobrado <strong>trimestralmente</strong> (1º de fev/mai/ago/nov) — lance ~US$ 1.000–1.500+/mês de reserva de imposto no proforma.</li>
+<li>✅ <strong>SEM reavaliação à frente:</strong> East Orange está <strong>em conformidade</strong> (Director's Ratio 2025 <strong>~89,86%</strong>, acima do piso estadual de ~85%) e <strong>não</strong> aparece no pipeline de reval do Essex. O cronograma até ~2028 é de <strong>outras</strong> cidades (Newark, Montclair, Bloomfield, Belleville). Ou seja: imposto caro, mas <strong>previsível</strong> — vantagem sobre Newark (reavalia em FY2027). <em>Monitorar:</em> se o Director's Ratio cair abaixo de ~85%, o condado pode ordenar reval.</li>
+<li><strong>Tax appeal:</strong> Essex County Board of Taxation (prazo geral <strong>1º/abril</strong>; 1º/maio em ano de reval). Cartões de assessment enviados até ~1º/fev. Ver processo (Essex).</li>
+</ul>
+<h2>2. 🏘️ Rent Control (Rent Leveling)</h2>
+<p>East Orange <strong>tem</strong> rent control municipal, administrado pela <strong>Rent Leveling Board</strong> (ordenança no city code / ecode360):
+- <strong>Teto de reajuste anual:</strong> atrelado ao <strong>CPI</strong> (região NY-Newark-Jersey City) — <strong>~4,6% máx.</strong> para o ciclo abr/2025–abr/2026 (muda todo ano com o CPI).
+- <strong>Idosos/deficientes</strong> qualificados: reajuste limitado a <strong>2% ao ano</strong>.
+- <strong>Cobertura:</strong> prédios com <strong>4+ unidades</strong>; <strong>single-family e imóveis menores/owner-occupied costumam ser isentos</strong> — ⚠️ <strong>confirme a cobertura/isenção do 2–4 family específico</strong> com a Rent Leveling Board antes de comprar.
+- <strong>Impacto na tese:</strong> aumento pós-reforma limitado em unidades <strong>ocupadas cobertas</strong>; os ganhos maiores vêm na <strong>troca de inquilino/vacância</strong>.
+- ⚠️ <strong>Exceção de risco:</strong> em prédios sob <strong>receivership judicial</strong>, o receiver pode buscar <strong>hardship increase</strong> acima do teto do CPI (caso noticiado) — fenômeno de exceção, mas existe.</p>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>online</strong></h2>
+<ul>
+<li><strong>Órgão:</strong> Tax Collector <strong>Annmarie Corbitt, CTC</strong> — City Hall, 44 City Hall Plaza, East Orange 07018 · 📞 <strong>973-266-5130</strong> · TaxCollector@eastorange-nj.gov. <em>Tax search: taxa de US$ 10, até 15 dias úteis.</em></li>
+<li><strong>É ONLINE ✅:</strong> <strong><a href="https://eastorange.newjerseytaxsale.com/">eastorange.newjerseytaxsale.com</a></strong> (RealAuction / RealTaxLien) — estava ativa/aberta em 04/11/2024. Registro/depósito online tipicamente ~1 semana antes.</li>
+<li><strong>Mecânica NJ:</strong> o Tax Sale Certificate é adjudicado por <strong>bid-down</strong> dos juros a partir de <strong>18%</strong> até 0%, depois por <strong>premium</strong>; redemption em fundos certificados pagáveis à <strong>City of East Orange</strong>. NJ exige ao menos <strong>1 tax sale/ano</strong> para delinquências. Detalhes: guia do estado e estratégia.</li>
+<li>Confirme <strong>datas/regras exatas do ano</strong> com o Tax Collector.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>compartilhado (Essex)</strong></h2>
+<p>Igual a Newark — mesmo Sheriff, mesmo local, mesmo portal:
+- <strong>Essex County Sheriff</strong> · Leroy F. Smith Jr. Public Safety Building, 60 West Market St, 14º andar, Newark · <strong>terças quinzenais 13h30</strong> (registro só no dia, 12h30–13h30) · lance inicial US$ 100, incrementos US$ 1.000, <strong>depósito 20%</strong> em fundos certificados (sem dinheiro) · Sheriff 973-621-4111.
+- Listas: <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=2">salesweb.civilview.com (countyId=2)</a></strong>.
+- Detalhes completos: doc de Newark (Essex).</p>
+<h2>5. 📋 Compliance de landlord</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978): inspeção no turnover / a cada 3 anos, <strong>certificado válido 2 anos</strong>, surcharge US$ 20/unid. — igual ao estado, ver compliance-newark.</li>
+<li><strong>Registro estadual</strong> (N.J.S.A. 46:8-27) + <strong>registro municipal</strong> de East Orange.</li>
+<li><strong>Financiamento:</strong> 2–4 family por conventional (até 4 unid.) e <strong>FHA</strong> (house-hack owner-occupied, down baixo — melhor porta de entrada). Investidor puro: <strong>DSCR loan</strong>, mas o imposto ~2,888% <strong>derruba o DSCR</strong> — modele com folga. Aquisição com desconto (sheriff/tax lien/off-market) costuma exigir cash/hard money + refi (BRRRR).</li>
+</ul>
+<p>⬅️ Hub de East Orange · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

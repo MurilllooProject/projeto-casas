@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hackensack — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Hackensack, Bergen County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Hackensack</h1>
+  <div class="facts">
+    <span class="fact">Bergen County</span>
+    <span class="fact">imposto efetivo <b>2,678%</b></span>
+    <span class="fact tese" data-t="Cash-flow">Cash-flow</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>County seat de Bergen</strong> e o mercado <strong>urbano e multifamily</strong> do condado — um dos poucos com estoque grande de <strong>2–4 family</strong> e prediais menores (Main Street, Prospect Ave, First/Second Ward). A tese: <strong>cash-flow + appreciation moderada</strong> — preços ainda <strong>abaixo da média de Bergen</strong> (caro e suburbano), aluguel forte puxado por NYC e âncoras de emprego (Hackensack Meridian, tribunais do condado, faculdade).</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> Hackensack é a <strong>porta de entrada mais barata de Bergen</strong> (ZHVI ~US$ 392k) com o <strong>maior estoque de 2–4 family</strong> — o único dos 4 hubs de Bergen onde a tese de <strong>cash-flow via house-hack</strong> realmente fecha: o <strong>2-family fica FORA do rent control</strong> (só cobre 3+ un.) e o <strong>3–4 family owner-occupied é isento</strong>, com <strong>vacancy decontrol</strong>. Contrapartida: tem o <strong>effective tax mais alto dos 4 (~2,678%)</strong> e está <strong>agendada para reavaliação FY2027</strong> (ratio ~80,7%) — o IPTU pode subir. E o corredor do <strong>Hackensack River</strong> (First/Second Ward, waterfront) traz <strong>flood</strong>.</p>
+</blockquote>
+<h2>📊 Hackensack em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>ZHVI ~US$ 392k (+3,6% YoY) · median sale ~US$ 465k (volátil) · 2–4 family US$ 550–850k</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>geral ~US$ 2,6k · 1BR ~US$ 2,3k · 2BR ~US$ 3,1k · 3-family bruto ~US$ 7,5–8,5k/mês</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td>🔴 <strong>effective ~2,678%</strong> (general 3,056 — o mais alto dos 4 de Bergen) · conta média ~US$ 9,8k (3-family US$ 14–18k)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>⚠️ <strong>Agendada FY2027</strong> (ratio ~80,7%) — risco de alta no assessment</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ Chapter 134: teto <strong>5%</strong> (4,5% se inquilino paga aquecimento) · cobre <strong>3+ un.</strong> → <strong>2-family FORA</strong>, vacancy decontrol</td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🟢 Fairmount/Heights (oeste/norte, alto) · 🔴 <strong>First/Second Ward (Hackensack River)</strong> em zona AE</td>
+</tr>
+<tr>
+<td>Acesso NYC</td>
+<td>🚌 Ônibus 165/780 → Port Authority ~60–68 min · 🚆 Pascack Valley → Hoboken 29 min + PATH · GWB ~15–20 min</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li><strong>House-hack de cash-flow:</strong> 2-family (fora do rent control) ou 3–4 family owner-occupied (isento) nos setores secos (Fairmount/Heights/Downtown).</li>
+<li><strong>Reavaliação FY2027:</strong> não modele o cash-flow assumindo o IPTU atual perpétuo.</li>
+<li><strong>Flood:</strong> puxe FEMA + First Street no corredor do <strong>Hackensack River / Route 17</strong> (First/Second Ward) antes de fechar.</li>
+<li><strong>Analise</strong> com o imposto real (~2,68%) — o cap bruto de ~7% cai para <strong>~5–6% líquido</strong>; positivo mesmo no house-hack.</li>
+<li>Classifique 🟢🟡🔴 e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026). Confirmados: general 3,056 (effective ~2,7%), rent control Ch 134 (5%/3+ un., 2-family fora), reval FY2027 (pipeline de 10 towns), Sheriff Bergen countyId=7, tax sale accelerated 21/dez/2026. Ressalvas: plataforma do tax sale (RealAuction) <strong>não</strong> confirmada — verificar no edital; ratio ~80,7% é o director's ratio recente (não o de 2024). Cap/cash-flow ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Fronteira NY/Gold Coast · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Hackensack é o <strong>único cash-flow real de Bergen</strong>: county seat urbano e denso, com o <strong>maior estoque de 2–4 family</strong> do condado e preços <strong>abaixo da média</strong> de Bergen. Aluguel forte (proximidade de NYC + hospital/tribunais) sustenta a renda; o <strong>imposto alto</strong> e o <strong>flood do rio</strong> definem o net.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zillow ZHVI (valor típico)</td>
+<td><strong>~US$ 392k</strong> (+3,6% YoY)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td>Redfin median sale</td>
+<td>~US$ 465k (volátil — +32,9% YoY é <strong>ruído de amostra</strong>)</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td>2–4 family</td>
+<td>US$ 550–850k (2-fam ~US$ 550–650k; 3–4 fam ~US$ 650–850k)</td>
+<td>estimativa/MLS</td>
+</tr>
+<tr>
+<td>Aluguel geral</td>
+<td>~US$ 2,6k (+2,3% YoY) · 1BR ~US$ 2,3k · 2BR ~US$ 3,1k</td>
+<td>RentCafe</td>
+</tr>
+<tr>
+<td>Por unidade / 3-family bruto</td>
+<td>unidade 2BR ~US$ 2,4–2,9k · 3-family ~US$ 7,5–8,5k/mês</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Ruído de mercado:</strong> o +32,9% YoY do Redfin é amostra pequena/mix, <strong>não</strong> tendência — a leitura de fundo é o Zillow (+3,6%). Use a <strong>faixa</strong> US$ 365–465k para valor típico e comps reais do MLS/GSMLS para 2–4 family.</p>
+</blockquote>
+<h2>Cap rate / cash flow (o único que fecha em Bergen)</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (3-family US$ 700k, 25% down, financiando US$ 525k @ ~7% = ~US$ 3.490/mês P&I; bruto ~US$ 7.800/mês = 3× US$ 2.600): OpEx+taxes+seguro+vacância ~45% → NOI ~US$ 51,5k → <strong>cap bruto ~7,4%</strong>, mas com <strong>IPTU alto (~US$ 14–18k)</strong> o <strong>cap líquido cai para ~5–6%</strong>.</li>
+<li>Como <strong>buy-hold puro</strong> o cash-flow fica ~break-even/levemente negativo; no <strong>house-hack</strong> (owner ocupa 1 unidade, FHA 3,5%, as outras 2 cobrem a maior parte do PITI) tende a <strong>POSITIVO</strong> — a matemática que os outros 3 hubs de Bergen não entregam.</li>
+<li>⚠️ Rode com o <strong>IPTU efetivo real</strong> e o <strong>rent control</strong> (3–4 family 100% alugado cai no teto de 5%).</li>
+</ul>
+<h2>🆚 Hackensack × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Hackensack</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entrada</td>
+<td>ZHVI ~US$ 392k (mais caro/unidade)</td>
+<td>Muitos bairros abaixo</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>~2,678% (menor que Essex de Newark em vários setores)</td>
+<td>~1,85–3,5% (varia)</td>
+</tr>
+<tr>
+<td>Tese</td>
+<td>Cash-flow + appreciation, inquilino/bairro estável</td>
+<td>Yield bruto maior + upside especulativo</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>5% fixo só 3+ un.; <strong>2-family fora</strong>, vacancy decontrol</td>
+<td>Ordinance própria mais rígida (CPI)</td>
+</tr>
+<tr>
+<td>Liquidez/exit</td>
+<td>Comprador suburbano + investidor (saída previsível)</td>
+<td>Concentrada em investidores</td>
+</tr>
+<tr>
+<td>Gestão</td>
+<td>Menos intensiva (Bergen)</td>
+<td>Mais intensiva (DD de quadra)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> Newark dá <strong>mais yield bruto</strong> e mais deals distressed, com mais risco de bairro/gestão; Hackensack dá <strong>cap menor porém inquilino/bairro mais estáveis, tax base de Bergen e saída mais líquida</strong> — além do <strong>2-family fora do rent control</strong> (vantagem que Newark nem sempre oferece). Para quem quer <strong>cash-flow com menos dor de cabeça de gestão</strong>, Hackensack é a escolha de Bergen.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>House-hack de cash-flow</strong> (2-family fora do rent control, ou 3–4 family owner-occupied isento) nos setores secos.</li>
+<li>🟡 <strong>Buy-hold de 3–4 family</strong> (cap líquido ~5–6%; ciente do teto de 5% e do flood do rio).</li>
+<li>🔴 Ignorar o <strong>flood do Hackensack River</strong> (First/Second Ward) ou modelar o IPTU como se a <strong>reval 2027</strong> não viesse.</li>
+</ul>
+<p>⬅️ Hub de Hackensack · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>Cidade urbana e densa; a seleção é <strong>quadra-a-quadra</strong>. O eixo que mais importa é o <strong>corredor do Hackensack River (leste/waterfront — flood) × os setores altos a oeste/norte (Fairmount, The Heights — secos e mais seguros)</strong>.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li>🟢 <strong>Fairmount (oeste)</strong> e <strong>The Heights (norte)</strong> são os mais seguros — residencial, familiar.</li>
+<li>🟡 <strong>Downtown / Main Street</strong> é urbano e movimentado (grade C; pontos mais fracos à noite), mas com forte demanda locatícia por trânsito/hospital.</li>
+<li>🟡→🔴 <strong>First/Second Ward (leste)</strong> varia por quadra e soma o risco de <strong>flood</strong>.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Misto</th>
+<th>🔴 Atenção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fairmount (O) · The Heights (N)</td>
+<td>Downtown/Main St · Prospect Ave · Second Ward</td>
+<td>First Ward/River St (waterfront)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados qualitativos (CrimeGrade). Crime maior → suba vacância/gestão no modelo.</p>
+</blockquote>
+<h2>🌊 Flood (o red flag central)</h2>
+<ul>
+<li>🟢 <strong>Baixo em Fairmount e The Heights</strong> (terreno mais alto, longe do rio).</li>
+<li>🔴 <strong>Alto no corredor do Hackensack River:</strong> <strong>First Ward / River Street</strong> (waterfront) provável <strong>zona AE</strong> — flood insurance <strong>obrigatório</strong>; <strong>Second Ward</strong> e trechos perto da <strong>Route 17</strong> moderado-alto.</li>
+<li>Cheque <strong>os dois por endereço</strong>: <a href="https://msc.fema.gov/portal/search">FEMA MSC</a> · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fairmount</strong> (oeste)</td>
+<td>Mais seguro, flood baixo; <strong>melhor risco/estabilidade</strong> para buy-hold de 2-family. Ticket no topo, cap menor.</td>
+</tr>
+<tr>
+<td><strong>The Heights</strong> (norte)</td>
+<td>Suburbano, tranquilo; <strong>house-hack de qualidade</strong> + valorização. Menos deals baratos.</td>
+</tr>
+<tr>
+<td><strong>Downtown / Main Street</strong></td>
+<td>Prédios de 3+ (rent control aplica); <strong>forte demanda locatícia</strong> por trânsito/hospital. Yield melhor, gestão ativa.</td>
+</tr>
+<tr>
+<td><strong>Second Ward</strong> (centro-leste)</td>
+<td>Muito <strong>estoque 2–4 family</strong> e yield atraente; checar flood quadra a quadra + rent control se 3+ un.</td>
+</tr>
+<tr>
+<td><strong>First Ward / River Street</strong> (waterfront)</td>
+<td>🔴 <strong>Flood AE</strong> — preços menores e upside de redevelopment, mas só com cotação de flood + FEMA em mãos.</td>
+</tr>
+<tr>
+<td><strong>Prospect Avenue</strong> (SO)</td>
+<td>Mais condos/high-rise que 2–4 family; útil p/ comps de aluguel, menos para a tese multifamily.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li><strong>Cash-flow seco:</strong> Fairmount/The Heights/Downtown; <strong>yield com risco:</strong> Second/First Ward (com DD de flood).</li>
+<li><strong>Sempre cheque o flood</strong> no corredor do rio/Route 17 — pode inviabilizar o deal.</li>
+<li>Confirme <strong>rent control</strong> (3+ un. cai no teto de 5%) e <strong>C.O. de multifamily</strong> (a cidade fiscaliza).</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Hackensack · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><blockquote>
+<p>🏛️ <strong>Este doc é o hub-âncora de Bergen:</strong> a §4 (Sheriff) traz o <strong>detalhe completo do Bergen County Sheriff</strong>, referenciado por Fort Lee, Englewood e Teaneck.</p>
+</blockquote>
+<h2>1. 🏛️ Property tax + reavaliação 2027</h2>
+<ul>
+<li><strong>Effective rate 2024: ~2,678%</strong> (general rate <strong>3,056</strong> por US$ 100 de assessed) — confirmado no PDF oficial da NJ Division of Taxation (breakdown: county 0,249 + school 1,373 + municipal 1,374). É o <strong>mais alto dos 4 hubs de Bergen</strong>. <em>(Um agregador cita 2,752% — divergência menor; o load-bearing é o general 3,056 sobre o assessed.)</em></li>
+<li><strong>Conta média (2024):</strong> ~US$ 9.794/ano (baixa em dólar só porque os preços são dos menores de Bergen — o <strong>percentual sobre o valor é alto</strong>). Um <strong>3-family</strong> paga ~US$ 14–18k/ano.</li>
+<li>⚠️ <strong>Reavaliação FY2027:</strong> Hackensack está no <strong>pipeline de 10 municípios</strong> ordenado pelo Bergen County Board of Taxation (dez/2024), junto de Fort Lee, Ridgewood, Rutherford e outras — campo em 2026, tax roll de 2027. Reval <strong>não muda o total arrecadado, redistribui</strong>: imóveis subavaliados (multifamily/waterfront revitalizado) podem <strong>subir</strong>. <strong>Não modele o IPTU atual como perpétuo.</strong> Appeal em ano de reval: <strong>1/mai</strong>. <em>(O ratio ~80,7% citado é o director's ratio recente que disparou a reval, não o de 2024.)</em></li>
+</ul>
+<h2>2. 🏘️ Rent Control (Chapter 134) — <strong>2-family fora</strong>, vacancy decontrol</h2>
+<ul>
+<li><strong>Chapter 134 (Rent Stabilization)</strong>, administrado pelo <strong>Rent Control Board</strong> (201-646-3920 x2020). Teto de reajuste anual: <strong>5,0%</strong> se o senhorio paga o aquecimento, <strong>4,5%</strong> se o inquilino paga (desconto de 1% para idosos).</li>
+<li><strong>Cobertura: prédios de 3+ unidades.</strong> ✅ <strong>2-family está FORA</strong> (menos de 3 un.) e <strong>3–4 family owner-occupied é isento</strong> — ideal para house-hack. Um <strong>3–4 family 100% alugado cai no teto de 5%</strong>.</li>
+<li><strong>Isenções:</strong> owner-occupied, first-time rentals (unidade nova), hotéis/motéis, public housing, rooming/boarding houses licenciados. ✅ <strong>Vacancy decontrol existe</strong> (reajuste na re-locação). Sem litígio/sunset conhecido (diferente de Union City).</li>
+</ul>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>accelerated</strong></h2>
+<ul>
+<li><strong>Accelerated tax lien sale</strong> — próxima confirmada: <strong>21/dez/2026</strong>. ⚠️ <strong>Plataforma não confirmada:</strong> a página oficial confirma a data e o <strong>registro por e-mail</strong> (Bidder Information Sheet + W-9 à Assistant Tax Collector <strong>Xylia Dane, xdane@hackensack.org</strong>), mas <strong>não</strong> especifica RealAuction — confirme o formato no edital antes do leilão.</li>
+<li><strong>Órgão:</strong> Tax Collector <strong>Chris Bahney</strong> — City Hall, 65 Central Avenue, Hackensack 07601 · cbahney@hackensack.org · (201) 646-3927. Contas em dia até <strong>10/nov</strong> para evitar a venda.</li>
+<li><strong>Mecânica NJ:</strong> bid-down dos juros (<strong>18%</strong> → 0%), depois premium; o comprador paga subsequentes taxes; <strong>2 anos</strong> de redemption antes de foreclosure. Detalhes: guia do estado e estratégia.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>Bergen County (countyId=7)</strong> 📌 <em>detalhe compartilhado</em></h2>
+<blockquote>
+<p>Vale para <strong>Hackensack, Fort Lee, Englewood e Teaneck</strong> (todas Bergen).</p>
+</blockquote>
+<ul>
+<li><strong>Bergen County Sheriff</strong> — Court House, <strong>2 Bergen County Plaza, 2º andar, Hackensack 07601</strong>. Imóveis de todas as 4 cidades são jurisdição de Bergen.</li>
+<li><strong>Plataforma:</strong> <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=7">salesweb.civilview.com — countyId=7</a></strong> (⚠️ <strong>Hudson = 10, Essex = 2</strong> — não confundir). Listas também em <strong>bcsd.us/sheriff-sales</strong> e sheriffwp.bergen.org.</li>
+<li><strong>Formato:</strong> leilão <strong>"open"</strong> (sem lance selado), lance mínimo inicial <strong>US$ 100</strong> do exequente, incrementos de US$ 100 (US$ 1.000 acima de US$ 100k).</li>
+<li><strong>Depósito:</strong> <strong>20% do maior lance no ato</strong> em cash/certified/cashier's check (data não anterior a 90 dias), pagável a "Bergen County Sheriff"; <strong>saldo em 30 dias</strong> sob pena de juros de default.</li>
+<li><strong>Contato:</strong> Foreclosure Unit <strong>(201) 336-3500 x4453</strong> · civil@bcsd.us. Faça <strong>title search grátis</strong> no Bergen County Clerk antes de dar lance. Confirme <strong>dia/horário</strong> atuais no site do Sheriff.</li>
+</ul>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978) e <strong>registro estadual</strong> (N.J.S.A. 46:8-27): estaduais, ver compliance-newark. <strong>C.O./inspeção de multifamily</strong> de Hackensack pode travar o fechamento.</li>
+<li><strong>Financiamento:</strong> Bergen é <strong>high-cost</strong> (conforming 2026 high-cost 1-unit ~US$ 1,2M; 2–4 unidades bem acima; FHA 1-unit US$ 1.249.125). <strong>FHA 3,5% house-hack</strong> é o motor do cash-flow aqui. Investidor puro: <strong>DSCR</strong> (20–25% down). <strong>Flood insurance obrigatório</strong> em zona AE (Hackensack River) — cote NFIP/privado antes de fechar.</li>
+</ul>
+<p>⬅️ Hub de Hackensack · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

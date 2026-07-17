@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloomfield — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Bloomfield, Essex County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Bloomfield</h1>
+  <div class="facts">
+    <span class="fact">Essex County</span>
+    <span class="fact">imposto efetivo <b>2,603%</b></span>
+    <span class="fact tese" data-t="House-hack">House-hack</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>4ª cidade</strong> do projeto (Township de Essex, ~50 mil hab.), colada em Newark (S/SE), Montclair (O) e Nutley (N), a ~14 km de Manhattan. A tese: <strong>house-hack / buy &amp; hold em 2–4 family</strong> com <strong>liberdade de reprecificar o aluguel a mercado</strong> — porque o rent control municipal <strong>só incide em prédios acima do limite de unidades</strong>. Combinado com a NJ Transit (Montclair-Boonton Line) e o spillover de Montclair, cria demanda de commuters.</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> em Bloomfield, <strong>1–4 family estão ISENTAS de rent control</strong> (a cobertura do Chapter 435, pós-Ordinance 25-32 de nov/2025, é de "5 ou mais unidades") → você pode <strong>marcar o aluguel a mercado</strong>, ao contrário de Newark, que tem rent control mais amplo e rígido. Esse é o diferencial da tese de house-hack. <strong>A contrapartida:</strong> o <strong>effective tax ~2,603% é dos mais altos de NJ</strong> (conta média ~US$ 12,4k) e o <strong>Rent Leveling Board está em litígio/disfunção</strong> com a prefeitura — regule a expectativa mesmo com a isenção.</p>
+</blockquote>
+<h2>📊 Bloomfield em números (2025–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>ZHVI ~US$ 464k (+14,5% YoY) · <strong>ZIP 07003 ~US$ 619k</strong> (casas) · median sale ~US$ 589k · 2–4 family US$ 600–850k+</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>2BR ~US$ 2.300 (–7,8% YoY) · pró-forma conservadora <strong>US$ 2.100–2.400/unidade</strong></td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td>🔴 <strong>effective ~2,603%</strong> (2024, general 3,392 — dos mais altos de NJ) · conta média ~US$ 12.379 (2025)</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ Chapter 435 — <strong>1–4 family ISENTAS</strong> (cobre 5+ un.) · reajuste 3% ou CPI (máx <strong>5%</strong>) · ⚠️ <strong>Board em litígio</strong></td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>Reval town-wide recente/em curso (Appraisal Systems Inc.) — <strong>confirmar ano de vigência com o assessor</strong></td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🟡→🔴 <strong>Alto</strong> no eixo do <strong>Third River</strong> (flood stage ~6 ft; severo na Ida 2021) · baixo em Brookdale (elevado)</td>
+</tr>
+<tr>
+<td>Segurança</td>
+<td>🟢 NE/Brookdale mais seguro → 🟡 oeste concentra mais ocorrências</td>
+</tr>
+<tr>
+<td>Perfil</td>
+<td>Transit-oriented (estações Bloomfield e Watsessing) · spillover de Montclair · valorização forte</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li>Ache 2–4 family (<strong>isentas de rent control</strong>) — priorize <strong>Brookdale</strong> (valorização) ou <strong>Center/Watsessing</strong> (transit + entrada menor).</li>
+<li><strong>Screening:</strong> flood por endereço (FEMA MSC / First Street — <strong>Third River e Toney Brook alagam</strong>) + crime por quadra.</li>
+<li><strong>Preço só pelo ZIP 07003</strong> (buscas genéricas por "Bloomfield" misturam cidades homônimas ~US$ 350k — errado).</li>
+<li><strong>Analise</strong> na ferramenta com o imposto real (~2,6%) e <strong>aluguel a mercado</strong> (2–4 family isentas). O diferencial é a flexibilidade + valorização, <strong>não</strong> cap alta.</li>
+<li>Classifique 🟢🟡🔴 e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026). Ressalvas: cobertura do rent control corrigida para <strong>"5+ unidades"</strong> (1–4 family isentas — confirmar o piso exato com o Rent Leveling Board 973-680-4192); <strong>litígio do Board</strong> adicionado como risco; <strong>plataforma do tax lien não confirmada</strong> (pode ser mytaxbill.org/newjerseytaxsale.com — confirmar com o tax collector). Números de cap são ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Guia do estado · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Bloomfield é um <strong>house-hack / buy &amp; hold play</strong> de Essex: township de ~50 mil hab. colado em Newark e Montclair, com <strong>valorização forte</strong> e demanda de commuters (NJ Transit). A tese não vive de cap alta — vive da <strong>isenção de rent control em 1–4 family</strong> (aluguel a mercado) + <strong>apreciação</strong>.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZHVI (valor típico)</td>
+<td><strong>~US$ 464k</strong> (+14,5% YoY)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td><strong>ZIP 07003 (casas)</strong></td>
+<td><strong>~US$ 619k</strong> (leve recuo YoY no recorte de casas)</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td>Median sale</td>
+<td>~US$ 589k (referência, não piso)</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td>2–4 family</td>
+<td>US$ 600–850k+ (acima da mediana unifamiliar)</td>
+<td>listagens</td>
+</tr>
+<tr>
+<td>Aluguel 2BR</td>
+<td><strong>~US$ 2.300</strong> (–7,8% YoY) — mais oferta</td>
+<td>Zumper/RentHop</td>
+</tr>
+<tr>
+<td>Pró-forma conservadora</td>
+<td><strong>US$ 2.100–2.400/unidade</strong> (2BR)</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Armadilha de preço:</strong> buscas genéricas por "Bloomfield" no Redfin retornam ~US$ 350k, mas <strong>misturam bairros homônimos de OUTRAS cidades</strong> (Merchantville, Hoboken) — <strong>sempre use o ZIP 07003</strong> para o Township de Essex. ZHVI (~$464k) inclui condos/todos os tipos; ZIP 07003 (~$619k) reflete casas. Agregadores de aluguel (Apartments.com ~$2.914) tendem a superestimar — use comps reais da quadra.</p>
+</blockquote>
+<h2>Cap rate / cash flow</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (triplex US$ 700k, 3× US$ 2.200 = <strong>US$ 79,2k/ano bruto</strong>): IPTU ~US$ 16–18k, seguro ~US$ 3k, água/esgoto, vacância/manutenção ~15% → <strong>NOI ~US$ 42–48k</strong> → cap <strong>~6,0–6,8% no papel</strong>, cash-on-cash levemente positivo a neutro com financiamento cheio.</li>
+<li><strong>O diferencial NÃO é cap alta.</strong> É: (1) <strong>1–4 family isentas de rent control</strong> → liberdade para reprecificar o aluguel a mercado; (2) <strong>house-hack FHA 3,5%</strong> reduz o capital inicial; (3) <strong>valorização</strong> (spillover de Montclair).</li>
+<li><strong>Investidor puro</strong> deve entrar <strong>bem abaixo do asking</strong> ou contar com <strong>value-add</strong>, senão o IPTU ~2,6% zera o retorno. Rode na ferramenta com o imposto real do lote.</li>
+</ul>
+<h2>🆚 Bloomfield × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Bloomfield</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entrada</td>
+<td>🔴 Ticket maior (ZIP 07003 ~$619k)</td>
+<td>~$374k (mediana) — mais barato</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>🔴 <strong>~2,603%</strong> (nominal alto sobre assessed)</td>
+<td>~1,85% (uma leitura; ver ressalva)</td>
+</tr>
+<tr>
+<td><strong>Rent control</strong></td>
+<td>✅ <strong>1–4 family ISENTAS</strong> → aluguel a mercado</td>
+<td>Mais amplo/rígido (teto ~4% ou CPI)</td>
+</tr>
+<tr>
+<td>Valorização</td>
+<td>🟢 Forte (+14,5% YoY, spillover Montclair)</td>
+<td>Forte (momentum de gentrificação)</td>
+</tr>
+<tr>
+<td>Trânsito</td>
+<td>Montclair-Boonton (Bloomfield/Watsessing)</td>
+<td>NEC + PATH (mais robusto)</td>
+</tr>
+<tr>
+<td>Perfil</td>
+<td>Ticket/imposto altos + <strong>flexibilidade de aluguel</strong></td>
+<td>Yield/entrada baixos + <strong>regulação pesada</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> Newark entra <strong>mais barato</strong> e (numa das leituras) com <strong>imposto efetivo menor</strong>, mas tem <strong>rent control amplo</strong> — menos liberdade para subir aluguel. Bloomfield cobra <strong>ticket e imposto maiores</strong>, porém as <strong>2–4 family (produto-alvo) ficam livres do teto</strong> e você reprecifica a mercado, com valorização de commuter belt. Para a tese de <strong>house-hack de 2–4 family</strong>, Bloomfield vence pela <strong>isenção + demanda de commuters</strong> — ressalvado o <strong>litígio atual do Rent Leveling Board</strong>. <em>(A comparação de imposto é ruidosa: o efetivo de Newark tem fontes divergentes ~1,85% vs ~3,73% — confirme com o assessor de Newark.)</em></p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>House-hack</strong> (FHA 3,5% owner-occupied em 2–4 family isentas) e <strong>buy &amp; hold com aluguel a mercado</strong>.</li>
+<li>🟡 <strong>Value-add / entrada abaixo do asking</strong> para o IPTU não comer o retorno; <strong>apreciação</strong> de médio prazo.</li>
+<li>🔴 Não conte com <strong>cap alta a preço cheio</strong> (o imposto de 2,6% aperta) nem ignore o <strong>flood do Third River</strong> e o <strong>litígio do Board</strong>.</li>
+</ul>
+<p>⬅️ Hub de Bloomfield · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>O que mais importa em Bloomfield é o <strong>flood</strong>: o eixo do <strong>Third River</strong> (e o Toney Brook, junto a Watsessing) alaga forte — foi severo na <strong>Ida (2021)</strong>. A segurança segue um gradiente <strong>nordeste seguro (Brookdale) → oeste com mais ocorrências</strong>.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li><strong>Brookdale (N/NE)</strong> é o setor mais seguro — o nordeste tem a menor chance de vitimização; núcleo residencial valorizado, colado em Brookdale Park e na fronteira com Montclair.</li>
+<li><strong>Oeste</strong> (borda de Montclair) concentra o <strong>maior número de ocorrências</strong> do município.</li>
+<li><strong>Center/Downtown</strong> e <strong>Watsessing</strong> (SE, fronteira Newark) ficam no meio e <strong>variam por quadra</strong>.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Intermediário</th>
+<th>🔴 Atenção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brookdale (N/NE)</td>
+<td>Bloomfield Center · Watsessing (SE)</td>
+<td>Oeste (borda Montclair)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados de crime <strong>não re-auditados</strong> nesta verificação — cheque o <strong>percentil da quadra</strong> em <a href="https://crimegrade.org/safest-places-in-bloomfield-nj/">CrimeGrade</a> antes de aprofundar.</p>
+</blockquote>
+<h2>🌊 Flood (o red flag central de Bloomfield)</h2>
+<ul>
+<li>🔴 <strong>Alto no eixo do Third River</strong> (flood stage ~6 ft): <strong>Brookside</strong> e trechos ao longo do leito têm enchentes históricas, <strong>severas na Ida 2021</strong>. <strong>Evite ou exija elevation certificate + seguro de cheia FEMA</strong>.</li>
+<li>🟡 <strong>Moderado no Center/Downtown</strong> (proximidade da estação Bloomfield e do Third River — pontos alagaram na Ida) e em <strong>Watsessing</strong> (bacia do Toney Brook / entorno de Watsessing Park).</li>
+<li>🟢 <strong>Baixo em Brookdale</strong> (área mais elevada, longe do leito do Third River).</li>
+<li><strong>Zona FEMA</strong> (exige flood insurance no financiamento) e <strong>Flood Factor</strong> são independentes → cheque <strong>os dois por endereço</strong>, rua a rua:</li>
+<li><a href="https://msc.fema.gov/portal/search">FEMA MSC</a> (zona X/A/AE + BFE) · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Brookdale</strong> (N/NE)</td>
+<td>Premium, mais seguro, flood baixo. <strong>Buy-hold de longo prazo + valorização</strong>; ticket alto, yield menor.</td>
+</tr>
+<tr>
+<td><strong>Bloomfield Center / Downtown</strong></td>
+<td><strong>Transit-oriented</strong> (estação NJ Transit): melhor p/ house-hack e commuter. Flood moderado — verificar cota de cheia rua a rua.</td>
+</tr>
+<tr>
+<td><strong>Watsessing</strong> (SE, fronteira Newark)</td>
+<td>Entrada mais barata com <strong>estação própria</strong>; bom custo-benefício p/ 2–4 family. DD de quadra + flood (Toney Brook) essencial.</td>
+</tr>
+<tr>
+<td><strong>Oak View / Oeste</strong> (fronteira Montclair)</td>
+<td>Mais acessível que Brookdale, upside de proximidade a Montclair; selecionar micro-localização (segurança + córregos).</td>
+</tr>
+<tr>
+<td><strong>Brookside / eixo do Third River</strong></td>
+<td>🔴 <strong>Flood ALTO</strong> — evitar ou exigir elevation certificate + seguro de cheia. Risco pode virar oportunidade de preço se bem precificado.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li>Para <strong>valorização/hold</strong>, mire <strong>Brookdale</strong>; para <strong>house-hack/commuter</strong>, <strong>Center</strong> ou <strong>Watsessing</strong> (entrada menor).</li>
+<li><strong>Sempre cheque flood por endereço</strong> — o Third River e o Toney Brook são o principal red flag; orce o <strong>seguro de cheia</strong> antes de fechar.</li>
+<li>Confirme <strong>crime da quadra</strong> e <strong>cota de cheia rua a rua</strong> antes de aprofundar.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Bloomfield · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><h2>1. 🏛️ Property tax (o freio de cash-flow)</h2>
+<ul>
+<li><strong>Effective rate 2024: ~2,603%</strong> (general rate <strong>3,392</strong> por US$ 100 de assessed) — <strong>um dos mais altos de NJ</strong>, bate <strong>exatamente</strong> com o PDF oficial da NJ Division of Taxation. Modele o imposto a <strong>~2,6% do valor de mercado</strong>.</li>
+<li><strong>Conta média (2025):</strong> <strong>~US$ 12.379</strong> (sobre imóvel avaliado ~US$ 354,9k), em tendência de alta — Essex teve a maior conta média de NJ. Para uma <strong>2–4 family de US$ 650–700k</strong>, o IPTU realista é <strong>~US$ 16–18k/ano</strong>. Vencimentos <strong>trimestrais</strong> (1º ago/nov/fev/mai; grace de 10 dias).</li>
+<li>⚠️ <strong>Reavaliação:</strong> o township passou por <strong>revaluation town-wide</strong> (Appraisal Systems Inc., ~13k propriedades; ciclos anteriores em 1992 e 2010). Reval <strong>não aumenta a arrecadação total</strong>, só <strong>redistribui</strong> o assessed ao valor justo — imóveis subavaliados podem ver salto de conta. <strong>Prazo de tax appeal em ano de reval: 1º de maio</strong> (vs. 1º de abril padrão). <em>Assessor: (973) 680-4021 — confirme o ano de vigência.</em> <strong>Oportunidade:</strong> contestar assessment inflado pós-reval.</li>
+</ul>
+<h2>2. 🏘️ Rent Control (Chapter 435) — <strong>1–4 family isentas</strong>, mas <strong>Board em litígio</strong></h2>
+<ul>
+<li><strong>Chapter 435 (Rent Control) + Rent Leveling Board</strong>, emendado por inteiro pela <strong>Ordinance 25-32 (17/nov/2025)</strong> — 1ª revisão desde 2016.</li>
+<li><strong>Cobertura:</strong> o texto codificado atual (ecode360) descreve <strong>"5 ou mais unidades"</strong> → o piso de isenção mais provável é <strong>4 unidades e menos</strong>. ✅ <strong>CRÍTICO: 2–4 family (produto-alvo) permanecem ISENTAS</strong> — a tese central se mantém. <em>(Confiança média no número exato — o texto primário não pôde ser lido limpo; confirmar com o Rent Leveling Board </em><em>973-680-4192</em><em>.)</em></li>
+<li><strong>Reajuste (unidades cobertas):</strong> <strong>3% ao ano OU CPI</strong> (NY-Northeastern NJ), o <strong>maior</strong>, com <strong>teto de 5%</strong> (fórmula confirmada). Cap corrente ~4,6% (estimativa, confirmar a cada ciclo).</li>
+<li>⚠️ <strong>RISCO NOVO — Board em disfunção:</strong> o Rent Leveling Board está em <strong>conflito aberto com a prefeitura</strong> (acusações de obstrução, bloqueio de rent rolls, 9 anos de registros retidos). O conselho <strong>autorizou ação no Superior Court</strong>, as <strong>reuniões estão suspensas</strong> (advogado do conselho renunciou) e o <strong>enforcement é mínimo desde 2016</strong>. Impacta o ambiente regulatório, ainda que 2–4 family sejam isentas.</li>
+<li><strong>Rental Property Registration</strong> obrigatório para <strong>todos os tipos</strong>.</li>
+</ul>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>plataforma a confirmar</strong></h2>
+<ul>
+<li><strong>Órgão:</strong> Tax &amp; Water Payments — Prefeitura de Bloomfield, 1 Municipal Plaza, Room 101, Bloomfield 07003 · 📞 <strong>973-680-4049</strong>. Portal de contas/pagamento: <strong><a href="https://www.mytaxbill.org/">mytaxbill.org</a></strong> (town=bloomfield) — <strong>confirmado para pagamentos</strong>.</li>
+<li>NJ obriga <strong>tax sale anual</strong> quando há delinquência (standard ou accelerated, ~11º mês fiscal). <strong>Juros:</strong> 8% até os primeiros US$ 1.500 e <strong>18%</strong> sobre o excedente, mais eventual penalidade de 6%.</li>
+<li>⚠️ <strong>ATENÇÃO:</strong> <strong>não confirmei</strong> que o leilão de tax lien de Bloomfield use <strong>RealAuction</strong> — vários municípios de NJ usam <code>newjerseytaxsale.com</code> (RealTaxLien), outros usam RealAuction. <strong>Confirme o formato do ano diretamente com o tax collector (973-680-4049)</strong> antes de qualquer estratégia de certificado. Não confundir com o <strong>sheriff sale</strong> (foreclosure, CivilView). Detalhes NJ: guia do estado e estratégia.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>compartilhado (Essex)</strong></h2>
+<p>Igual a Newark — mesmo Sheriff, mesmo local, mesmo portal:
+- <strong>Essex County Sheriff</strong> · 60 West Market St, 14º andar, Newark · execuções <strong>quinzenais (terça 13h30)</strong> · registro só no dia (12h30–13h30) · <strong>depósito 20%</strong> em money order/certified/bank check (sem dinheiro) · Sheriff 973-621-4111 · essexsheriff.com.
+- Listas: <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=2">salesweb.civilview.com (countyId=2)</a></strong> (CivilView/Tyler, <strong>não</strong> RealAuction).
+- Detalhes completos: doc de Newark (Essex).</p>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978): igual ao estado — inspeção no turnover / a cada 3 anos, certificado válido 2 anos. Ver compliance-newark. <strong>Registro estadual</strong> (N.J.S.A. 46:8-27) + <strong>Rental Property Registration</strong> municipal.</li>
+<li><strong>Financiamento:</strong> Essex é <strong>high-cost area</strong> (limites cobrem com folga a faixa US$ 550–850k). <strong>House-hack FHA 3,5%</strong> owner-occupied em 2–4 family (⚠️ <strong>self-sufficiency test</strong> da FHA em 3–4 unidades — o aluguel projetado precisa cobrir o PITI); conventional owner-occupied 5% em 2–4 unidades. <strong>Investidor puro:</strong> conventional 20–25% ou <strong>DSCR loan</strong> (o imposto ~2,6% aperta o DSCR — modele com folga). <em>(Reconfirmar limites FHFA/FHA de 2026 na fonte oficial.)</em></li>
+</ul>
+<p>⬅️ Hub de Bloomfield · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

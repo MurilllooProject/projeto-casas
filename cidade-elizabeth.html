@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elizabeth — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Elizabeth, Union County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Elizabeth</h1>
+  <div class="facts">
+    <span class="fact">Union County</span>
+    <span class="fact">imposto efetivo <b>2,072%</b></span>
+    <span class="fact tese" data-t="Cash-flow">Cash-flow</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>5ª cidade</strong> do projeto — e a <strong>primeira fora de Essex</strong>: Elizabeth é de <strong>Union County</strong>, a 4ª maior cidade de NJ (~137 mil hab.), colada em Newark, ao lado do <strong>Aeroporto (EWR)</strong> e do <strong>Port Newark-Elizabeth</strong> (maior porto de contêineres da Costa Leste). A tese: <strong>cash-flow clássico via 2–4 family</strong> — entrada mais barata que Newark, <strong>demanda estável de inquilino imigrante</strong> (majoritariamente hispânica/latina), alta ocupação e boa retenção.</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> Elizabeth é <strong>outra jurisdição</strong> — Sheriff é o de <strong>Union County</strong> (salesweb <strong>countyId=15</strong>, leilões no Warinanco Ice Skating Center em Roselle), e a tax sale é <strong>online da própria cidade</strong> (<code>elizabeth.newjerseytaxsale.com</code>). <strong>Não confunda com Newark/Essex.</strong> Além disso, você subscreve <strong>três wildcards</strong> que Newark não tem: (1) <strong>rent control anulado judicialmente + em litígio + sunset em 31/12/2026</strong>; (2) <strong>1ª reavaliação desde 1977</strong> em curso; (3) <strong>flood/passivo ambiental alto</strong> no Port/Bayway. É a entrada mais barata perto do EWR/porto, mas com <strong>3 riscos regulatórios/de assessment em movimento</strong>.</p>
+</blockquote>
+<h2>📊 Elizabeth em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>ZHVI ~US$ 467k (+9,9% YoY) · median sale ~US$ 544k · <strong>2–4 family listing ~US$ 730k</strong> (US$ 550–850k+)</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>geral ~US$ 1.877 · 1BR ~US$ 1.780 · 2BR ~US$ 2.228 · triplex bruto ~US$ 6.500–7.500/mês</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td><strong>effective ~2,072%</strong> (2024, general 1,924) · conta média ~US$ 10.001 (2–4 family US$ 14,5–15,1k)</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>⚠️ <strong>Cap. 5.70 — teto ANULADO em juízo + em litígio + sunset 31/12/2026</strong> (regime indefinido)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>🔴 <strong>1ª desde 1977</strong> (~47 anos), em curso (ASI) — pode elevar muito o assessment</td>
+</tr>
+<tr>
+<td>Flood/ambiental</td>
+<td>🔴 <strong>Alto</strong> em Elizabethport/Bayway (baía de Newark, rio Elizabeth) + brownfield/refinaria</td>
+</tr>
+<tr>
+<td>Jurisdição</td>
+<td>🟦 <strong>Union County</strong> (Sheriff countyId=15, Roselle) — <strong>NÃO</strong> é Essex</td>
+</tr>
+<tr>
+<td>Perfil</td>
+<td>Cash-flow 2–4 family · inquilino imigrante estável · EWR + Port Newark-Elizabeth</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li>Ache 2–4 family nos setores <strong>Elmora / North Elizabeth / Peterstown</strong> (mais seguros e <strong>fora das zonas de flood</strong>).</li>
+<li><strong>Screening:</strong> flood por endereço (FEMA MSC / First Street — <strong>Elizabethport/Bayway são risco alto + ambiental</strong>) + crime por quadra.</li>
+<li><strong>Confirme os 3 wildcards antes de modelar:</strong> status do rent control (Rent Control Board), <strong>ano de vigência da reval</strong> (novo assessment muda a conta), zona FEMA + due diligence ambiental.</li>
+<li><strong>Puxe valores</strong> (puxar-valores-dados) e o <strong>imposto real do lote</strong> (modele a ~2,07%; some água/esgoto — viram lien na tax sale).</li>
+<li><strong>Analise</strong> na ferramenta; o cash flow a preço cheio é apertado — a tese fecha via <strong>house-hack FHA, compra abaixo do mercado ou tax/sheriff sale</strong>. Classifique 🟢🟡🔴 e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026, <strong>confiança alta</strong> — todos os fatos load-bearing bateram). Ajustes: median sale de venda ~US$ 544k (o ~US$ 593k era snapshot datado de nov/2025); <strong>sunset do rent control (31/12/2026)</strong> adicionado; Sheriff/county <strong>confirmado Union (countyId=15)</strong>. Números de cap são ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Guia do estado · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Elizabeth é um <strong>cash-flow play</strong> de Union County: 4ª maior cidade de NJ, colada em Newark, ao lado do <strong>EWR</strong> e do <strong>Port Newark-Elizabeth</strong>. A tese clássica é <strong>2–4 family</strong> com <strong>demanda de inquilino imigrante estável</strong> (alta ocupação, baixa vacância estrutural). Entrada mais barata que Newark, apreciação mais moderada.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZHVI (valor típico)</td>
+<td><strong>~US$ 467k</strong> (+9,9% YoY)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td>Median sale (atual)</td>
+<td><strong>~US$ 544k</strong> (abr/2026; ~US$ 290–334/sqft)</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td>2–4 family (listing)</td>
+<td><strong>~US$ 730k</strong> mediana · faixa US$ 550–850k+</td>
+<td>Homes.com/Redfin</td>
+</tr>
+<tr>
+<td>Aluguel geral</td>
+<td><strong>~US$ 1.877</strong> (–0,2% YoY, ~flat)</td>
+<td>RentCafe</td>
+</tr>
+<tr>
+<td>Por tipologia</td>
+<td>studio ~US$ 1.424 · 1BR ~US$ 1.780 · 2BR ~US$ 2.228</td>
+<td>RentCafe</td>
+</tr>
+<tr>
+<td>Em 2–4 family</td>
+<td>~US$ 2.000–2.600/unidade · triplex bruto ~US$ 6.500–7.500/mês</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Divergência de fontes é grande:</strong> Zillow (~$467k, valor típico) vs Redfin (~$544k, mediana de venda) vs ~$730k (mediana de <strong>listing de multifamily</strong>), por metodologia e mix. A mediana ~US$ 593k que circulava era <strong>snapshot datado de nov/2025</strong> — use ~US$ 544k como referência corrente. Para modelar, use a <strong>venda de 2–4 family especificamente</strong>, não o índice geral. DOM subiu para <strong>~51 dias</strong> (vs 29 há 1 ano) — mercado desacelerando, ainda líquido.</p>
+</blockquote>
+<h2>Cap rate / cash flow</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (triplex US$ 730k, bruto ~US$ 78–84k/ano): com ~40–45% de despesas (<strong>tax ~US$ 15k/ano</strong>, seguro elevado por flood, água/esgoto, manutenção, vacância) → <strong>NOI ~US$ 45–50k</strong> → cap <strong>~6,2–6,8%</strong> na compra a preço cheio.</li>
+<li>Deals <strong>abaixo do asking</strong>, em <strong>Elizabethport/Bayway</strong>, ou via <strong>tax sale/sheriff</strong> podem empurrar o cap para <strong>7–8%+</strong>.</li>
+<li><strong>Cash-on-cash positivo geralmente exige house-hack</strong> (FHA 3,5%, morar em 1 unidade) <strong>ou compra abaixo do mercado</strong>; a preço cheio com financiamento de investidor a juros correntes, o fluxo tende a ser <strong>marginal/negativo no ano 1</strong>. A tese real = <strong>cash-flow + valorização + amortização</strong>, não yield puro. Rode na ferramenta com o imposto real do lote.</li>
+</ul>
+<h2>🆚 Elizabeth × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Elizabeth</strong> (Union)</th>
+<th><strong>Newark</strong> (Essex)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entrada</td>
+<td>🟢 Mais barata (~$467k típico / ~$544k mediana)</td>
+<td>Mais cara / valoriza mais rápido</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>~2,072%</td>
+<td>~1,85% (uma leitura)</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>~$1.877–2.228</td>
+<td>~$1.900–2.200 (≈ igual)</td>
+</tr>
+<tr>
+<td><strong>Jurisdição</strong></td>
+<td>🟦 <strong>Union</strong> (Sheriff countyId=15, Roselle; tax sale própria)</td>
+<td>Essex (Sheriff countyId=2, Newark)</td>
+</tr>
+<tr>
+<td>Âncoras</td>
+<td>EWR + <strong>Port Newark-Elizabeth</strong> (logística)</td>
+<td>NEC + PATH + downtown/Ironbound</td>
+</tr>
+<tr>
+<td>Investidor institucional</td>
+<td>Menos saturado</td>
+<td>Mais fluxo institucional</td>
+</tr>
+<tr>
+<td>Wildcards</td>
+<td>🔴 <strong>3</strong> (rent control litigado + reval 1977 + flood/ambiental)</td>
+<td>Reval FY2027 (1 wildcard)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> Elizabeth entra <strong>mais barato</strong> e é <strong>menos disputada por investidor institucional</strong> que Newark, com inquilino imigrante estável e âncoras de emprego (porto/aeroporto/logística). Mas você troca a <strong>liquidez e o momentum de Newark</strong> por <strong>três riscos em movimento</strong> (rent control indefinido, reavaliação de assessment e flood/ambiental) — e opera numa <strong>jurisdição diferente</strong> (Union, não Essex). Escolha Elizabeth quando quiser <strong>entrada barata + fluxo de porto/aeroporto</strong> e tiver disciplina para <strong>precificar os 3 wildcards</strong>.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>House-hack</strong> (FHA 3,5% owner-occupied em 2–4 family) e <strong>cash-flow buy &amp; hold</strong> nos setores secos (Elmora/North/Peterstown).</li>
+<li>🟡 <strong>Value-add / compra abaixo do mercado</strong> (Elizabethport/Bayway ou tax/sheriff sale) para o cap fechar — <strong>precifique flood + ambiental</strong>.</li>
+<li>🔴 Não subscreva assumindo um <strong>regime de rent control fixo</strong> (está judicializado) nem o <strong>assessment atual</strong> (reval em curso pode elevar a conta).</li>
+</ul>
+<p>⬅️ Hub de Elizabeth · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>Em Elizabeth o eixo que mais separa os deals é <strong>oeste (seco e mais seguro) × leste/sul (flood + passivo ambiental)</strong>. O <strong>Elizabethport ("The Port")</strong> e o <strong>Bayway</strong> têm entrada barata e cap alto, mas somam <strong>flood alto + crime + ambiental</strong> — só para quem precifica o risco e o seguro corretamente.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li><strong>Oeste/sul</strong> (Elmora, Westminster/Frog Hollow) é o mais seguro; <strong>nordeste (Elizabethport)</strong> tem a maior chance de vitimização.</li>
+<li><strong>Midtown/Downtown</strong> é misto (violent crime relativamente contido, property crime maior); melhora perto do corredor comercial da Elizabeth Ave.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Intermediário</th>
+<th>🔴 Atenção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Elmora / Elmora Hills (O) · Westminster/Frog Hollow</td>
+<td>North Elizabeth · Peterstown · Midtown/Downtown</td>
+<td>Elizabethport (NE) · Bayway (S)</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Cheque o <strong>percentil da quadra</strong> em <a href="https://crimegrade.org/safest-places-in-elizabeth-nj/">CrimeGrade</a>. Crime mais alto → suba <strong>vacância/management</strong> e endureça o screening (respeitando fair housing).</p>
+</blockquote>
+<h2>🌊 Flood + passivo ambiental (o red flag central de Elizabeth)</h2>
+<ul>
+<li>🔴 <strong>Alto em Elizabethport ("The Port")</strong> — cota baixa junto à <strong>baía de Newark</strong> e à foz do <strong>rio Elizabeth</strong>; <strong>zonas FEMA de risco</strong>, storm surge (legado do <strong>Sandy</strong>).</li>
+<li>🔴 <strong>Alto em Bayway</strong> — área baixa, industrial, <strong>passivo ambiental/brownfield</strong>, proximidade da <strong>refinaria Phillips 66 Bayway</strong> e do complexo portuário. Financiamento e seguro podem ser difíceis.</li>
+<li>🟡 <strong>Moderado</strong> em Midtown/Downtown (proximidade parcial do rio Elizabeth em trechos).</li>
+<li>🟢 <strong>Baixo</strong> em Elmora, North Elizabeth e Westminster (terreno mais alto).</li>
+<li><strong>DD obrigatória por endereço:</strong> cheque a <strong>zona FEMA</strong> (exige flood insurance no financiamento) e a <strong>due diligence ambiental</strong> (brownfields/porto/refinaria) em Elizabethport/Bayway:</li>
+<li><a href="https://msc.fema.gov/portal/search">FEMA MSC</a> (zona X/A/AE + BFE) · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Elmora / Elmora Hills</strong> (O)</td>
+<td>Mais seguro, flood baixo. <strong>Buy-and-hold conservador</strong>; ticket alto, cap menor, inquilino estável. Preserva capital.</td>
+</tr>
+<tr>
+<td><strong>North Elizabeth / Peterstown</strong></td>
+<td>Peterstown = enclave italiano/português coeso; North Eliz. com <strong>estação NJ Transit</strong>. Bom equilíbrio transit + 2–4 family, preços abaixo de Elmora.</td>
+</tr>
+<tr>
+<td><strong>Midtown / Downtown</strong> (Central)</td>
+<td><strong>Estação principal NJ Transit</strong> (NEC direto p/ NY Penn), tribunais/prefeitura. Potencial transit-oriented; unidades menores, rotatividade maior.</td>
+</tr>
+<tr>
+<td><strong>Elizabethport ("The Port")</strong> (L)</td>
+<td>🔴 Entrada baixa, cap alto, mas <strong>flood ALTO + crime + inadimplência</strong>. Só para investidor experiente que precifica risco/seguro.</td>
+</tr>
+<tr>
+<td><strong>Bayway</strong> (S)</td>
+<td>🔴 Barato, cash-flow bruto atraente, mas <strong>flood/ambiental</strong> (refinaria, brownfield, caminhões). <strong>DD ambiental essencial.</strong></td>
+</tr>
+<tr>
+<td><strong>Westminster / Frog Hollow</strong> (O-Central)</td>
+<td>Residencial, relativamente melhor (lado oeste), flood baixo-moderado. Boa <strong>2-family</strong> p/ inquilino de longo prazo fora das zonas de flood.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li>Para <strong>preservação de capital</strong>, mire <strong>Elmora / North / Peterstown / Westminster</strong> (secos, mais seguros).</li>
+<li>Se for atrás de <strong>cap alto no Port/Bayway</strong>, <strong>precifique flood + seguro + ambiental</strong> e conte com maior inadimplência.</li>
+<li><strong>Sempre cheque a zona FEMA por endereço</strong> e faça <strong>DD ambiental</strong> perto do porto/refinaria.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Elizabeth · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><blockquote>
+<p>⚠️ <strong>Jurisdição:</strong> Elizabeth é <strong>Union County</strong>, <strong>não</strong> Essex. O Sheriff, o portal de foreclosure e a mecânica de leilão são <strong>diferentes de Newark/Irvington</strong> — ver §4.</p>
+</blockquote>
+<h2>1. 🏛️ Property tax + reavaliação (o wildcard de assessment)</h2>
+<ul>
+<li><strong>Effective rate 2024: ~2,072%</strong> (general rate <strong>1,924</strong> por US$ 100 de assessed) — confirmado na fonte oficial. A diferença entre general e effective vem do <strong>ratio de assessment defasado</strong> (roda desde <strong>1977</strong>), que a reavaliação em curso deve corrigir/convergir. Modele a <strong>~2,07% do valor de mercado</strong>.</li>
+<li><strong>Conta média:</strong> ~US$ 10.001/ano (imóvel mediano avaliado ~US$ 393,5k). Para <strong>2–4 family de US$ 700–730k</strong>, projete <strong>~US$ 14,5–15,1k/ano</strong> de IPTU — despesa dominante. <strong>Some água/esgoto</strong> (cobrados pelo município e passíveis de virar <strong>lien na tax sale</strong>).</li>
+<li>🔴 <strong>Reavaliação — 1ª desde 1977</strong> (~47 anos), contratada (Appraisal Systems Inc.), anunciada em abr/2023, alvo original FY2024 mas <strong>sujeita a atrasos</strong> (pode escorregar 1–2 anos). Impacto: assessments realinhados ao valor de mercado (regra prática: ~⅓ sobe, ⅓ estável, ⅓ cai). <strong>Imóveis multifamily antigos subavaliados podem levar aumento relevante.</strong> ⚠️ <strong>Confirme o ano de vigência e o novo assessment ANTES de fechar</strong> — muda a conta de carrego.</li>
+</ul>
+<h2>2. 🏘️ Rent Control (Cap. 5.70) — <strong>judicializado + sunset</strong></h2>
+<p>Elizabeth <strong>tem</strong> rent control (Municipal Code <strong>Cap. 5.70 — Rent Control and Stabilization</strong>), mas o regime está <strong>indefinido</strong>:
+- <strong>Histórico:</strong> em 2022 o City Council enfraqueceu a lei e removeu o teto de US$ 20; em <strong>28/jul/2025</strong> uma petição popular reinstaurou o teto (aumento anual limitado a <strong>3% da base OU US$ 20</strong>, o maior); em seguida <strong>landlords processaram</strong> a cidade (campanha <em>FreeLizabeth</em>) e um <strong>tribunal ANULOU (voided) o teto</strong> — que no momento <strong>NÃO está em vigor</strong>, com <strong>julgamento final pendente</strong>.
+- ⚠️ <strong>Sunset:</strong> o próprio Cap. 5.70 tem cláusula de <strong>expiração em 31/12/2026</strong> — cessa automaticamente salvo extensão pelo governing body. Camada extra de incerteza.
+- <strong>Prático:</strong> o marco de aumento de aluguel está <strong>INDEFINIDO/judicializado</strong> — <strong>não assuma</strong> nem teto restritivo nem liberdade total. <strong>Confirme o status vigente na data da compra</strong> com o <strong>Rent Control Board</strong> (elizabethnj.org/552 ou /213) e advogado local. Historicamente <strong>sem vacancy decontrol</strong>. É o principal wildcard regulatório da tese.</p>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>online, da própria cidade</strong></h2>
+<ul>
+<li><strong>É ONLINE ✅:</strong> <strong><a href="https://elizabeth.newjerseytaxsale.com/">elizabeth.newjerseytaxsale.com</a></strong> (RealAuction) — tax sale <strong>anual</strong> de encargos municipais delinquentes (<strong>impostos + água + esgoto</strong>). Ciclo recente cobriu o <strong>SFY2025</strong>; leilão anunciado/aberto em torno de <strong>mai–jun/2026 às 9h</strong>. Info oficial: elizabethnj.org/191.</li>
+<li><strong>Órgão:</strong> City of Elizabeth — Tax Collector / Division of Revenue, Room 102, <strong>50 Winfield Scott Plaza</strong>, Elizabeth 07201 · 📞 <strong>908-820-4115 / 4118</strong> · COE-Taxcollector@elizabethnj.org. Páginas: /177 (Tax Collector) e /178 (Billing &amp; Payment).</li>
+<li><strong>Mecânica NJ:</strong> compra-se o <strong>tax lien/certificate</strong> (não a propriedade), com direito a juros (bid-down a partir de <strong>18%</strong>) e eventual foreclosure futura. Distinto do sheriff sale. Detalhes: guia do estado e estratégia.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>Union County</strong> (⚠️ NÃO é Essex)</h2>
+<ul>
+<li><strong>Union County Sheriff's Office</strong> — sheriff sales (foreclosures judiciais) em <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=15">salesweb.civilview.com (countyId=15)</a></strong>. Portal oficial: <strong>ucnj.org/sheriff</strong>.</li>
+<li><strong>Local:</strong> <strong>Warinanco Ice Skating Center</strong>, 1 Park Dr, <strong>Roselle</strong> NJ 07203 · <strong>quartas-feiras 14h</strong> (com mudança para <strong>quinzenal a partir de meados de 2026</strong>). Imóveis anunciados <strong>4 segundas-feiras</strong> antes.</li>
+<li><strong>Foreclosure Unit:</strong> 📞 <strong>908-527-4478 / 4479</strong> — confirme se o leilão ocorrerá (adiamentos/acordos/falências são comuns).</li>
+<li>⚠️ Não use o portal/rotina de Essex (Newark/Irvington/East Orange/Bloomfield usam <strong>countyId=2</strong>). Elizabeth = <strong>countyId=15</strong>.</li>
+</ul>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978) e <strong>registro estadual</strong> (N.J.S.A. 46:8-27): são <strong>estaduais</strong> — valem igual, ver compliance-newark. Some o <strong>registro municipal</strong> de Elizabeth.</li>
+<li><strong>Financiamento:</strong> Union é <strong>high-cost area</strong> (limites FHA 2026: 1-unit US$ 1.249.125; 2-unit US$ 1.599.375; 3-unit US$ 1.933.200; 4-unit US$ 2.402.625) — praticamente todo 2–4 family cabe em FHA/conforming. <strong>House-hack FHA 3,5%</strong> owner-occupied é a rota mais eficiente de capital. Investidor puro: conventional 20–25% ou <strong>DSCR loan</strong> (DSCR ≥ 1,0–1,25, difícil a preço cheio dado o tax). <strong>Flood insurance NFIP</strong> pode ser caro/obrigatório nas zonas de risco (Port/Bayway).</li>
+</ul>
+<p>⬅️ Hub de Elizabeth · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

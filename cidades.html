@@ -50,8 +50,10 @@
   .grouplab::after{content:"";flex:1;height:1px;background:var(--line)}
 
   .cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-  .city{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:17px 18px;transition:border-color .14s,background .14s}
-  .city:hover{border-color:var(--accent);background:var(--p2)}
+  .city{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:17px 18px;transition:border-color .14s,background .14s,transform .14s}
+  .city:hover{border-color:var(--accent);background:var(--p2);transform:translateY(-3px)}
+  .city .open{display:inline-block;margin-top:11px;font-family:var(--mono);font-size:.75rem;color:var(--accent);font-weight:600}
+  .city:hover .open{text-decoration:underline}
   .city .r1{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
   .city .nm{font-weight:800;font-size:1.12rem}
   .city .co{font-size:.66rem;color:var(--dimmer);text-transform:uppercase;letter-spacing:.08em}
@@ -92,7 +94,7 @@
   <section class="hero" style="padding-bottom:0">
     <p class="eyebrow">Cobertura · 12 cidades de NJ</p>
     <h1>Onde estamos olhando em New Jersey.</h1>
-    <p class="lead">Hubs verificados por workflow (mercado, bairros, impostos e leilões). O <b>property tax é o fator nº 1</b> — por isso cada cidade traz o efetivo real, a tese, o <b>rent control</b> e o risco de <b>flood/reavaliação</b>, os 3 pontos que mais mexem no cash flow.</p>
+    <p class="lead"><b>Clique numa cidade</b> para abrir o hub completo (mercado & tese, bairros/segurança/flood, impostos & leilões). O <b>property tax é o fator nº 1</b> — por isso cada cartão já mostra o efetivo real, a tese, o <b>rent control</b> e o risco de <b>flood/reavaliação</b>.</p>
     <div class="keys">
       <span class="k"><b>Cash-flow</b> · renda mensal</span>
       <span class="k"><b>Appreciation</b> · valorização</span>
@@ -133,12 +135,13 @@
     {nm:'Union City',co:'Hudson',tax:'1,997%',tese:'House-hack',rc:'2-family isento (3-family dentro)',fl:'Zone X (flood baixo); reassessment anual',note:'Densa e bem servida de transporte. Reavaliação todo ano mantém o imposto colado ao mercado.'},
     {nm:'Bayonne',co:'Hudson',tax:'2,116%',tese:'House-hack',rc:'Só 5+ unidades no rent control',fl:'Flood da península; tax sale presencial',note:'Península entre NY e Newark Bay. 1–4 family a mercado; leilão de imposto é presencial.'}
   ];
-  function card(c){ return '<div class="city">'+
+  function card(c){ var slug=c.nm.toLowerCase().replace(/ /g,'-'); return '<a class="city" href="cidade-'+slug+'.html">'+
     '<div class="r1"><span class="nm">'+c.nm+'</span><span class="co">'+c.co+' County</span></div>'+
     '<div class="r2"><span class="tax">eff&nbsp;<b>'+c.tax+'</b></span><span class="tese" data-t="'+c.tese+'">'+c.tese+'</span></div>'+
     '<div class="fact"><span class="fl">Rent control</span><span class="fv">'+c.rc+'</span></div>'+
     '<div class="fact"><span class="fl">Flood / reval</span><span class="fv">'+c.fl+'</span></div>'+
-    '<p class="note">'+c.note+'</p></div>'; }
+    '<p class="note">'+c.note+'</p>'+
+    '<span class="open">abrir hub completo →</span></a>'; }
   document.getElementById('essex').innerHTML = ESSEX.map(card).join('');
   document.getElementById('gold').innerHTML  = GOLD.map(card).join('');
 </script>

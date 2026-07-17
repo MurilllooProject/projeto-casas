@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bayonne — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Bayonne, Hudson County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Bayonne</h1>
+  <div class="facts">
+    <span class="fact">Hudson County</span>
+    <span class="fact">imposto efetivo <b>2,116%</b></span>
+    <span class="fact tese" data-t="House-hack">House-hack</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>A opção "value" de Hudson</strong> — península no extremo sul do condado, servida pela <strong>HBLR (light rail)</strong>, mais barata que Jersey City e Hoboken. Estoque em abundância do clássico <strong>"Bayonne Box"</strong> (2–4 family). A tese: <strong>house-hack + cash-flow</strong> — comprar um two/three-family, morar numa unidade (FHA 3,5%) e alugar as demais, com o inquilino cobrindo boa parte do PITI. É vista como a <strong>"última fronteira"</strong> de valorização de Hudson (spillover de JC em curso, com desconto de entrada).</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> o rent control de Bayonne cobre <strong>apenas prédios de 5+ unidades</strong> — <strong>todo 2–4 family alvo do investidor é ISENTO</strong> (diferencial operacional decisivo, como Jersey City, mas com <strong>entrada mais barata</strong>). Os dois freios: (1) por ser <strong>península cercada de água</strong>, o <strong>flood é o red flag central</strong> (~29% dos imóveis com risco, faixas waterfront em zona AE); (2) <strong>reavaliação em curso (ASI)</strong> vai realinhar assessments ao mercado → <strong>o IPTU do vendedor não é o seu</strong>. Detalhe operacional: o <strong>tax sale de Bayonne é PRESENCIAL</strong> na prefeitura (não online), diferente dos vizinhos.</p>
+</blockquote>
+<h2>📊 Bayonne em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>Redfin median sale ~US$ 663k (+6,1% YoY) · ZHVI ~US$ 510k · <strong>2–4 family ~US$ 650–900k</strong> (median listing ~US$ 825k)</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>geral ~US$ 2,17k · 2BR ~US$ 2,1–2,2k · unidade em 2–4 family US$ 2,0–2,6k</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td>🔴 <strong>effective ~2,116%</strong> (general 2,796) · conta média ~US$ 10,8k (2–4 family US$ 13,7–18k)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>⚠️ <strong>Em curso</strong> (Appraisal Systems Inc.) — assessments sobem ao mercado; projete pós-reval</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>✅ Chapter 16 — <strong>só 5+ unidades</strong>; <strong>todo 2–4 family ISENTO</strong> (Board 201-858-6065)</td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🔴 <strong>Península — ~29% com risco</strong>; waterfront (leste/sul) em zona <strong>AE</strong> (Sandy)</td>
+</tr>
+<tr>
+<td>Acesso NYC</td>
+<td>🚈 <strong>HBLR</strong> → Hoboken/Exchange Place + PATH · ferry · commute ~45–60 min (sustenta o desconto)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li><strong>House-hack de cash-flow:</strong> 2–4 family (todos <strong>isentos</strong> de rent control) — priorize <strong>Uptown/Midtown</strong> (secos).</li>
+<li><strong>Flood primeiro:</strong> península → cheque FEMA/First Street e <strong>elevation certificate</strong> por endereço; oriente-se pelo interior/spine central.</li>
+<li><strong>Reavaliação em curso:</strong> projete o IPTU <strong>pós-reassessment</strong>, não o do vendedor.</li>
+<li><strong>Tax sale é PRESENCIAL</strong> (630 Avenue C) — não confunda com os leilões online dos vizinhos.</li>
+<li>Classifique 🟢🟡🔴 (cap ~5–5,8%) e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026, confiança alta). Confirmados: tax 2,116% (general 2,796), <strong>rent control só 5+ un. (2–4 family isento)</strong>, reval em curso (ASI), Sheriff Hudson countyId=10, tax sale <strong>presencial</strong> (630 Avenue C; Tax Collector Rosemarie Martinez-Kufta). Correção: sheriff sale na <strong>Jury Room 400 (4º andar) do Brennan Courthouse</strong>, 595 Newark Ave (não "Room 201B"). Cap/cash-flow ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Fronteira NY/Gold Coast · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Bayonne é a <strong>opção "value"</strong> de Hudson: península servida pela HBLR, com abundância do <strong>"Bayonne Box"</strong> (2–4 family) e preço abaixo de JC/Hoboken. A tese é <strong>house-hack + cash-flow</strong> — o <strong>2–4 family é isento de rent control</strong>, o inquilino cobre boa parte do PITI, e há <strong>spillover de valorização</strong> de Jersey City.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redfin median sale</td>
+<td><strong>~US$ 663k</strong> (+6,1% YoY)</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td>Zillow ZHVI (todos os tipos)</td>
+<td>~US$ 510k (+2,8% YoY; zip 07002 ~US$ 600k)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td><strong>2–4 family (produto-alvo)</strong></td>
+<td><strong>US$ 650–900k+</strong> (median listing multifamily ~US$ 825k)</td>
+<td>Redfin/listagens</td>
+</tr>
+<tr>
+<td>Aluguel geral</td>
+<td>~US$ 2,17k (ZORI; −10% YoY, <strong>esfriando</strong>)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td>Por unidade em 2–4 family</td>
+<td>floor-through 2–3BR ~US$ 2,0–2,6k (topo perto da HBLR)</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Divergência por metodologia:</strong> ZHVI (~$510k) &lt; Redfin median (~$663k) &lt; median listing de multifamily (~$825k). Ancore no <strong>comp de 2–4 family</strong>, não na manchete. Sinal misto: <strong>preço subindo (+6,1%)</strong> mas <strong>aluguel esfriando (−YoY)</strong> = compressão de yield na margem — não extrapole rents de pico.</p>
+</blockquote>
+<h2>Cap rate / cash flow</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (three-family US$ 825k, 3× US$ 2.200 = US$ 79,2k/ano bruto): menos <strong>property tax ~US$ 13–17k</strong> (eff 2,12%), seguro+flood ~US$ 4–7k (se AE), manutenção/vacância/reserva ~US$ 12–16k → <strong>NOI ~US$ 40–48k</strong> → <strong>cap ~5,0–5,8%</strong> sobre o preço cheio.</li>
+<li>No <strong>house-hack</strong> (FHA 3,5%, dono em 1 unidade), o objetivo é <strong>reduzir o custo de moradia próprio</strong>: as 2 unidades alugadas (~US$ 4,4k/mês) cobrem boa parte do PITI (~US$ 5,5–6,5k/mês). O mercado de <strong>comprador-morador</strong> é mais resiliente que o de investidor puro neste ponto do ciclo.</li>
+<li>⚠️ <strong>Refaça pós-reval</strong> (o assessment sobe) e <strong>com o prêmio de flood real</strong> — pode ser o que quebra o cash-flow no waterfront.</li>
+</ul>
+<h2>🆚 Bayonne × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Bayonne</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entrada</td>
+<td>~US$ 663k (median)</td>
+<td>Mais barata (~US$ 410–430k)</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>~2,116%</td>
+<td>~1,85% (menor)</td>
+</tr>
+<tr>
+<td><strong>Rent control</strong></td>
+<td>✅ <strong>só 5+ un. → 2–4 family isento</strong></td>
+<td>Ordinance própria mais restritiva</td>
+</tr>
+<tr>
+<td>Tese</td>
+<td>House-hack estável + spillover de JC</td>
+<td>Cash-flow / revitalização urbana</td>
+</tr>
+<tr>
+<td>Perfil</td>
+<td>Península homogênea, morador-proprietário</td>
+<td>Bairros heterogêneos, gestão intensiva</td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🔴 Península (waterfront AE)</td>
+<td>~40% em floodplain</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> Newark é mais <strong>barato e com imposto menor</strong> (melhor cash-flow bruto), mas com bairros heterogêneos e rent control próprio mais restritivo. Bayonne troca <strong>yield por estabilidade</strong>: península homogênea, perfil de morador-proprietário, <strong>2–4 family isento de rent control</strong> e spillover de JC — ao custo de imposto maior e do <strong>risco de flood da península</strong>. Para <strong>house-hack estável perto de NYC com liberdade de aluguel</strong>, Bayonne faz sentido.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>House-hack em 2–4 family</strong> (todos isentos de rent control) nos setores secos (Uptown/Midtown).</li>
+<li>🟡 <strong>Value-add no "Bayonne Box"</strong> (reforma) e <strong>cash-flow</strong> em 3-family bem posicionado perto da HBLR.</li>
+<li>🔴 Ignorar <strong>flood</strong> (península, waterfront AE) ou modelar o <strong>IPTU do vendedor</strong> como se a reval não viesse.</li>
+</ul>
+<p>⬅️ Hub de Bayonne · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>Bayonne é uma <strong>península</strong> — o <strong>flood é o filtro nº 1</strong>. O interior/spine central (Broadway) é mais elevado; as bordas (Newark Bay a oeste, Kill Van Kull ao sul, NY Bay a leste) têm faixas em <strong>zona AE</strong>. O crime segue um gradiente <strong>NW mais seguro → leste com mais incidência</strong>.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li>🟢 <strong>Uptown / North Bayonne</strong> (NW, junto a JC, estação 45th St) é o mais seguro (~1 em 59 no NW vs ~1 em 28 no leste).</li>
+<li>🟡 <strong>Midtown / Central</strong> (Broadway) tem a maior contagem <strong>bruta</strong> de incidentes — mas inflada pelo varejo do corredor comercial, não necessariamente residencial pior. Avaliar por quadra.</li>
+<li>🟡 <strong>Bergen Point</strong> (extremo sul) é residencial tranquilo; <strong>West Side</strong> (Route 440) é misto/industrial.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Misto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uptown / North Bayonne (NW) · Bergen Point (residencial)</td>
+<td>Midtown/Broadway · West Side (Route 440) · Waterfront leste</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados qualitativos (CrimeGrade). Cheque o percentil da quadra antes de aprofundar.</p>
+</blockquote>
+<h2>🌊 Flood (o red flag central da península)</h2>
+<ul>
+<li>🔴 <strong>~29% dos imóveis</strong> com risco em 30 anos; <strong>faixas waterfront em zona AE</strong> (obrigatório NFIP). <strong>Sandy</strong> impactou centenas de imóveis.</li>
+<li>🔴 <strong>Bergen Point</strong> (cercado por água em 3 lados) e <strong>Peninsula/Waterfront leste</strong> (Newark Bay, ex-MOTBY) têm a <strong>maior exposição</strong>.</li>
+<li>🟢 <strong>Spine central mais elevado</strong> (Broadway/Midtown) tem risco relativo menor.</li>
+<li><strong>DD obrigatória:</strong> peça <strong>elevation certificate</strong>, cheque <a href="https://msc.fema.gov/portal/search">FEMA MSC</a> + <a href="https://firststreet.org/">First Street</a> por endereço e <strong>orce o prêmio real</strong> — pode inviabilizar o cash-flow.</li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Uptown / North Bayonne</strong> (NW)</td>
+<td>Mais seguro + <strong>spillover direto de JC</strong>; melhor valorização + liquidez de saída. Premium, yield mais apertado.</td>
+</tr>
+<tr>
+<td><strong>Midtown / Central</strong> (Broadway, estações 22nd/34th)</td>
+<td>Coração do estoque de <strong>2–4 family</strong> e do trânsito; melhor walkability/aluguel. Spine mais elevado. Selecionar quadra residencial.</td>
+</tr>
+<tr>
+<td><strong>Bergen Point</strong> (extremo sul, 8th St terminal)</td>
+<td>Charme histórico + terminal HBLR; 🔴 <strong>flood alto</strong> nas faixas waterfront — comprar afastado da água.</td>
+</tr>
+<tr>
+<td><strong>Peninsula / Waterfront leste</strong> (Newark Bay)</td>
+<td>Produto novo (condos/townhomes) &gt; 2–4 family clássico; 🔴 <strong>maior flood da cidade</strong>; menos aderente ao house-hack de box.</td>
+</tr>
+<tr>
+<td><strong>West Side</strong> (Route 440)</td>
+<td>Entrada mais barata e deals de reforma; compensar risco de flood/borda + industrial com desconto.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li><strong>House-hack seco:</strong> Uptown/Midtown (spine central); <strong>fuja da água</strong> salvo desconto que cubra o seguro.</li>
+<li><strong>Elevation certificate + cotação NFIP</strong> antes de ofertar em qualquer imóvel de borda.</li>
+<li>Verifique o <strong>"Bayonne Box"</strong>: sistemas antigos (knob-and-tube, oil tank enterrado, telhado) e <strong>C.O. legal</strong> — conversões de 2→3 family sem C.O. são comuns.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Bayonne · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><h2>1. 🏛️ Property tax + reavaliação em curso</h2>
+<ul>
+<li><strong>Effective rate 2024: 2,116%</strong> (general rate <strong>2,796</strong> por US$ 100 de assessed) — confirmado no PDF oficial da NJ Division of Taxation. <em>(Agregadores mais recentes marcam ~2,68% por metodologia/ano diferentes.)</em></li>
+<li><strong>Conta média:</strong> ~US$ 10,75–10,8k/ano. Para <strong>2–4 family (US$ 650–850k de mercado a 2,116%)</strong>: ~US$ 13,7–18,0k/ano — o <strong>principal detrator de cash-flow</strong> vs. cidades com eff menor.</li>
+<li>⚠️ <strong>Reavaliação em curso:</strong> Bayonne contratou a <strong>Appraisal Systems Inc. (ASI)</strong> para revaluation/reassessment; assessments serão alinhados ao mercado (que disparou), e mesmo com ajuste da general rate, <strong>imóveis subavaliados podem ver o IPTU SUBIR</strong>. <strong>Não assuma o IPTU do vendedor.</strong> Appeal em ano de reval pode ir a <strong>1/mai</strong> (confirmar com o Hudson County Board of Taxation). Modele <strong>pós-reassessment</strong>.</li>
+</ul>
+<h2>2. 🏘️ Rent Control (Chapter 16) — <strong>só 5+ unidades</strong> (2–4 family isento)</h2>
+<ul>
+<li><strong>Chapter 16</strong> (ordinance atualizada <strong>O-23-31</strong>, vigente jul/2023; guias jan/2026 confirmam vigência), Bayonne Rent Control Board (<strong>201-858-6065</strong>).</li>
+<li>✅ <strong>Cobre apenas prédios de 5+ unidades.</strong> <strong>Isentos: dwellings com 4 ou menos unidades</strong> (todo 2–4 family alvo), hotéis/motéis, comercial/industrial, public housing, moradia subsidiada, primeiras locações e novas construções com CO <strong>pós-1/nov/2011</strong>. Diferencial operacional decisivo: <strong>o produto-alvo escapa do teto de reajuste.</strong></li>
+<li>Contexto de Hudson: em <strong>Union City</strong> a ordinance foi declarada inconstitucional "as applied" (falta de pre-deprivation notice) — <strong>não</strong> atinge diretamente 2–4 family em Bayonne, mas mostra o ambiente jurídico móvel se um dia mirar 5+ unidades.</li>
+</ul>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>PRESENCIAL</strong> (⚠️ diferente dos vizinhos)</h2>
+<ul>
+<li>⚠️ <strong>É PRESENCIAL</strong>, conduzido pela <strong>própria cidade</strong> — <strong>não</strong> em RealAuction/newjerseytaxsale.com. O "2025 Tax Sale" ocorreu em <strong>15/abr/2026, 16:30</strong>, no <strong>Office of the Tax Collector, 630 Avenue C</strong>. Pagamento em <strong>cash ou certified check</strong>.</li>
+<li><strong>Órgão:</strong> Tax Collector <strong>Rosemarie N. Martinez-Kufta</strong> — 630 Avenue C, Bayonne 07002 · ~201-858-6055. Consulta/pagamento online (só contas não-delinquentes) via WIPP/Edmunds (wipp.edmundsassoc.com, wippid=0901). Portal: bayonnenj.org/Departments/tax-collection.</li>
+<li><strong>Mecânica NJ:</strong> arremata-se o <strong>tax lien certificate</strong> (não o imóvel); bid-down dos juros (<strong>18%</strong> → 0%), depois premium; redemption pelo dono; foreclosure após 2 anos. Confirme a lista e as regras da próxima venda no site da cidade. Detalhes: guia do estado e estratégia.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>Hudson County (countyId=10)</strong></h2>
+<ul>
+<li><strong>Hudson County Sheriff</strong> — salesweb <strong>countyId=10</strong> (⚠️ Bergen = 7, Essex = 2). Leilões <strong>quintas, 2× por mês, 14h</strong> na <strong>Jury Room 400 (4º andar) do William J. Brennan Courthouse, 595 Newark Ave, Jersey City</strong> (registro 13h; a sala varia por edição — confirme no edital); depósito <strong>20%</strong> imediato; juros legais 2026 = 6,5%.</li>
+<li>📄 <strong>Detalhe completo (compartilhado pelas 3 cidades de Hudson):</strong> ver hub de Jersey City — §4 Sheriff. Listas: <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=10">salesweb.civilview.com (countyId=10)</a></strong> · hudsoncountysheriff.com/foreclosures-sales.</li>
+</ul>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978) e <strong>registro estadual</strong> (N.J.S.A. 46:8-27): estaduais, ver compliance-newark. ⚠️ <strong>Confirme a contagem LEGAL de unidades</strong> (um "4-family" que é 5 na prática cai no rent control) e o <strong>C.O.</strong> de conversões do Bayonne Box.</li>
+<li><strong>Financiamento:</strong> Hudson é <strong>high-cost</strong> (conforming 2026 high-cost: 2-unit US$ 1.548.975; 3-unit US$ 1.872.225; 4-unit US$ 2.326.875; FHA 1-unit US$ 1.249.125). <strong>House-hack FHA 3,5%</strong> em 2–4 family é a rota. Investidor puro: <strong>DSCR</strong>. <strong>Flood insurance obrigatório</strong> em zona AE (waterfront) — peça elevation certificate e cote NFIP+privado <strong>antes de fechar</strong> (frequentemente é o que quebra o cash-flow).</li>
+</ul>
+<p>⬅️ Hub de Bayonne · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>

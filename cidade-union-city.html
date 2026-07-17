@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Union City — Projeto Casas</title>
+<meta name="description" content="Hub de investidor de Union City, Hudson County (NJ): mercado e tese, bairros/segurança/flood e impostos/leilões — verificado por workflow.">
+<style>
+  :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--dimmer:#5E7089;
+    --prose:#C6D2E2;--accent:#33D3C2;--accent-ink:#04201d;--g:#3FB950;--y:#E3B341;--r:#F85149;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;--sans:system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(1100px 560px at 82% -10%,rgba(51,211,194,.09),transparent 60%),
+      linear-gradient(transparent 95%,rgba(42,54,72,.30) 96%) 0 0/100% 34px,
+      linear-gradient(90deg,transparent 95%,rgba(42,54,72,.24) 96%) 0 0/34px 100%;}
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} .mono{font-family:var(--mono)}
+  header.bar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(14,20,32,.72);border-bottom:1px solid var(--line)}
+  .bar .wrap{display:flex;align-items:center;gap:14px;height:56px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ink);flex-shrink:0}
+  .sig{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(51,211,194,.18)}
+  .brand small{display:block;font-weight:500;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-top:1px}
+  .tabs{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;color:var(--dim);font-size:.86rem;font-weight:600;padding:8px 12px;border-radius:9px}
+  .tabs a:hover{color:var(--accent)} .tabs a.on{background:var(--p2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--dim);font-size:.84rem;font-weight:600;margin:26px 0 10px}
+  .back:hover{color:var(--accent)}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.06;margin:6px 0 12px;font-weight:800;letter-spacing:-.02em}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+  .fact{font-size:.76rem;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--dim)}
+  .fact b{color:var(--accent)}
+  .tese[data-t="Cash-flow"]{color:var(--g)} .tese[data-t="Appreciation"]{color:var(--accent)}
+  .tese[data-t="House-hack"]{color:var(--y)} .tese[data-t="Value-add"]{color:#C99BF5}
+  .subnav{position:sticky;top:56px;z-index:40;display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin:14px 0 0;
+    background:linear-gradient(var(--bg),var(--bg) 70%,transparent)}
+  .subnav a{background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:7px 13px;border-radius:999px;font-size:.8rem;font-weight:600}
+  .subnav a:hover{border-color:var(--accent);color:var(--accent)}
+  section{padding:24px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+  .sec-head .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+  .sec-head h2{font-size:1.35rem;margin:0;font-weight:800;letter-spacing:-.01em}
+  /* prose */
+  .prose{color:var(--prose);font-size:.96rem}
+  .prose h1{font-size:1.2rem;margin:22px 0 8px;color:var(--ink);font-weight:800}
+  .prose h2{font-size:1.15rem;margin:24px 0 8px;color:var(--ink);font-weight:800}
+  .prose h3{font-size:1rem;margin:18px 0 6px;color:var(--ink)}
+  .prose h4{font-size:.9rem;margin:14px 0 4px;color:var(--dim)}
+  .prose p{margin:9px 0}
+  .prose ul,.prose ol{margin:9px 0;padding-left:22px} .prose li{margin:4px 0}
+  .prose strong,.prose b{color:var(--ink)}
+  .prose code{font-family:var(--mono);background:var(--p2);padding:1px 6px;border-radius:5px;font-size:.85em;color:var(--ink)}
+  .prose blockquote{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+  .prose blockquote p{margin:4px 0}
+  .prose hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+  .prose a{color:var(--accent)}
+  .tblwrap{overflow-x:auto}
+  .prose table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.85rem;min-width:440px}
+  .prose th{background:var(--p2);text-align:left;padding:9px 11px;border:1px solid var(--line);font-weight:700;color:var(--ink)}
+  .prose td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  footer{border-top:1px solid var(--line);margin-top:22px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
+  @media(max-width:720px){.brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
+  <nav class="tabs">
+    <a href="index.html">Visão geral</a>
+    <a href="mapa.html">Mapa</a>
+    <a href="lista.html">Lista</a>
+    <a href="leiloes.html">Leilões</a>
+    <a href="buy-hold.html">Buy &amp; Hold</a>
+    <a href="estrategias.html">Estratégias</a>
+    <a href="cidades.html" class="on">Cidades</a>
+    <a href="glossario.html">Glossário</a>
+  </nav>
+</div></header>
+<div class="wrap">
+  <a class="back" href="cidades.html">← Todas as cidades</a>
+  <h1>Union City</h1>
+  <div class="facts">
+    <span class="fact">Hudson County</span>
+    <span class="fact">imposto efetivo <b>1,997%</b></span>
+    <span class="fact tese" data-t="House-hack">House-hack</span>
+    <span class="fact">Hub verificado por workflow</span>
+  </div>
+  <nav class="subnav">
+    <a href="#s0">Panorama</a>
+    <a href="#s1">Mercado & tese</a>
+    <a href="#s2">Bairros, segurança & flood</a>
+    <a href="#s3">Impostos & leilões</a>
+  </nav>
+  <section id="s0"><div class="sec-head"><span class="idx">01</span><h2>Panorama</h2></div><div class="prose"><p><strong>A cidade mais densa dos EUA</strong>, no topo dos Palisades, de frente para Manhattan pelo Lincoln Tunnel. Estoque predominante de <strong>2–4 family de tijolo</strong>. A tese: <strong>appreciation + house-hack</strong> — comprar um 2-family, morar numa unidade (FHA 3,5%) e alugar a outra para quem trabalha em NYC e busca custo menor que Hoboken/Jersey City. Não é cap gordo; é <strong>proximidade + valorização</strong>.</p>
+<blockquote>
+<p>🧠 <strong>O achado que muda o jogo:</strong> o rent control de Union City tem um <strong>corte de unidades preciso</strong> — <strong>1-family e 2-family são ISENTOS</strong>, mas as emendas de <strong>2017/2018 trouxeram o 3-family para DENTRO</strong> do controle (4+ também). Ou seja, o <strong>sweet spot de house-hack é especificamente o 2-family</strong> (foge do teto); subir para 3–4 family muda o jogo. Some dois wildcards: (1) a <strong>metodologia do rent control foi declarada inconstitucional (2023)</strong> e a ordinance foi emendada — regime em zona cinzenta; (2) a cidade faz <strong>reassessment ANUAL</strong> (programa de 4 anos, ASI) → o <strong>IPTU pode mudar todo ano</strong>. Vantagem: no alto dos Palisades, a maioria é <strong>FEMA Zone X</strong> (flood não costuma ser obrigatório) — alívio vs. o waterfront de Hudson.</p>
+</blockquote>
+<h2>📊 Union City em números (2024–2026, verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preço</td>
+<td>ZHVI ~US$ 445k (+2,5% YoY) · 2-family mediana ~US$ 675k · 1-family ~US$ 857k</td>
+</tr>
+<tr>
+<td>Aluguel</td>
+<td>geral ~US$ 2,2k · 1BR ~US$ 1,9k · 2BR ~US$ 2,7k · unidade em 2–4 family ~US$ 2,2–2,7k</td>
+</tr>
+<tr>
+<td>Property tax</td>
+<td><strong>effective ~1,997%</strong> (general 1,848) · conta média ~US$ 10k (2–4 family US$ 12–16k)</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>🔴 <strong>Reassessment ANUAL</strong> (programa de 4 anos, ASI) — o IPTU muda todo ano</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td>⚠️ Chapter 334 — <strong>1 e 2-family ISENTOS</strong>; <strong>3-family DENTRO</strong> (emendas 2017/18); metodologia <strong>em litígio</strong></td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🟢 <strong>Vantagem: maioria Zone X</strong> (alto nos Palisades) — checar cotas leste (descida ao rio)</td>
+</tr>
+<tr>
+<td>Acesso NYC</td>
+<td>🚌 Ônibus → Port Authority ~7–20 min (Lincoln Tunnel) · 🚈 HBLR Bergenline + PATH · ferry próximo</td>
+</tr>
+</tbody>
+</table></div>
+<h2>⚡ Fluxo rápido</h2>
+<ol>
+<li><strong>Sweet spot: 2-family</strong> (isento de rent control) para house-hack — 3-family cai no controle.</li>
+<li><strong>Reassessment anual:</strong> subscreva com <strong>margem no IPTU</strong> (a conta atual não trava o futuro).</li>
+<li><strong>Rent control em litígio:</strong> confirme o status vigente e o texto com o Rent Leveling Office antes de fechar.</li>
+<li><strong>Flood:</strong> vantagem de Zone X no plateau; ainda assim cheque cotas na <strong>descida leste</strong> para o rio.</li>
+<li>Classifique 🟢🟡🔴 (cap 3–4,5% → provável 🟡) e registre no pipeline.</li>
+</ol>
+<hr />
+<blockquote>
+<p>✅ Verificado por workflow (jul/2026, confiança alta). Confirmados: tax 1,997% (general 1,848), <strong>2-family isento / 3-family dentro</strong> (emendas 2017/18), litígio 1700 Bergenline (inconstitucional 2023), reassessment anual (ASI), Sheriff Hudson countyId=10, tax sale unioncity.newjerseytaxsale.com. Correção: <strong>appeal de assessment ~1/mai (ou 45 dias após o notice), no Hudson County Board of Taxation via njappealonline.com</strong> — NÃO 1/abr no assessor local. Cap/cash-flow ilustrativos.</p>
+</blockquote>
+<p>⬅️ Cidades de NJ · Fronteira NY/Gold Coast · Mapa</p></div></section>
+<section id="s1"><div class="sec-head"><span class="idx">02</span><h2>Mercado & tese</h2></div><div class="prose"><p>Union City é a <strong>cidade mais densa dos EUA</strong>, no topo dos Palisades em frente a Manhattan, com estoque predominante de <strong>2–4 family de tijolo</strong>. A tese é <strong>appreciation + house-hack</strong>: proximidade premium a Midtown (Lincoln Tunnel), liquidez e valorização — não cap rate gordo.</p>
+<h2>Preço e aluguel (verificado)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zillow ZHVI (valor típico)</td>
+<td><strong>~US$ 445k</strong> (+2,5% YoY)</td>
+<td>Zillow</td>
+</tr>
+<tr>
+<td>Redfin median sale</td>
+<td>~US$ 461k (−16,3% YoY = <strong>ruído de mix</strong>, poucas vendas)</td>
+<td>Redfin</td>
+</tr>
+<tr>
+<td>2-family / 1-family</td>
+<td>mediana ~US$ 675k / ~US$ 857k</td>
+<td>Jill Biggs Group</td>
+</tr>
+<tr>
+<td>Aluguel geral</td>
+<td>~US$ 2,2k (RentCafe) · 1BR ~US$ 1,9k · 2BR ~US$ 2,7k</td>
+<td>RentCafe</td>
+</tr>
+<tr>
+<td>Por unidade em 2–4 family</td>
+<td>~US$ 2,2–2,7k (sujeito a rent control se 3+ un.)</td>
+<td>estimativa</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⚠️ <strong>Não leia o Redfin −16% como queda real</strong> — é ruído de amostra (poucas transações). A tendência de fundo é o ZHVI (+2,5%). Para 2–3 family em condição de morar+alugar, <strong>orce US$ 600k–800k+</strong>. DOM ~54 dias (subindo) → margem de negociação existe.</p>
+</blockquote>
+<h2>Cap rate / cash flow (comprimido)</h2>
+<ul>
+<li>Exemplo <strong>ilustrativo</strong> (3-family US$ 750k, 20% down, financiando US$ 600k @ ~7% = ~US$ 3.990/mês P&amp;I): <strong>IPTU ~US$ 14–16k/ano</strong> pós-reassessment, seguro ~US$ 250/mês, água/manutenção/vacância ~US$ 500/mês.</li>
+<li><strong>House-hack</strong> (owner ocupa 1, aluga 2 ~US$ 5.000/mês): fluxo ~<strong>−US$ 1.040/mês</strong> — o dono <strong>subsidia parcialmente a própria moradia</strong> (o ganho real).</li>
+<li><strong>Rental puro</strong> (3 un. ~US$ 7.200 brutos): NOI ~US$ 61,8k/ano → <strong>cap ~3,5–4%</strong>.</li>
+<li><strong>Cap típico da cidade é baixo (3–4,5%)</strong> — o jogo é <strong>appreciation + amortização + house-hack</strong>, não yield. ⚠️ Note que o 3-family <strong>cai no rent control</strong>; o 2-family não.</li>
+</ul>
+<h2>🆚 Union City × Newark (o comparativo que importa)</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Union City</strong></th>
+<th><strong>Newark</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2-family</td>
+<td>🔴 ~US$ 675k</td>
+<td>~US$ 400–700k</td>
+</tr>
+<tr>
+<td>Effective tax</td>
+<td>~1,997%</td>
+<td>~1,85–2,8%</td>
+</tr>
+<tr>
+<td>Tese</td>
+<td>Appreciation + house-hack (Lincoln Tunnel)</td>
+<td>Cash-flow / yield</td>
+</tr>
+<tr>
+<td>Rent control</td>
+<td><strong>2-family isento</strong>, 3-family dentro (litígio)</td>
+<td>Ordinance própria</td>
+</tr>
+<tr>
+<td>Reavaliação</td>
+<td>🔴 <strong>Anual</strong> (IPTU muda todo ano)</td>
+<td>1ª desde 2013 (FY2027)</td>
+</tr>
+<tr>
+<td>Flood</td>
+<td>🟢 Maioria Zone X (Palisades)</td>
+<td>~40% em floodplain</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🧠 <strong>O ponto-chave:</strong> Newark dá <strong>cap maior e mais deals distressed</strong>; Union City dá <strong>proximidade premium a Manhattan, liquidez e a isenção de rent control no 2-family</strong> — mas com cap baixo e <strong>reassessment anual</strong> (o IPTU não trava). A vantagem operacional específica: em UC o <strong>2-family foge do rent control</strong> (sweet spot de house-hack), enquanto Newark nem sempre oferece isso. Escolha UC para <strong>valorização + house-hack perto do Lincoln Tunnel</strong>; Newark para <strong>yield/entrada</strong>.</p>
+</blockquote>
+<h2>Fit de estratégia</h2>
+<ul>
+<li>🟢 <strong>House-hack em 2-family</strong> (isento de rent control) no West Side/Central — o produto certo aqui.</li>
+<li>🟡 <strong>Buy &amp; hold / appreciation</strong> de longo prazo, com <strong>margem no IPTU</strong> (reassessment anual).</li>
+<li>🔴 <strong>3–4 family para renda pura</strong> (cai no rent control + cap baixo) e assumir o <strong>IPTU atual como fixo</strong>.</li>
+</ul>
+<p>⬅️ Hub de Union City · Bairros · Impostos &amp; leilões</p></div></section>
+<section id="s2"><div class="sec-head"><span class="idx">03</span><h2>Bairros, segurança & flood</h2></div><div class="prose"><p>Cidade minúscula e densíssima; a seleção é <strong>quadra-a-quadra</strong>. A boa notícia: por ficar no <strong>alto dos Palisades</strong>, a <strong>maioria é FEMA Zone X</strong> (flood não costuma ser obrigatório) — alívio raro na Gold Coast de Hudson. O eixo de crime é <strong>oeste/central (mais seguro) → norte/NE (mais incidência)</strong>.</p>
+<h2>🚨 Segurança (crime)</h2>
+<ul>
+<li>🟢 <strong>West Side / Central</strong> (junto a Kennedy Blvd) é o mais seguro (~1 em 50 no oeste vs ~1 em 33 no norte); corredores residenciais com associações de bairro ativas.</li>
+<li>🟡 <strong>Bergenline Ave / Waterfront leste</strong> — misto, foot traffic alto tende a reduzir incidentes.</li>
+<li>🔴 <strong>North / Northeast</strong> (fronteira North Bergen) tem a maior incidência relativa — DD quadra a quadra.</li>
+</ul>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>🟢 Mais seguro</th>
+<th>🟡 Misto</th>
+<th>🔴 Atenção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>West Side / Central · Bergenline (49th St)</td>
+<td>Waterfront/East · South/SE (Lincoln Tunnel)</td>
+<td>North / Northeast</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Dados qualitativos (CrimeGrade ~C+). Cheque o percentil da quadra antes de aprofundar.</p>
+</blockquote>
+<h2>🌊 Flood (vantagem de Zone X)</h2>
+<ul>
+<li>🟢 <strong>Maioria em Zone X</strong> — a cidade está no <strong>plateau dos Palisades</strong>; seguro de cheia <strong>não</strong> costuma ser obrigatório (vantagem de custo vs. waterfront de Hudson).</li>
+<li>🟡 <strong>Blocos na descida leste</strong> (em direção ao Hudson) exigem checagem parcela a parcela.</li>
+<li>Cheque <strong>os dois por endereço</strong> mesmo assim: <a href="https://msc.fema.gov/portal/search">FEMA MSC</a> · <a href="https://firststreet.org/">First Street</a></li>
+</ul>
+<h2>🏘️ Bairros em uma linha</h2>
+<div class="tblwrap"><table>
+<thead>
+<tr>
+<th>Setor</th>
+<th>Perfil de investimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>West Side / Central</strong> (Kennedy Blvd)</td>
+<td>Mais seguro + estoque de <strong>2–3 family</strong> para house-hack. <strong>Foco primário.</strong> Zone X.</td>
+</tr>
+<tr>
+<td><strong>Bergenline Ave / 48th–49th St</strong> (HBLR)</td>
+<td><strong>Premium de trânsito</strong> (HBLR + PATH para Downtown); melhor liquidez de aluguel, commuter-oriented. Zone X.</td>
+</tr>
+<tr>
+<td><strong>Waterfront / East</strong> (vistas de Manhattan)</td>
+<td>Premium de <strong>valorização</strong>; confirmar flood da parcela na descida leste.</td>
+</tr>
+<tr>
+<td><strong>North / Northeast</strong> (fronteira North Bergen)</td>
+<td>Entrada mais barata; <strong>maior incidência</strong> — value-add se a quadra for boa.</td>
+</tr>
+<tr>
+<td><strong>South / SE</strong> (Lincoln Tunnel, borda Weehawken/Hoboken)</td>
+<td>Melhor acesso a <strong>ônibus Midtown</strong>; spillover de valorização de Hoboken/Weehawken.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Como usar num deal</h2>
+<ol>
+<li><strong>House-hack seguro:</strong> 2-family no <strong>West Side/Central</strong>; <strong>commuter/aluguel:</strong> perto da <strong>Bergenline (HBLR)</strong>.</li>
+<li>Aproveite a <strong>vantagem de Zone X</strong>, mas confira cotas na descida leste.</li>
+<li>Confirme <strong>rent control</strong> (2-family isento, 3+ dentro) e a <strong>contagem legal de unidades</strong>.</li>
+<li>Guia geral de red flags: dd-localizacao.</li>
+</ol>
+<p>⬅️ Hub de Union City · Mercado &amp; tese · Impostos &amp; leilões</p></div></section>
+<section id="s3"><div class="sec-head"><span class="idx">04</span><h2>Impostos & leilões</h2></div><div class="prose"><h2>1. 🏛️ Property tax + <strong>reassessment anual</strong> (o wildcard de assessment)</h2>
+<ul>
+<li><strong>Effective rate 2024: 1,997%</strong> (general rate <strong>1,848</strong> por US$ 100 de assessed) — confirmado no PDF oficial da NJ Division of Taxation.</li>
+<li><strong>Conta média:</strong> ~US$ 10k para o imóvel típico; para <strong>2–4 family de US$ 600–800k pós-reassessment</strong>, ~US$ 12–16k/ano.</li>
+<li>🔴 <strong>Reassessment ANUAL:</strong> Union City fez uma <strong>revaluation histórica (FY2024)</strong> e obteve aprovação para um <strong>programa de annual reassessment de 4 anos</strong> (o 1º do tipo em Hudson), com a <strong>Appraisal Systems Inc.</strong> (~25% dos imóveis/ano). Consequência: o <strong>assessed value pode mudar TODO ANO</strong> — a conta de hoje <strong>não trava</strong> o custo futuro. <strong>Subscreva com margem no IPTU.</strong></li>
+<li>⚠️ <strong>Appeal (correção):</strong> por ser cidade em reassessment, o prazo <strong>não</strong> é 1/abr no assessor local — é <strong>~1 de maio (ou 45 dias após o envio em massa do Notice of Assessments)</strong>, protocolado no <strong>Hudson County Board of Taxation</strong> (257 Cornelison Ave, 3º andar) via <strong>njappealonline.com</strong>.</li>
+</ul>
+<h2>2. 🏘️ Rent Control (Chapter 334) — <strong>2-family isento, 3-family dentro</strong> + litígio</h2>
+<ul>
+<li><strong>Chapter 334 (Rent Stabilization)</strong>, Rent Leveling Office. Teto de reajuste: <strong>menor entre 3,0% ou o CPI</strong> (NY-Northern NJ) dos 12 meses (<strong>2,0%</strong> para senior qualificado).</li>
+<li><strong>Corte de unidades (confirmado):</strong> a ordinance original isentava 1, 2 e 3 famílias; as <strong>emendas de 2017/2018 trouxeram o 3-family para DENTRO</strong> do controle. Logo: <strong>1-family e 2-FAMILY continuam ISENTOS</strong> (o sweet spot de house-hack); <strong>3-family e 4+ estão DENTRO</strong> (isenções grandfathered para 4/5/6-unit owner-occupied nas datas das emendas).</li>
+<li>⚠️ <strong>Litígio:</strong> em 2023 a juíza Espinales-Maloney (Hudson Superior Court, caso <em>1700 Bergenline</em>) declarou a <strong>metodologia de rent determination inconstitucional</strong> (falta de pre-deprivation hearing); stays emitidos; a cidade <strong>emendou</strong> a ordinance (processo de hearing/appeal, 30 dias) e apela. <strong>Confirme o status vigente (2026)</strong> com o Rent Leveling Office antes de comprar.</li>
+</ul>
+<h2>3. 🧾 Tax Sale (tax lien) — <strong>online</strong></h2>
+<ul>
+<li><strong>É ONLINE ✅:</strong> <strong><a href="https://unioncity.newjerseytaxsale.com/">unioncity.newjerseytaxsale.com</a></strong> (accelerated electronic tax sale; ex.: dez/2024). Lista de parcels, delinquências e custos no portal; datas em <strong>ucnj.com</strong> (News – Tax Sale Notice).</li>
+<li><strong>Órgão:</strong> City of Union City — Tax Department, City Hall, 3715 Palisade Avenue, Union City 07087 · ucnj.com/Departments/tax-department. <em>(Confirmar nome/ramal do Tax Collector no site.)</em></li>
+<li><strong>Mecânica NJ:</strong> bid-down dos juros a partir de <strong>18%</strong>, depois premium; certificado com direito a subsequent taxes; redemption/foreclosure após 2 anos. Detalhes: guia do estado e estratégia.</li>
+</ul>
+<h2>4. 🏦 Sheriff foreclosure — <strong>Hudson County (countyId=10)</strong></h2>
+<ul>
+<li><strong>Hudson County Sheriff</strong> — salesweb <strong>countyId=10</strong> (⚠️ Bergen = 7, Essex = 2). Leilões <strong>quintas, 2× por mês, 14h</strong> no <strong>William J. Brennan Courthouse, 595 Newark Ave, Jersey City</strong> (número da sala varia por edição — confirme no edital); depósito <strong>20%</strong> imediato; juros legais 2026 = 6,5%.</li>
+<li>📄 <strong>Detalhe completo (compartilhado pelas 3 cidades de Hudson):</strong> ver hub de Jersey City — §4 Sheriff. Listas: <strong><a href="https://salesweb.civilview.com/Sales/SalesSearch?countyId=10">salesweb.civilview.com (countyId=10)</a></strong> · hudsoncountysheriff.com/foreclosures-sales.</li>
+</ul>
+<h2>5. 📋 Compliance &amp; financiamento</h2>
+<ul>
+<li><strong>Lead paint</strong> (pré-1978) e <strong>registro estadual</strong> (N.J.S.A. 46:8-27): estaduais, ver compliance-newark. Verificar <strong>C.O. de multi-unidade</strong> e conversões (estoque antigo de tijolo).</li>
+<li><strong>Financiamento:</strong> Hudson é <strong>high-cost</strong> (FHA 2026 1-unit US$ 1.249.125; 2-unit US$ 1.548.975; 3-unit US$ 1.872.225; 4-unit US$ 2.326.875). <strong>House-hack FHA 3,5%</strong> em 2-family é a rota. Investidor puro/estrangeiro: <strong>DSCR</strong> (qualifica pelo rent roll). Flood <strong>não</strong> obrigatório na maior parte (Zone X nos Palisades) — confira a parcela.</li>
+</ul>
+<p>⬅️ Hub de Union City · Mercado · Bairros</p></div></section>
+</div>
+<footer><div class="wrap">
+  Conteúdo verificado por workflow multi-agente (jul/2026). Imposto, rent control e flood mudam por ano/lote — confirme na fonte oficial antes de decidir. &nbsp;·&nbsp; <a href="cidades.html">← Cidades</a> · <a href="mapa.html">ver no mapa</a>
+</div></footer>
+</body>
+</html>
