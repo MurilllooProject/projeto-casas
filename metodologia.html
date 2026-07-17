@@ -76,6 +76,40 @@
   .green-when b{color:var(--g)}
   .njnote{font-size:.78rem;color:var(--dimmer);margin-top:8px}
 
+  /* exemplos na prática */
+  .exlbl{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin:18px 0 9px}
+  .exwrap{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .exc{background:var(--p2);border:1px solid var(--line);border-top-width:3px;border-radius:11px;padding:13px 14px;display:flex;flex-direction:column}
+  .exc.g{border-top-color:var(--g)} .exc.y{border-top-color:var(--y)} .exc.r{border-top-color:var(--r)}
+  .exc .pill{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:4px 10px;border-radius:999px;margin-bottom:9px}
+  .exc.g .pill{background:color-mix(in srgb,var(--g) 15%,transparent);color:var(--g)}
+  .exc.y .pill{background:color-mix(in srgb,var(--y) 15%,transparent);color:var(--y)}
+  .exc.r .pill{background:color-mix(in srgb,var(--r) 15%,transparent);color:var(--r)}
+  .exc .cen{font-weight:700;font-size:.9rem;line-height:1.35} .exc .sub{color:var(--dim);font-size:.75rem;margin:3px 0 10px}
+  .exc .kv{display:flex;justify-content:space-between;gap:8px;font-size:.78rem;padding:5px 0;border-bottom:1px dashed var(--line)}
+  .exc .kv span{color:var(--dim)} .exc .kv b{font-family:var(--mono);text-align:right}
+  .exc .why{font-size:.8rem;color:var(--dim);margin-top:11px;line-height:1.5} .exc .why b{color:var(--ink)}
+
+  /* calculadora */
+  .calc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .seg{display:flex;gap:6px;background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:18px}
+  .seg button{flex:1;background:transparent;border:0;color:var(--dim);font-family:inherit;font-weight:700;font-size:.82rem;padding:11px 8px;border-radius:8px;cursor:pointer;line-height:1.2}
+  .seg button.on{background:var(--accent);color:var(--accent-ink)}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field label{display:block;font-size:.74rem;color:var(--dim);margin-bottom:6px;font-weight:600}
+  .field .inp{display:flex;align-items:center;background:var(--p2);border:1px solid var(--line);border-radius:10px;padding:0 12px;transition:border-color .15s}
+  .field .inp:focus-within{border-color:var(--accent)}
+  .field .pre,.field .suf{color:var(--dimmer);font-family:var(--mono);font-size:.9rem;white-space:nowrap}
+  .field input{width:100%;min-width:0;background:transparent;border:0;color:var(--ink);font-family:var(--mono);font-size:1.05rem;font-weight:700;padding:11px 8px;outline:none}
+  .field input::-webkit-outer-spin-button,.field input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .out{margin-top:18px;background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .out .big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .out .big .n{font-family:var(--mono);font-size:2rem;font-weight:800;color:var(--accent);line-height:1}
+  .out .big .lab{color:var(--dim);font-size:.82rem}
+  .out .row{display:flex;justify-content:space-between;gap:10px;font-size:.86rem;padding:8px 0;border-bottom:1px solid var(--line)}
+  .out .row:last-of-type{border-bottom:0} .out .row b{font-family:var(--mono)}
+  .out .lead2{font-size:.83rem;color:var(--dim);margin-top:12px;line-height:1.55;border-top:1px solid var(--line);padding-top:12px}
+
   /* glossário */
   .search{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:1rem;
     padding:13px 16px;border-radius:12px;margin-bottom:6px}
@@ -90,7 +124,7 @@
 
   footer{border-top:1px solid var(--line);margin-top:24px;padding:26px 0 50px;color:var(--dimmer);font-size:.8rem}
 
-  @media(max-width:720px){ .rules{grid-template-columns:1fr} .ex{grid-template-columns:1fr} .bar .nav a:first-child{display:none} }
+  @media(max-width:720px){ .rules{grid-template-columns:1fr} .ex{grid-template-columns:1fr} .exwrap{grid-template-columns:1fr} .fields{grid-template-columns:1fr} .seg{flex-direction:column} .bar .nav a:first-child{display:none} }
 </style>
 </head>
 <body>
@@ -104,12 +138,13 @@
   <section class="hero" style="border:0;padding-bottom:8px">
     <p class="eyebrow">Metodologia · como aplicamos</p>
     <h1>Como a estratégia é aplicada — e o que cada nome significa.</h1>
-    <p class="lead">No mapa você vê o <b>veredito 🟢🟡🔴 já aplicado</b>. Aqui está o <b>como</b>: as premissas e fórmulas exatas que o motor usa para classificar cada casa, cada estratégia passo a passo, e um <b>glossário pesquisável</b> de todos os termos.</p>
+    <p class="lead">No mapa você vê o <b>veredito 🟢🟡🔴 já aplicado</b>. Aqui está o <b>como</b>: as premissas e fórmulas exatas que o motor usa, cada estratégia com <b>3 exemplos reais</b> (comprar · aguardar · passar), uma <b>calculadora</b> de entrada × prestação, e um <b>glossário pesquisável</b>.</p>
   </section>
 
   <nav class="subnav">
     <a href="#semaforo">🚦 O semáforo</a>
     <a href="#estrategias">🎯 As 5 estratégias</a>
+    <a href="#calculadora">🧮 Calculadora</a>
     <a href="#glossario">📖 Glossário</a>
   </nav>
 
@@ -176,6 +211,8 @@ Parcela  = amortização de (preço×75%) a 7,5%/30a<br>
       <div class="lbl">Como aplicamos</div>
       <div class="fx">roda o motor do semáforo acima → cap, cash flow, DSCR e preço-gatilho.</div>
       <div class="green-when"><b>🟢 quando:</b> cash flow ≥ +US$ 100/unidade/mês · cap ≥ 6% · DSCR ≥ 1,2.</div>
+      <div class="exlbl">▸ Na prática — 3 cenários (números do motor)</div>
+      <div class="exwrap" data-ex="buyhold"></div>
     </div>
 
     <div class="strat">
@@ -188,6 +225,8 @@ lucro  = ARV − preço − reforma − juros de carrego − custos de venda/com
 margem = lucro ÷ ARV
       </div>
       <div class="green-when"><b>🟢 quando:</b> preço ≤ MAO · lucro ≥ US$ 30k · margem ≥ 10% do ARV. <span style="color:var(--dim)">(🔴 se lucro &lt; US$ 15k ou preço &gt; MAO×1,05.)</span></div>
+      <div class="exlbl">▸ Na prática — 3 cenários (números do motor)</div>
+      <div class="exwrap" data-ex="flip"></div>
     </div>
 
     <div class="strat">
@@ -199,6 +238,8 @@ yield anual = (juros + penalidade) ÷ capital ÷ anos<br>
 LTV         = capital ÷ valor do imóvel
       </div>
       <div class="green-when"><b>🟢 quando:</b> yield efetivo ≥ 8% · LTV ≤ 60% (o imóvel cobre a dívida com folga). <span style="color:var(--dim)">(🔴 se yield &lt; 4% ou capital &gt; valor.)</span></div>
+      <div class="exlbl">▸ Na prática — 3 cenários (números do motor)</div>
+      <div class="exwrap" data-ex="lien"></div>
     </div>
 
     <div class="strat">
@@ -207,6 +248,8 @@ LTV         = capital ÷ valor do imóvel
       <div class="lbl">Como aplicamos (em estados de deed)</div>
       <div class="fx">lance ≤ valor − (quiet title + reforma + venda + margem)</div>
       <div class="njnote">Em NJ, o caminho de aquisição via imposto é o tax lien + foreclosure após o prazo de redemption (2 anos). Ver <a href="index.html">tax lien</a>.</div>
+      <div class="exlbl">▸ Na prática — 3 cenários (deed vale fora de NJ)</div>
+      <div class="exwrap" data-ex="deed"></div>
     </div>
 
     <div class="strat">
@@ -218,14 +261,38 @@ MAO = ARV × fator − reforma<br>
 taxa (fee) = MAO − preço de contrato
       </div>
       <div class="green-when"><b>🟢 quando:</b> fee ≥ US$ 10k (e você tem lista de compradores). <span style="color:var(--dim)">(🔴 se fee &lt; US$ 5k.)</span></div>
+      <div class="exlbl">▸ Na prática — 3 cenários (números do motor)</div>
+      <div class="exwrap" data-ex="wholesale"></div>
     </div>
 
     <p style="color:var(--dimmer);font-size:.82rem;margin-top:16px">Os 3 maiores corrosores de retorno na região: <b>property tax</b> · <b>flood</b> (FEMA) · <b>rent control</b> — por isso o semáforo subscreve o imposto real do lote e sinaliza flood/crime por endereço.</p>
   </section>
 
-  <!-- 03 GLOSSÁRIO -->
+  <!-- 03 CALCULADORA -->
+  <section id="calculadora">
+    <div class="sec-head"><span class="idx">03</span><h2>Calculadora — entrada × prestação</h2></div>
+    <p style="color:var(--dim)">A conta que você faz de cabeça: <b>quanto de entrada preciso dar para a prestação caber?</b> Diga o que já sabe — o preço e a prestação que quer, ou o preço e a entrada que tem — e a calculadora resolve o outro lado. <span style="color:var(--dimmer)">(Aqui é só a parcela do banco; imposto, seguro e vacância entram no <a href="#semaforo">semáforo</a>.)</span></p>
+
+    <div class="calc">
+      <div class="seg">
+        <button id="mA" class="on" type="button" onclick="setMode('A')">Sei a prestação → quero a entrada</button>
+        <button id="mB" type="button" onclick="setMode('B')">Sei a entrada → quero a prestação</button>
+      </div>
+      <div class="fields">
+        <div class="field"><label>Preço da casa</label><div class="inp"><span class="pre">US$</span><input id="c_price" type="number" value="500000" min="0" step="5000"></div></div>
+        <div class="field" id="fTarget"><label>Prestação que você quer</label><div class="inp"><span class="pre">US$</span><input id="c_target" type="number" value="1500" min="0" step="50"><span class="suf">/mês</span></div></div>
+        <div class="field" id="fDown" style="display:none"><label>Entrada</label><div class="inp"><input id="c_downpct" type="number" value="25" min="0" max="100" step="1"><span class="suf">%</span></div></div>
+        <div class="field"><label>Juros ao ano</label><div class="inp"><input id="c_rate" type="number" value="7.5" min="0" step="0.25"><span class="suf">%</span></div></div>
+        <div class="field"><label>Prazo</label><div class="inp"><input id="c_term" type="number" value="30" min="1" step="1"><span class="suf">anos</span></div></div>
+      </div>
+      <div class="out" id="c_out"></div>
+    </div>
+    <p style="color:var(--dimmer);font-size:.8rem;margin-top:10px">Amortização francesa (parcela fixa), como um financiamento <i>conventional</i>/DSCR. Para o veredito completo com imposto, vacância e cash flow, use o <a href="analisador.html">analisador</a>.</p>
+  </section>
+
+  <!-- 04 GLOSSÁRIO -->
   <section id="glossario">
-    <div class="sec-head"><span class="idx">03</span><h2>Glossário — o que cada nome significa</h2></div>
+    <div class="sec-head"><span class="idx">04</span><h2>Glossário — o que cada nome significa</h2></div>
     <input class="search" id="q" type="search" placeholder="🔎 Buscar termo… (ex.: cap rate, DSCR, ARV, tax lien, BRRRR)" autocomplete="off">
     <p class="shint">Digite para filtrar. <span id="qcount"></span></p>
     <div id="glist"></div>
@@ -320,6 +387,115 @@ taxa (fee) = MAO − preço de contrato
     document.querySelectorAll('.gblock').forEach(b=>{const any=[...b.querySelectorAll('.term')].some(t=>t.style.display!=='none');b.style.display=any?'':'none';});
     nores.style.display=shown?'none':'block'; qc.textContent=v?(shown+' de '+total):(total+' termos.');
   });
+
+  /* ---------- exemplos 🟢🟡🔴 (números conferidos no motor estrategias.py) ---------- */
+  const EXEMPLOS = {
+    buyhold:[
+      {v:'g',cen:'3-family · Irvington · US$ 340k',sub:'aluguel US$ 6.300/mês · imposto 2,26%',
+        kv:[['Cap rate','13,9%'],['Cash flow','+US$ 717 /un/mês'],['DSCR','2,21']],
+        why:'Cap muito acima dos 6%, sobram <b>US$ 717 por unidade</b> e a renda cobre 2,2× a parcela. Verde folgado — seguiria verde até US$ 560k.'},
+      {v:'y',cen:'2-family · Newark · US$ 420k',sub:'aluguel US$ 4.200/mês · imposto 1,845%',
+        kv:[['Cap rate','6,7%'],['Cash flow','+US$ 76 /un/mês'],['DSCR','1,07']],
+        why:'Fundamentos ok, mas o preço aperta: cash flow de só <b>US$ 76/un</b> (alvo US$ 100) e DSCR 1,07 (alvo 1,2). <b>Aguardar</b> o preço-gatilho <b>US$ 383k</b>.'},
+      {v:'r',cen:'2-family · Fort Lee · US$ 900k',sub:'aluguel US$ 6.000/mês · imposto 2,1%',
+        kv:[['Cap rate','3,7%'],['Cash flow','−US$ 972 /un/mês'],['DSCR','0,59']],
+        why:'Aposta em <b>valorização</b>, não em renda: sangra <b>US$ 1.945/mês</b> e a renda cobre só 0,6× a parcela. Pelos números de aluguel, passa.'},
+    ],
+    flip:[
+      {v:'g',cen:'Compra US$ 205k · ARV US$ 400k',sub:'reforma US$ 50k · 6 meses · MAO US$ 230k',
+        kv:[['Lucro','US$ 96,3k'],['Margem','24,1%'],['Preço vs MAO','−US$ 25k']],
+        why:'Preço <b>abaixo do MAO</b>, lucro de US$ 96k e margem de 24% do ARV — colchão de sobra para surpresas de obra. Verde.'},
+      {v:'y',cen:'Compra US$ 235k · ARV US$ 400k',sub:'reforma US$ 50k · 6 meses · MAO US$ 230k',
+        kv:[['Lucro','US$ 64,2k'],['Margem','16,0%'],['Preço vs MAO','+US$ 5k']],
+        why:'Lucro ainda bom, mas o preço passou <b>US$ 5k do MAO</b>. <b>Aguardar/negociar</b> para ≤ US$ 230k antes de fechar.'},
+      {v:'r',cen:'Compra US$ 265k · ARV US$ 400k',sub:'reforma US$ 50k · 8 meses · MAO US$ 230k',
+        kv:[['Lucro','US$ 26,9k'],['Margem','6,7%'],['Preço vs MAO','+US$ 35k']],
+        why:'US$ 35k acima do MAO e margem de só 6,7% — <b>um imprevisto de obra zera o lucro</b>. Passa.'},
+    ],
+    lien:[
+      {v:'g',cen:'Lien US$ 9.000 · juros 18%',sub:'imóvel US$ 210k · resgate em 18 meses',
+        kv:[['Yield anual','20,7%'],['LTV','4,3%'],['Ganho','US$ 2.790']],
+        why:'Juros cheios de 18% + penalidade, e a dívida é <b>4% do valor do imóvel</b> — se não pagar, o lastro cobre de sobra. Verde.'},
+      {v:'y',cen:'Lien US$ 9.000 · juros 6% (bid-down)',sub:'+ prêmio US$ 3.000 · imóvel US$ 210k',
+        kv:[['Yield anual','6,5%'],['LTV','5,7%'],['Ganho','US$ 1.170']],
+        why:'A disputa derrubou o juros para 6% e ainda pagou prêmio → yield de <b>6,5%</b> (alvo 8%). Seguro, mas rende pouco: <b>aguardar</b> lote melhor.'},
+      {v:'r',cen:'Lien US$ 9.000 · prêmio US$ 8.000',sub:'imóvel US$ 28k (lote fraco) · 24 meses',
+        kv:[['Yield anual','2,1%'],['LTV','60,7%'],['Capital','US$ 17.000']],
+        why:'Prêmio alto sobre um <b>lote de baixo valor</b>: yield 2% e o capital já é 61% do imóvel. Risco sem retorno. Passa.'},
+    ],
+    deed:[
+      {v:'g',cen:'Arremate US$ 88k · valor US$ 180k',sub:'estado de deed · custos ~US$ 50k',
+        kv:[['Margem','US$ 42k'],['Custos','US$ 50k'],['Teto de lance','US$ 100k']],
+        why:'Depois de quiet title, reforma e venda, sobram <b>US$ 42k de margem</b>. Lance bem abaixo do teto. Verde <i>(em estado de deed — não NJ)</i>.'},
+      {v:'y',cen:'Arremate US$ 118k · valor US$ 180k',sub:'estado de deed · custos ~US$ 50k',
+        kv:[['Margem','US$ 12k'],['Custos','US$ 50k'],['Teto de lance','US$ 100k']],
+        why:'A disputa levou o lance <b>acima do teto seguro</b> (US$ 100k) e a margem virou US$ 12k. <b>Aguardar</b> o próximo leilão.'},
+      {v:'r',cen:'Comprar "deed" em NJ',sub:'New Jersey é estado de LIEN',
+        kv:[['Aplicável?','Não'],['Caminho','lien → foreclosure'],['Prazo','~2 anos']],
+        why:'Em NJ o leilão <b>não transfere a escritura</b> — só o certificado da dívida. Via imposto, o caminho é <b>tax lien + foreclosure</b> após o resgate. Passa.'},
+    ],
+    wholesale:[
+      {v:'g',cen:'Contrato US$ 155k · ARV US$ 300k',sub:'reforma US$ 40k · MAO US$ 170k',
+        kv:[['Fee (spread)','US$ 15.000'],['MAO','US$ 170k'],['Sobra p/ comprador','ok']],
+        why:'Travou US$ 15k abaixo do MAO → <b>fee de US$ 15k</b> e ainda sobra desconto para o investidor-comprador. Verde.'},
+      {v:'y',cen:'Contrato US$ 163k · ARV US$ 300k',sub:'reforma US$ 40k · MAO US$ 170k',
+        kv:[['Fee (spread)','US$ 7.000'],['MAO','US$ 170k'],['Gatilho (fee 10k)','US$ 160k']],
+        why:'Fee de US$ 7k fica entre US$ 5–10k. <b>Renegociar</b> o contrato para ≤ US$ 160k para o spread valer o trabalho.'},
+      {v:'r',cen:'Contrato US$ 169k · ARV US$ 300k',sub:'reforma US$ 40k · MAO US$ 170k',
+        kv:[['Fee (spread)','US$ 1.000'],['MAO','US$ 170k'],['Sobra p/ comprador','~zero']],
+        why:'Contrato colado no MAO: <b>fee de US$ 1k</b> e nada de desconto para repassar. Ninguém compra. Passa.'},
+    ],
+  };
+  const VMETA={g:['Comprar','dot g'],y:['Aguardar','dot y'],r:['Passar','dot r']};
+  document.querySelectorAll('.exwrap[data-ex]').forEach(w=>{
+    const arr=EXEMPLOS[w.dataset.ex]||[];
+    w.innerHTML=arr.map(e=>{const [lab,dot]=VMETA[e.v];
+      return `<div class="exc ${e.v}"><span class="pill"><span class="${dot}"></span>${lab}</span>`+
+        `<div class="cen">${e.cen}</div><div class="sub">${e.sub}</div>`+
+        e.kv.map(([k,val])=>`<div class="kv"><span>${k}</span><b>${val}</b></div>`).join('')+
+        `<div class="why">${e.why}</div></div>`;}).join('');
+  });
+
+  /* ---------- calculadora entrada × prestação ---------- */
+  (function(){
+    const $=id=>document.getElementById(id);
+    let mode='A';
+    const fmt=n=>'US$ '+Math.round(n).toLocaleString('pt-BR');
+    const fmt1=n=>(Math.round(n*10)/10).toLocaleString('pt-BR',{minimumFractionDigits:1});
+    window.setMode=m=>{mode=m;$('mA').classList.toggle('on',m==='A');$('mB').classList.toggle('on',m==='B');
+      $('fTarget').style.display=m==='A'?'':'none';$('fDown').style.display=m==='B'?'':'none';calc();};
+    const factor=(rate,term)=>{const i=(rate/100)/12,n=term*12;return i>0?i/(1-Math.pow(1+i,-n)):1/n;};
+    function calc(){
+      const price=+$('c_price').value||0, rate=+$('c_rate').value||0, term=+$('c_term').value||1, out=$('c_out');
+      if(price<=0){out.innerHTML='<div class="lead2">Informe o preço da casa.</div>';return;}
+      const f=factor(rate,term);
+      if(mode==='A'){
+        const target=+$('c_target').value||0, need=target/f;
+        let loan=Math.min(Math.max(need,0),price);
+        const entrada=price-loan, pctv=entrada/price*100, realPmt=loan*f;
+        let nota;
+        if(need>price) nota=`Uma prestação tão baixa não exige financiar tudo: mesmo à vista a parcela seria menor. Entrada mínima = <b>0%</b> (compra à vista).`;
+        else if(pctv>=50) nota=`Entrada de <b>${fmt1(pctv)}%</b> é alta — a esse preço, uma prestação de ${fmt(target)} pede mais da metade do valor à vista. Ou negocia o preço, ou aceita parcela maior.`;
+        else if(pctv<20) nota=`Dá para chegar nessa parcela com <b>${fmt1(pctv)}%</b> de entrada — abaixo dos 25% padrão do nosso underwriting.`;
+        else nota=`Entrada de <b>${fmt1(pctv)}%</b> — na faixa típica (o padrão do projeto é 25%).`;
+        out.innerHTML=
+          `<div class="big"><span class="n">${fmt(entrada)}</span><span class="lab">de entrada &nbsp;(${fmt1(pctv)}% do preço)</span></div>`+
+          `<div class="row" style="margin-top:12px"><span>Valor financiado</span><b>${fmt(loan)}</b></div>`+
+          `<div class="row"><span>Prestação resultante</span><b>${fmt(realPmt)}/mês</b></div>`+
+          `<div class="lead2">${nota}</div>`;
+      }else{
+        const dp=Math.min(Math.max(+$('c_downpct').value||0,0),100);
+        const entrada=price*dp/100, loan=price-entrada, pmt=loan*f;
+        out.innerHTML=
+          `<div class="big"><span class="n">${fmt(pmt)}</span><span class="lab">de prestação por mês</span></div>`+
+          `<div class="row" style="margin-top:12px"><span>Entrada (${fmt1(dp)}%)</span><b>${fmt(entrada)}</b></div>`+
+          `<div class="row"><span>Valor financiado</span><b>${fmt(loan)}</b></div>`+
+          `<div class="lead2">Só a parcela do banco. Some imposto, seguro e ~25% do aluguel (vacância + gestão + manutenção) para o <b>cash flow real</b> — é o que o <a href="#semaforo">semáforo</a> faz.</div>`;
+      }
+    }
+    ['c_price','c_target','c_downpct','c_rate','c_term'].forEach(id=>{const el=$(id);if(el)el.addEventListener('input',calc);});
+    calc();
+  })();
 </script>
 </body>
 </html>
