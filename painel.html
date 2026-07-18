@@ -80,6 +80,25 @@
   .hide{display:none}
   footer{margin-top:26px;color:var(--faint);font-size:.76rem;text-align:center}
 </style>
+<style id="nav2">
+/* ==== nav2 · navegação agrupada (Encontrar / Analisar / Entender) ==== */
+.tabs{overflow:visible!important}
+.gnav .gt{overflow:visible!important}
+.tabs summary,.gnav .gt summary{white-space:nowrap;color:#8DA0B8;font-weight:600;border-radius:9px;cursor:pointer;list-style:none;transition:color .12s,background .12s}
+.tabs summary{font-size:.86rem;padding:8px 12px}
+.gnav .gt summary{font-size:.84rem;padding:7px 11px}
+.tabs summary:hover,.gnav .gt summary:hover{color:#33D3C2}
+.tabs summary.on,.gnav .gt summary.on{background:#1E2838;color:#EAF0F8;box-shadow:inset 0 0 0 1px #2A3648}
+.tabs summary::-webkit-details-marker,.gnav .gt summary::-webkit-details-marker{display:none}
+.tabs summary::after,.gnav .gt summary::after{content:"▾";margin-left:5px;color:#5E7089;font-size:.72rem}
+.grp{position:relative}
+.grp[open]>summary{color:#EAF0F8}
+.grp .menu{position:absolute;top:calc(100% + 7px);right:0;min-width:200px;background:#161E2C;border:1px solid #2A3648;border-radius:12px;padding:6px;box-shadow:0 16px 38px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:2px;z-index:9000}
+.grp .menu a{color:#8DA0B8;font-size:.86rem;font-weight:600;padding:9px 11px;border-radius:8px;white-space:nowrap;display:flex;align-items:center;gap:9px;text-decoration:none}
+.grp .menu a:hover{background:#1E2838;color:#33D3C2}
+.grp .menu a.on{color:#EAF0F8;background:#1E2838;box-shadow:inset 0 0 0 1px #2A3648}
+@media(max-width:720px){.grp .menu{min-width:174px}}
+</style>
 </head>
 <body>
 <style>
@@ -97,14 +116,22 @@
   <a class="gb" href="index.html"><i></i><span>Projeto Casas</span></a>
   <div class="gt">
     <a href="index.html">Visão geral</a>
-    <a href="mapa.html">Mapa</a>
-    <a href="lista.html">Lista</a>
-    <a href="leiloes.html">Leilões</a>
-    <a href="terrenos.html">Terrenos</a>
-    <a href="buy-hold.html">Buy &amp; Hold</a>
-    <a href="estrategias.html">Estratégias</a>
-    <a href="cidades.html">Cidades</a>
-    <a href="glossario.html">Glossário</a>
+    <details class="grp"><summary>Encontrar</summary><div class="menu">
+      <a href="mapa.html">🗺️ Mapa</a>
+      <a href="lista.html">📋 Lista</a>
+      <a href="leiloes.html">🏦 Leilões</a>
+      <a href="terrenos.html">🏗️ Terrenos</a>
+    </div></details>
+    <details class="grp"><summary class="on">Analisar</summary><div class="menu">
+      <a href="buy-hold.html">🔑 Buy & Hold</a>
+      <a href="estrategias.html">🎯 Estratégias</a>
+      <a href="analisador.html">🧮 Analisador</a>
+      <a href="painel.html" class="on">📊 Painel</a>
+    </div></details>
+    <details class="grp"><summary>Entender</summary><div class="menu">
+      <a href="cidades.html">🏘️ Cidades</a>
+      <a href="glossario.html">📖 Glossário</a>
+    </div></details>
   </div>
 </nav>
 <div class="wrap">
@@ -242,6 +269,17 @@ function buildFilters(){
   document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{ filter=ch.dataset.f; buildFilters(); render(); });
 }
 buildFilters(); render();
+</script>
+<script id="nav2js">
+// fecha um dropdown quando outro abre + fecha ao clicar fora
+document.querySelectorAll('.grp').forEach(function(d){
+  d.addEventListener('toggle',function(){
+    if(d.open) document.querySelectorAll('.grp[open]').forEach(function(o){ if(o!==d) o.open=false; });
+  });
+});
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.grp')) document.querySelectorAll('.grp[open]').forEach(function(o){ o.open=false; });
+});
 </script>
 </body>
 </html>

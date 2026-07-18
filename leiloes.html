@@ -53,6 +53,12 @@
   .search:focus{outline:none;border-color:var(--accent)}
   .csel{background:var(--panel);border:1px solid var(--line);color:var(--ink);font:inherit;font-weight:600;font-size:.86rem;padding:11px 12px;border-radius:11px;cursor:pointer}
   .cnt{font-size:.82rem;color:var(--dimmer);margin:0 0 10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+  .chip{background:var(--panel);border:1px solid var(--line);color:var(--dim);font:inherit;font-weight:600;font-size:.8rem;padding:7px 12px;border-radius:999px;cursor:pointer;transition:color .12s,border-color .12s,background .12s}
+  .chip:hover{color:var(--accent);border-color:var(--accent)}
+  .chip.on{background:color-mix(in srgb,var(--accent) 16%,transparent);border-color:var(--accent);color:var(--accent)}
+  .srcnote{font-size:.8rem;color:var(--dim);margin:6px 0 12px;line-height:1.5}
+  .srcnote b{color:var(--accent)}
 
   .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
   table{border-collapse:collapse;width:100%;min-width:760px;font-size:.86rem}
@@ -72,6 +78,25 @@
   footer{border-top:1px solid var(--line);margin-top:24px;padding:24px 0 50px;color:var(--dimmer);font-size:.8rem}
   @media(max-width:720px){ .brand small{display:none} .tabs a{padding:8px 10px;font-size:.82rem} .search{min-width:140px} }
 </style>
+<style id="nav2">
+/* ==== nav2 · navegação agrupada (Encontrar / Analisar / Entender) ==== */
+.tabs{overflow:visible!important}
+.gnav .gt{overflow:visible!important}
+.tabs summary,.gnav .gt summary{white-space:nowrap;color:#8DA0B8;font-weight:600;border-radius:9px;cursor:pointer;list-style:none;transition:color .12s,background .12s}
+.tabs summary{font-size:.86rem;padding:8px 12px}
+.gnav .gt summary{font-size:.84rem;padding:7px 11px}
+.tabs summary:hover,.gnav .gt summary:hover{color:#33D3C2}
+.tabs summary.on,.gnav .gt summary.on{background:#1E2838;color:#EAF0F8;box-shadow:inset 0 0 0 1px #2A3648}
+.tabs summary::-webkit-details-marker,.gnav .gt summary::-webkit-details-marker{display:none}
+.tabs summary::after,.gnav .gt summary::after{content:"▾";margin-left:5px;color:#5E7089;font-size:.72rem}
+.grp{position:relative}
+.grp[open]>summary{color:#EAF0F8}
+.grp .menu{position:absolute;top:calc(100% + 7px);right:0;min-width:200px;background:#161E2C;border:1px solid #2A3648;border-radius:12px;padding:6px;box-shadow:0 16px 38px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:2px;z-index:9000}
+.grp .menu a{color:#8DA0B8;font-size:.86rem;font-weight:600;padding:9px 11px;border-radius:8px;white-space:nowrap;display:flex;align-items:center;gap:9px;text-decoration:none}
+.grp .menu a:hover{background:#1E2838;color:#33D3C2}
+.grp .menu a.on{color:#EAF0F8;background:#1E2838;box-shadow:inset 0 0 0 1px #2A3648}
+@media(max-width:720px){.grp .menu{min-width:174px}}
+</style>
 </head>
 <body>
 
@@ -79,13 +104,22 @@
   <a class="brand" href="index.html"><span class="sig"></span><span>Projeto Casas<small>NJ · torre de controle</small></span></a>
   <nav class="tabs">
     <a href="index.html">Visão geral</a>
-    <a href="mapa.html">Mapa</a>
-    <a href="lista.html">Lista</a>
-    <a href="leiloes.html" class="on">Leilões</a>
-    <a href="buy-hold.html">Buy &amp; Hold</a>
-    <a href="estrategias.html">Estratégias</a>
-    <a href="cidades.html">Cidades</a>
-    <a href="glossario.html">Glossário</a>
+    <details class="grp"><summary class="on">Encontrar</summary><div class="menu">
+      <a href="mapa.html">🗺️ Mapa</a>
+      <a href="lista.html">📋 Lista</a>
+      <a href="leiloes.html" class="on">🏦 Leilões</a>
+      <a href="terrenos.html">🏗️ Terrenos</a>
+    </div></details>
+    <details class="grp"><summary>Analisar</summary><div class="menu">
+      <a href="buy-hold.html">🔑 Buy & Hold</a>
+      <a href="estrategias.html">🎯 Estratégias</a>
+      <a href="analisador.html">🧮 Analisador</a>
+      <a href="painel.html">📊 Painel</a>
+    </div></details>
+    <details class="grp"><summary>Entender</summary><div class="menu">
+      <a href="cidades.html">🏘️ Cidades</a>
+      <a href="glossario.html">📖 Glossário</a>
+    </div></details>
   </nav>
 </div></header>
 
@@ -103,7 +137,27 @@
     <input class="search" id="q" type="search" placeholder="🔎 Buscar por endereço ou cidade…" autocomplete="off">
     <select class="csel" id="city"><option value="">Todas as cidades</option></select>
     <select class="csel" id="county"><option value="">Todos os counties</option></select>
+    <select class="csel" id="win">
+      <option value="fut">📅 A partir de hoje</option>
+      <option value="15">🔥 Próximos 15 dias</option>
+      <option value="30">Próximos 30 dias</option>
+      <option value="">Todos (inclui realizados)</option>
+    </select>
+    <select class="csel" id="band">
+      <option value="">💰 Qualquer lance</option>
+      <option value="0-150000">até US$ 150 mil</option>
+      <option value="150000-350000">US$ 150–350 mil</option>
+      <option value="350000-600000">US$ 350–600 mil</option>
+      <option value="600000-">acima de US$ 600 mil</option>
+    </select>
   </div>
+  <div class="chips" id="chips">
+    <button class="chip" data-chip="soon">🔥 Próximos 15 dias</button>
+    <button class="chip" data-chip="cheap">💸 Lance &lt; US$ 150 mil</button>
+    <button class="chip" data-chip="newark">🏙 Só Newark</button>
+    <button class="chip" data-chip="reset">↺ Limpar filtros</button>
+  </div>
+  <p class="srcnote">🔗 A coluna <b>Fonte ↗</b> abre a <b>lista oficial daquele county</b> no CivilView (o site agrupa por county e exige selecionar o county antes de abrir cada ficha — por isso o link direto de ficha cai na página geral). Já na lista certa, ache o imóvel pela <b>data</b> ou <b>endereço</b> e clique para ver o edital completo.</p>
   <p class="cnt" id="cnt"></p>
 
   <div class="tablewrap">
@@ -138,29 +192,60 @@ function pdate(s){const m=(s||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
 LEILOES.forEach(l=>{const p=pdate(l.date);l.ts=p.ts;l.br=p.br;});
 const today=new Date(); today.setHours(0,0,0,0); const T=today.getTime();
 
-let state={q:'',city:'',county:'',sort:'ts',dir:1};
+const BASE="https://salesweb.civilview.com";
+const COUNTY_ID={Essex:2,Bergen:7,Hudson:10,Union:15};
+const listUrl=l=>`${BASE}/Sales/SalesSearch?countyId=${COUNTY_ID[l.county]||''}`;
+
+let state={q:'',city:'',county:'',win:'fut',band:'',sort:'ts',dir:1};
 const cities=[...new Set(LEILOES.map(l=>l.city))].sort();
 const csel=document.getElementById('city');
 cities.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;csel.appendChild(o);});
+[...new Set(LEILOES.map(l=>l.county))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;document.getElementById('county').appendChild(o);});
 
 // readout
 (function(){
-  const soon=LEILOES.filter(l=>l.ts>=T).sort((a,b)=>a.ts-b.ts)[0];
+  const fut=LEILOES.filter(l=>l.ts>=T);
+  const soon=fut.slice().sort((a,b)=>a.ts-b.ts)[0];
+  const d15=fut.filter(l=>l.ts<T+15*864e5).length;
   const R=document.getElementById('readout');
   R.innerHTML=
-    `<div class="cell"><div class="n acc">${LEILOES.length}</div><div class="l">leilões nas 12 cidades</div></div>`+
-    `<div class="cell"><div class="n">${cities.length}</div><div class="l">cidades com leilão</div></div>`+
+    `<div class="cell"><div class="n acc">${LEILOES.length}</div><div class="l">leilões mapeados</div></div>`+
+    `<div class="cell"><div class="n">${fut.length}</div><div class="l">futuros (a partir de hoje)</div></div>`+
     `<div class="cell"><div class="n">${soon?soon.br:'—'}</div><div class="l">próximo leilão</div></div>`+
-    `<div class="cell"><div class="n">${fmt(Math.min(...LEILOES.map(l=>l.upset)))}</div><div class="l">menor lance mínimo</div></div>`;
+    `<div class="cell"><div class="n">${d15}</div><div class="l">nos próximos 15 dias</div></div>`;
 })();
 
+function inWindow(l){
+  if(state.win==='') return true;
+  if(l.ts<T) return false;
+  if(state.win==='fut') return true;
+  const days=state.win==='15'?15:30;
+  return l.ts<T+days*864e5;
+}
+function inBand(l){
+  if(!state.band) return true;
+  const [lo,hi]=state.band.split('-').map(x=>x===''?null:+x);
+  if(lo!=null && l.upset<lo) return false;
+  if(hi!=null && l.upset>=hi) return false;
+  return true;
+}
 function sortVal(l,k){ if(k==='address')return (l.city+' '+l.address).toLowerCase();
   if(k==='bank')return (l.bank||'').toLowerCase(); if(k==='county')return l.county;
   return l[k]; }
+function syncControls(){
+  document.getElementById('city').value=state.city;
+  document.getElementById('county').value=state.county;
+  document.getElementById('win').value=state.win;
+  document.getElementById('band').value=state.band;
+  const on={soon:state.win==='15',cheap:state.band==='0-150000',newark:state.city==='Newark'};
+  document.querySelectorAll('.chip').forEach(c=>{const k=c.dataset.chip; if(k in on) c.classList.toggle('on',on[k]);});
+}
 function apply(){
   let rows=LEILOES.filter(l=>{
     if(state.city && l.city!==state.city) return false;
     if(state.county && l.county!==state.county) return false;
+    if(!inWindow(l)) return false;
+    if(!inBand(l)) return false;
     if(state.q){const t=(l.address+' '+l.city).toLowerCase(); if(!t.includes(state.q))return false;}
     return true;
   });
@@ -177,7 +262,7 @@ function apply(){
       <td class="${dcl}">${l.br}${dnote}</td>
       <td class="num">${fmt(l.upset)}</td>
       <td><div class="bank" title="${bank}">${l.bank||'—'}</div></td>
-      <td><a class="srcl" href="${l.source_url}" target="_blank" rel="noopener" title="ver no CivilView (registro completo)">↗</a></td>
+      <td><a class="srcl" href="${listUrl(l)}" target="_blank" rel="noopener" title="Abre a lista oficial do county ${l.county} no CivilView — ache pelo endereço/data (o site exige escolher o county antes de abrir cada ficha)">↗</a></td>
     </tr>`;
   }).join('');
   document.getElementById('empty').style.display=rows.length?'none':'block';
@@ -186,18 +271,38 @@ function apply(){
     th.querySelector('.ar')?.remove();
     if(th.dataset.k===state.sort){const s=document.createElement('span');s.className='ar';s.textContent=state.dir>0?' ▲':' ▼';th.appendChild(s);}
   });
+  syncControls();
 }
 document.getElementById('q').addEventListener('input',e=>{state.q=e.target.value.trim().toLowerCase();apply();});
 csel.addEventListener('change',e=>{state.city=e.target.value;apply();});
 document.getElementById('county').addEventListener('change',e=>{state.county=e.target.value;apply();});
+document.getElementById('win').addEventListener('change',e=>{state.win=e.target.value;apply();});
+document.getElementById('band').addEventListener('change',e=>{state.band=e.target.value;apply();});
 document.querySelectorAll('thead th[data-k]').forEach(th=>th.addEventListener('click',()=>{
   const k=th.dataset.k;
   if(state.sort===k)state.dir*=-1; else{state.sort=k;state.dir=(k==='upset')?-1:1;}
   apply();
 }));
-// popular counties
-[...new Set(LEILOES.map(l=>l.county))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;document.getElementById('county').appendChild(o);});
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  const k=c.dataset.chip;
+  if(k==='soon') state.win = state.win==='15'?'fut':'15';
+  else if(k==='cheap') state.band = state.band==='0-150000'?'':'0-150000';
+  else if(k==='newark') state.city = state.city==='Newark'?'':'Newark';
+  else if(k==='reset'){state.q='';state.city='';state.county='';state.win='fut';state.band='';document.getElementById('q').value='';}
+  apply();
+}));
 apply();
+</script>
+<script id="nav2js">
+// fecha um dropdown quando outro abre + fecha ao clicar fora
+document.querySelectorAll('.grp').forEach(function(d){
+  d.addEventListener('toggle',function(){
+    if(d.open) document.querySelectorAll('.grp[open]').forEach(function(o){ if(o!==d) o.open=false; });
+  });
+});
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.grp')) document.querySelectorAll('.grp[open]').forEach(function(o){ o.open=false; });
+});
 </script>
 </body>
 </html>
