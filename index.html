@@ -7,7 +7,7 @@
 <meta name="description" content="Sistema pessoal de oportunidades imobiliárias em New Jersey: mapa, leilões, buy & hold e estratégias — cada imóvel vira um veredito no semáforo 🟢🟡🔴.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#E4E6E9; --paper2:#EDEEF1; --card:#F6F7F9; --card2:#E9EBEE;
@@ -163,8 +163,72 @@
   }
   @media(max-width:560px){ .cgrid,.tgrid,.form{grid-template-columns:1fr} .fbox{grid-template-columns:1fr}.fbox .im{min-height:150px;border-left:0;border-top:1px solid var(--line)} }
 </style>
+<style id="mhome-css">
+.mhome{display:none}
+@media(max-width:640px){
+  html,body{background:radial-gradient(900px 600px at 50% -10%,rgba(249,115,22,.10),transparent 60%),linear-gradient(165deg,#101014,#0B0B0E) !important}
+  body{padding:0 !important}
+  header.nav,.wrap,footer{display:none !important}
+  .mhome{display:flex !important;min-height:100vh;align-items:center;justify-content:center;padding:24px 14px;position:relative;z-index:1}
+  .mhome .screen{width:100%;max-width:412px;background:#17171D;border-radius:42px;overflow:hidden;box-shadow:0 40px 100px -40px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.05);display:flex;flex-direction:column;font-family:"Inter",system-ui,sans-serif}
+  .mhome .m-hero{position:relative;height:358px;flex-shrink:0;background:url("img/lux2.png") center/cover}
+  .mhome .m-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,14,.45),transparent 26%,transparent 52%,rgba(6,8,14,.5))}
+  .mhome .m-back{position:absolute;top:18px;left:18px;z-index:2;width:40px;height:40px;border-radius:50%;background:rgba(20,20,26,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;color:#fff;font-size:1.2rem;text-decoration:none}
+  .mhome .m-brand{position:absolute;left:0;right:0;bottom:58px;z-index:2;text-align:center;color:#fff}
+  .mhome .m-brand .nm{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:2.5rem;line-height:1;text-shadow:0 2px 26px rgba(0,0,0,.6)}
+  .mhome .m-brand small{display:block;font-weight:500;font-size:.6rem;letter-spacing:.36em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-top:9px}
+  .mhome .m-body{position:relative;z-index:3;margin-top:-42px;background:#ECEBE7;border-radius:34px 34px 42px 42px;padding:22px 20px 26px;color:#17171C;flex:1;display:flex;flex-direction:column;gap:16px}
+  .mhome .m-featured{display:flex;gap:14px;align-items:stretch}
+  .mhome .m-img{width:116px;align-self:stretch;min-height:156px;flex-shrink:0;border-radius:20px;background:url("img/lux4.png") center/cover;box-shadow:0 10px 24px -10px rgba(0,0,0,.45)}
+  .mhome .m-ct{flex:1;min-width:0;display:flex;flex-direction:column}
+  .mhome .m-status{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;background:#fff;border-radius:999px;padding:6px 13px;font-size:.75rem;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .mhome .m-status .d{width:8px;height:8px;border-radius:50%;background:#3FB56B}
+  .mhome .m-title{font-weight:700;font-size:1.2rem;margin:12px 0 2px;letter-spacing:-.01em}
+  .mhome .m-sub{font-size:.82rem;color:#6A6A70}
+  .mhome .m-nested{margin-top:auto;display:flex;align-items:center;gap:11px;background:#17171C;color:#EDECE9;border-radius:16px;padding:11px 13px;text-decoration:none}
+  .mhome .m-nested .av{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:url("img/chart1.png") center/cover}
+  .mhome .m-nested .nt b{font-size:.88rem;font-weight:600}
+  .mhome .m-nested .nt small{display:block;font-size:.73rem;color:#9A9AA4;margin-top:1px}
+  .mhome .m-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:16px;border-top:1px solid #D6D4CE}
+  .mhome .m-meta .lb{font-size:.72rem;color:#6A6A70;margin-bottom:9px}
+  .mhome .m-meta .col.right{text-align:right}
+  .mhome .thumbs{display:flex;align-items:center}
+  .mhome .thumbs span{width:36px;height:36px;border-radius:50%;border:2px solid #ECEBE7;background-size:cover;background-position:center;margin-left:-11px}
+  .mhome .thumbs span:first-child{margin-left:0}
+  .mhome .thumbs .more{background:#17171C;color:#fff;display:grid;place-items:center;font-size:.62rem;font-weight:700}
+  .mhome .m-date{font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
+  .mhome .m-date small{display:block;font-weight:500;font-size:.75rem;color:#6A6A70;margin-top:2px}
+  .mhome .m-cta{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;background:#17171C;color:#F3F2EF;border-radius:999px;padding:17px;font-weight:600;font-size:1.02rem;text-decoration:none;box-shadow:0 12px 26px -12px rgba(0,0,0,.5)}
+  .mhome .m-cta .a{width:27px;height:27px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:.82rem}
+  .mhome .m-fine{text-align:center;font-size:.73rem;color:#6A6A70;line-height:1.45;margin:-2px 6px 0}
+}
+</style>
 </head>
 <body>
+<div class="mhome"><div class="screen">
+  <div class="m-hero">
+    <a class="m-back" href="painel.html">&#8249;</a>
+    <div class="m-brand"><div class="nm">Projeto Casas</div><small>oportunidades · new jersey</small></div>
+  </div>
+  <div class="m-body">
+    <div class="m-featured">
+      <a class="m-img" href="lista.html" aria-label="Ver deal"></a>
+      <div class="m-ct">
+        <span class="m-status"><span class="d"></span> Comprar</span>
+        <div class="m-title">126 Scofield St</div>
+        <div class="m-sub">2-family · Newark · cap 7,1%</div>
+        <div class="m-nested"><span class="av"></span><span class="nt"><b>Motor de underwriting</b><small>veredito verde · +$132/mês</small></span></div>
+      </div>
+    </div>
+    <div class="m-meta">
+      <div class="col left"><div class="lb">Comparáveis</div><div class="thumbs"><span style="background-image:url(img/mf1.png)"></span><span style="background-image:url(img/mf2.png)"></span><span style="background-image:url(img/lux3.png)"></span><span class="more">10+</span></div></div>
+      <div class="col right"><div class="lb">Próximo leilão</div><div class="m-date">Seg 21.07<small>East Orange · US$ 7,6k</small></div></div>
+    </div>
+    <a class="m-cta" href="painel.html">Ver o painel <span class="a">&#8594;</span></a>
+    <div class="m-fine">Cada imóvel recebe um veredito objetivo pelo motor — comprar, observar (com preço-gatilho) ou passar.</div>
+  </div>
+</div></div>
+
 
 <header class="nav"><div class="wrap">
   <span class="logo">PROJETO<br>CASAS</span>
