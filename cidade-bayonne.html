@@ -583,14 +583,17 @@ window.openHouse=function(h){
     +'<div class="hchart">📉 Histórico de queda de preço — em breve (precisa do dado por casa)</div>'
     +(function(){
        // resolvedor único (bloco /*LINKS*/, alimentado pelo teste real de cada link)
-       var l=(window.linkAnuncio||function(a,u){return {url:u,direto:!!u,verificado:false,busca:u};})
+       var l=(window.linkAnuncio||function(a,u){return {url:u,direto:!!u,verificado:false,zillow:u,zillowExato:false,portal:u,portalOk:false,busca:u};})
              (h.address||h.addr, h.src||h.url);
        return '<div class="hcta">'
-         +'<a class="primary" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+(l.direto?'Ver anúncio':'Procurar anúncio')+' ↗</a>'
+         +'<a class="primary" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+(l.direto?'Ver anúncio':'Abrir no Zillow')+' ↗</a>'
          +'<a class="ghost" href="analisador.html">Analisar deal</a></div>'
-         +(l.verificado?'':'<div class="hlnota">'+(l.direto
-             ? 'Anúncio saiu do ar? <a href="'+esc(l.busca)+'" target="_blank" rel="noopener">procurar pelo endereço ↗</a>'
-             : 'o link do anúncio não abre mais — este procura pelo endereço exato')+'</div>');
+         +'<div class="hlnota">'
+           +(l.zillowExato?'':'<a href="'+esc(l.zillow)+'" target="_blank" rel="noopener">Zillow ↗</a> · ')
+           +((l.portalOk&&l.zillowExato)?'<a href="'+esc(l.portal)+'" target="_blank" rel="noopener">portal original ↗</a> · ':'')
+           +'<a href="'+esc(l.busca)+'" target="_blank" rel="noopener">buscar endereço ↗</a>'
+           +(l.direto?'':'<br>sem ID do imóvel — o Zillow abre pela busca do endereço')
+         +'</div>';
      })();
   document.getElementById('hmodal').classList.add('open');
 };
