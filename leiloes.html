@@ -52,6 +52,18 @@
   .search{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--line);color:var(--ink);font:inherit;font-size:.92rem;padding:11px 14px;border-radius:11px}
   .search:focus{outline:none;border-color:var(--accent)}
   .csel{background:var(--panel);border:1px solid var(--line);color:var(--ink);font:inherit;font-weight:600;font-size:.86rem;padding:11px 12px;border-radius:11px;cursor:pointer}
+  .cards{display:none}                          /* só no celular; desktop usa a tabela */
+  .pill{display:inline-block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+    padding:4px 9px;border-radius:999px;white-space:nowrap}
+  .pill.g{color:var(--g);background:var(--buy-bg);border:1px solid color-mix(in srgb,var(--g) 40%,transparent)}
+  .pill.y{color:var(--y);background:var(--watch-bg);border:1px solid color-mix(in srgb,var(--y) 40%,transparent)}
+  .pill.r{color:var(--r);background:var(--pass-bg);border:1px solid color-mix(in srgb,var(--r) 40%,transparent)}
+  .estr{font-size:.68rem;color:var(--dim);margin-top:3px}
+  .alvo{font-weight:700;white-space:nowrap} .alvo span{color:var(--dim);font-weight:500}
+  .comoler{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 14px;margin:0 0 12px}
+  .comoler summary{cursor:pointer;padding:12px 0;font-weight:700;font-size:.86rem}
+  .comoler p{font-size:.82rem;color:var(--dim);line-height:1.55;margin:0 0 10px}
+  .comoler b{color:var(--ink)}
   .cnt{font-size:.82rem;color:var(--dimmer);margin:0 0 10px}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
   .chip{background:var(--panel);border:1px solid var(--line);color:var(--dim);font:inherit;font-weight:600;font-size:.8rem;padding:7px 12px;border-radius:999px;cursor:pointer;transition:color .12s,border-color .12s,background .12s}
@@ -228,23 +240,32 @@ a{color:inherit}
 </style>
 <style id="appcard">
 @media(max-width:640px){
-  .tablewrap{overflow:visible !important;border:0 !important;background:transparent !important;border-radius:0 !important}
-  table,thead,tbody,tr,td{display:block}
-  thead{display:none}
-  table{min-width:0 !important;width:100%;font-size:1rem}
-  tbody tr{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px 46px 14px 15px;margin-bottom:10px}
-  tbody tr:hover{background:var(--panel)}
-  tbody td{border:0 !important;padding:0;white-space:normal}
-  td:nth-child(1) .addr{font-weight:700;font-size:1rem;line-height:1.25}
-  td:nth-child(1) .sub{font-size:.8rem;color:var(--dim);margin-top:2px}
-  td:nth-child(2){display:inline-flex;margin-top:9px;vertical-align:middle}
-  td:nth-child(3){display:inline-flex;margin:9px 0 0 10px;vertical-align:middle;font-family:var(--mono);font-size:.84rem;color:var(--dim);text-align:left}
-  td:nth-child(3).soon{color:var(--y);font-weight:700} td:nth-child(3).past{color:var(--dimmer)}
-  td:nth-child(4){display:block;margin-top:9px;font-family:var(--mono);font-weight:800;font-size:1.06rem;color:var(--accent);text-align:left}
-  td:nth-child(4)::before{content:"lance mín. ";font-family:var(--sans);font-weight:600;font-size:.66rem;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;margin-right:6px}
-  td:nth-child(5){display:none}
-  td:nth-child(6){position:absolute;top:13px;right:12px}
-  td:nth-child(6) .srcl{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--p2);border:1px solid var(--line);color:var(--accent);font-size:.92rem}
+  /* a tabela sai e entram os cards que leiloes.html renderiza (com a análise) */
+  .tablewrap{display:none}
+  .cards{display:flex;flex-direction:column;gap:11px}
+  .hero{padding:14px 0 2px !important}
+  .hero h1{font-size:1.32rem !important}
+  .hero .lead{font-size:.85rem !important}
+  .srcnote{display:none}
+
+  .acard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px 14px}
+  .atop{display:flex;gap:9px;align-items:flex-start}
+  .aend{flex:1;min-width:0}
+  .aend b{display:block;font-size:.94rem;font-weight:800;line-height:1.25}
+  .aend span{display:block;font-size:.74rem;color:var(--dim);margin-top:2px}
+  .adata{font-size:.78rem;color:var(--dim);margin-top:8px;font-family:var(--mono)}
+  .adata.soon{color:var(--y);font-weight:700} .adata.past{color:var(--dimmer)}
+  .amet{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+  .amet>div{background:var(--p2);border:1px solid var(--line);border-radius:11px;padding:8px 9px;min-width:0}
+  .amet span{display:block;font-size:.53rem;text-transform:uppercase;letter-spacing:.04em;color:var(--dim);font-weight:700;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .amet b{display:block;font-size:.82rem;font-weight:800;margin-top:3px;white-space:nowrap;font-family:var(--mono)}
+  .amet b.pos{color:var(--g)}
+  .anota{font-size:.73rem;color:var(--dim);line-height:1.45;margin-top:9px}
+  .anota b{color:var(--ink)}
+  .aacoes{margin-top:11px}
+  .abtn{display:block;text-align:center;background:var(--p2);border:1px solid var(--line);color:var(--accent);
+    border-radius:11px;padding:10px;font-weight:700;font-size:.82rem;text-decoration:none}
 }
 </style>
 </head>
@@ -286,14 +307,30 @@ a{color:inherit}
       <option value="600000-">acima de US$ 600 mil</option>
     </select>
   </div>
+  <div class="chips" id="vchips">
+    <button class="chip on" data-v="all">Todos</button>
+    <button class="chip" data-v="g"><span class="d" style="background:var(--g)"></span>Vale visitar</button>
+    <button class="chip" data-v="y"><span class="d" style="background:var(--y)"></span>Só se for 3-family</button>
+    <button class="chip" data-v="r"><span class="d" style="background:var(--r)"></span>Não fecha</button>
+  </div>
   <div class="chips" id="chips">
     <button class="chip" data-chip="soon">🔥 Próximos 15 dias</button>
     <button class="chip" data-chip="cheap">💸 Lance &lt; US$ 150 mil</button>
     <button class="chip" data-chip="newark">🏙 Só Newark</button>
     <button class="chip" data-chip="reset">↺ Limpar filtros</button>
   </div>
+
+  <details class="comoler">
+    <summary>Como ler a análise (e o que ela <b>não</b> sabe)</summary>
+    <p>O edital do leilão diz endereço, lance mínimo, data e banco — <b>não diz o tipo do imóvel nem quantas unidades tem</b>. Como a unidade é o que define o preço, calculamos <b>dois cenários</b>: se a casa for 2-family e se for 3-family. O <b>preço-alvo</b> é o maior lance em que o negócio ainda fecha 🟢 pelas mesmas regras do resto do site (cash flow ≥ US$100/unidade, cap ≥ 6%, DSCR ≥ 1,2).</p>
+    <p>O aluguel vem da <b>mediana por unidade das casas que já mapeamos naquela cidade</b>, e o imposto é a alíquota efetiva municipal. São estimativas — <b>confirme unidades e aluguel por endereço antes de dar lance</b>.</p>
+    <p><b>Atenção ao lance mínimo:</b> ele é o piso, não o preço de venda. Imóvel disputado sai bem acima. Por isso o número que importa é o <b>preço-alvo</b> — o teto que você pode pagar — e não o veredito no lance mínimo.</p>
+    <p><b>Risco do leilão em NJ:</b> pagamento à vista rápido, imóvel as-is sem visita interna, depósito de 20% no ato, possíveis <b>liens que sobrevivem</b> ao leilão e <b>direito de resgate</b> do devedor por 10 dias. O preço-alvo <b>não desconta</b> reforma nem liens — desconte antes de dar lance.</p>
+  </details>
   <p class="srcnote">🔗 A coluna <b>Fonte ↗</b> abre a <b>lista oficial daquele county</b> no CivilView (o site agrupa por county e exige selecionar o county antes de abrir cada ficha — por isso o link direto de ficha cai na página geral). Já na lista certa, ache o imóvel pela <b>data</b> ou <b>endereço</b> e clique para ver o edital completo.</p>
   <p class="cnt" id="cnt"></p>
+
+  <div class="cards" id="cards"></div>
 
   <div class="tablewrap">
     <table>
@@ -302,6 +339,8 @@ a{color:inherit}
         <th data-k="county">County</th>
         <th data-k="ts">Data do leilão</th>
         <th data-k="upset" class="num">Lance mínimo</th>
+        <th data-k="av">Análise</th>
+        <th class="num">Preço-alvo 2f / 3f</th>
         <th data-k="bank">Autor (banco)</th>
         <th>Fonte</th>
       </tr></thead>
@@ -330,14 +369,16 @@ const fmt=n=>'US$ '+Math.round(n).toLocaleString('pt-BR');
 function pdate(s){const m=(s||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if(!m)return{ts:0,br:s||'—'}; const[_,mo,d,y]=m;
   return{ts:new Date(+y,+mo-1,+d).getTime(), br:`${d.padStart(2,'0')}/${mo.padStart(2,'0')}/${y}`};}
+const ANALISE=/*ANALISE*/[{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":8.3,"cap3":13.6,"ru":2400,"med":689500,"desc":41,"arv":640798,"flip":true},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":-1.0,"cap3":-0.6,"ru":2400,"med":689500,"desc":-623,"arv":7177582,"flip":false},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":5.5,"cap3":9.3,"ru":2400,"med":689500,"desc":18,"arv":861463,"flip":false},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":30.2,"cap3":47.6,"ru":2150,"med":679000,"desc":84,"arv":216450,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":10.4,"cap3":16.7,"ru":2400,"med":689500,"desc":51,"arv":541432,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":10.4,"cap3":16.7,"ru":2400,"med":689500,"desc":51,"arv":542016,"flip":true},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"y","cap2":3.6,"cap3":6.4,"ru":2400,"med":689500,"desc":-11,"arv":1146735,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":7.8,"cap3":12.9,"ru":2400,"med":689500,"desc":38,"arv":668406,"flip":true},{"v":"y","a2":353465,"a3":538818,"v2":"r","v3":"g","cap2":4.8,"cap3":8.8,"ru":2150,"med":679000,"desc":29,"arv":746603,"flip":false},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":11.0,"cap3":18.2,"ru":2150,"med":679000,"desc":61,"arv":437397,"flip":true},{"v":"y","a2":440589,"a3":670461,"v2":"y","v3":"g","cap2":6.4,"cap3":10.8,"ru":2400,"med":689500,"desc":28,"arv":770411,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":9.3,"cap3":15.2,"ru":2400,"med":689500,"desc":46,"arv":585967,"flip":true},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":5.1,"cap3":8.8,"ru":2400,"med":689500,"desc":14,"arv":902737,"flip":false},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":2.9,"cap3":5.4,"ru":2400,"med":689500,"desc":-26,"arv":1302345,"flip":false},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":39.1,"cap3":61.0,"ru":2150,"med":679000,"desc":87,"arv":182827,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":8.1,"cap3":13.6,"ru":2200,"med":750000,"desc":53,"arv":563821,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":29.1,"cap3":45.2,"ru":2400,"med":689500,"desc":81,"arv":248573,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":11.6,"cap3":18.7,"ru":2400,"med":689500,"desc":55,"arv":495589,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":10.4,"cap3":16.8,"ru":2400,"med":689500,"desc":51,"arv":538736,"flip":true},{"v":"y","a2":353465,"a3":538818,"v2":"r","v3":"g","cap2":4.8,"cap3":8.8,"ru":2150,"med":679000,"desc":29,"arv":746085,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":16.5,"cap3":26.1,"ru":2400,"med":689500,"desc":67,"arv":379730,"flip":true},{"v":"y","a2":321051,"a3":490750,"v2":"r","v3":"g","cap2":4.5,"cap3":8.1,"ru":1850,"med":534500,"desc":13,"arv":720286,"flip":false},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":-1.0,"cap3":-0.5,"ru":2400,"med":689500,"desc":-575,"arv":6706756,"flip":false},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"y","cap2":4.2,"cap3":7.3,"ru":2400,"med":689500,"desc":0,"arv":1037768,"flip":false},{"v":"g","a2":321051,"a3":490750,"v2":"g","v3":"g","cap2":14.7,"cap3":23.6,"ru":1850,"med":534500,"desc":65,"arv":322649,"flip":true},{"v":"y","a2":321051,"a3":490750,"v2":"y","v3":"g","cap2":6.7,"cap3":11.5,"ru":1850,"med":534500,"desc":34,"arv":557792,"flip":false},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":4.6,"cap3":8.0,"ru":2400,"med":689500,"desc":7,"arv":971871,"flip":false},{"v":"y","a2":353465,"a3":538818,"v2":"r","v3":"g","cap2":6.1,"cap3":10.9,"ru":2150,"med":679000,"desc":40,"arv":640839,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":11.7,"cap3":18.8,"ru":2400,"med":689500,"desc":56,"arv":493120,"flip":true},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":0.7,"cap3":2.0,"ru":2400,"med":689500,"desc":-137,"arv":2395804,"flip":false},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":-0.8,"cap3":-0.2,"ru":2400,"med":689500,"desc":-468,"arv":5656028,"flip":false},{"v":"r","a2":353465,"a3":538818,"v2":"r","v3":"r","cap2":0.1,"cap3":1.6,"ru":2150,"med":679000,"desc":-85,"arv":1848139,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":7.8,"cap3":12.8,"ru":2400,"med":689500,"desc":37,"arv":673318,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":26.7,"cap3":42.1,"ru":2200,"med":750000,"desc":83,"arv":241260,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":9.3,"cap3":15.1,"ru":2400,"med":689500,"desc":46,"arv":589777,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":12.1,"cap3":19.7,"ru":2200,"med":750000,"desc":66,"arv":425590,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":8.0,"cap3":13.1,"ru":2400,"med":689500,"desc":39,"arv":657893,"flip":true},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"y","cap2":4.1,"cap3":7.2,"ru":2400,"med":689500,"desc":-1,"arv":1051749,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":238.5,"cap3":363.9,"ru":2400,"med":689500,"desc":98,"arv":81753,"flip":true},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":8.0,"cap3":13.7,"ru":2150,"med":679000,"desc":50,"arv":541914,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":81.0,"cap3":124.3,"ru":2400,"med":689500,"desc":93,"arv":128499,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":40.7,"cap3":62.8,"ru":2400,"med":689500,"desc":86,"arv":196295,"flip":true},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":14.1,"cap3":22.9,"ru":2150,"med":679000,"desc":68,"arv":368332,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":18.0,"cap3":28.3,"ru":2400,"med":689500,"desc":70,"arv":355650,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":36.2,"cap3":56.1,"ru":2400,"med":689500,"desc":84,"arv":212585,"flip":true},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":6.0,"cap3":10.1,"ru":2400,"med":689500,"desc":24,"arv":808382,"flip":false},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":4.9,"cap3":8.5,"ru":2400,"med":689500,"desc":11,"arv":930534,"flip":false},{"v":"y","a2":321051,"a3":490750,"v2":"r","v3":"g","cap2":4.7,"cap3":8.4,"ru":1850,"med":534500,"desc":15,"arv":702680,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":8.1,"cap3":13.3,"ru":2400,"med":689500,"desc":40,"arv":649572,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":542.2,"cap3":826.0,"ru":2400,"med":689500,"desc":99,"arv":68014,"flip":true},{"v":"r","a2":321051,"a3":490750,"v2":"r","v3":"r","cap2":1.5,"cap3":3.5,"ru":1850,"med":534500,"desc":-56,"arv":1247836,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":11.0,"cap3":17.6,"ru":2400,"med":689500,"desc":53,"arv":518949,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":15.6,"cap3":24.8,"ru":2400,"med":689500,"desc":66,"arv":395479,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":11.6,"cap3":18.6,"ru":2400,"med":689500,"desc":55,"arv":497027,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":9.6,"cap3":16.1,"ru":2200,"med":750000,"desc":59,"arv":498223,"flip":true},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":12.0,"cap3":19.8,"ru":2150,"med":679000,"desc":63,"arv":411738,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":18.4,"cap3":29.4,"ru":2200,"med":750000,"desc":76,"arv":314275,"flip":true},{"v":"y","a2":321051,"a3":490750,"v2":"y","v3":"g","cap2":7.2,"cap3":12.2,"ru":1850,"med":534500,"desc":38,"arv":531299,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":19.8,"cap3":31.0,"ru":2400,"med":689500,"desc":72,"arv":330831,"flip":true},{"v":"r","a2":321051,"a3":490750,"v2":"r","v3":"y","cap2":3.6,"cap3":6.8,"ru":1850,"med":534500,"desc":0,"arv":819489,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":12.2,"cap3":19.5,"ru":2400,"med":689500,"desc":57,"arv":478517,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":14.7,"cap3":23.4,"ru":2400,"med":689500,"desc":64,"arv":413905,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":11.9,"cap3":19.4,"ru":2200,"med":750000,"desc":65,"arv":430474,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":12.3,"cap3":19.6,"ru":2400,"med":689500,"desc":57,"arv":476349,"flip":true},{"v":"g","a2":321051,"a3":490750,"v2":"g","v3":"g","cap2":9.1,"cap3":15.0,"ru":1850,"med":534500,"desc":48,"arv":454692,"flip":true},{"v":"y","a2":372248,"a3":567235,"v2":"r","v3":"g","cap2":5.7,"cap3":10.0,"ru":2200,"med":750000,"desc":39,"arv":709440,"flip":true},{"v":"g","a2":321051,"a3":490750,"v2":"g","v3":"g","cap2":10.6,"cap3":17.4,"ru":1850,"med":534500,"desc":54,"arv":407179,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":8.0,"cap3":13.1,"ru":2400,"med":689500,"desc":39,"arv":660397,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":40.5,"cap3":62.6,"ru":2400,"med":689500,"desc":86,"arv":196899,"flip":true},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":-0.1,"cap3":0.8,"ru":2400,"med":689500,"desc":-239,"arv":3397963,"flip":false},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":21.3,"cap3":34.0,"ru":2150,"med":679000,"desc":78,"arv":274874,"flip":true},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":4.6,"cap3":8.0,"ru":2400,"med":689500,"desc":7,"arv":968671,"flip":false},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":3.0,"cap3":5.5,"ru":2400,"med":689500,"desc":-24,"arv":1278280,"flip":false},{"v":"y","a2":440589,"a3":670461,"v2":"y","v3":"g","cap2":6.6,"cap3":11.0,"ru":2400,"med":689500,"desc":29,"arv":755274,"flip":false},{"v":"g","a2":321051,"a3":490750,"v2":"g","v3":"g","cap2":7.8,"cap3":13.1,"ru":1850,"med":534500,"desc":41,"arv":505073,"flip":true},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":78.6,"cap3":121.3,"ru":2150,"med":679000,"desc":93,"arv":121865,"flip":true},{"v":"y","a2":353465,"a3":538818,"v2":"r","v3":"g","cap2":5.4,"cap3":9.7,"ru":2150,"med":679000,"desc":34,"arv":696281,"flip":false},{"v":"y","a2":353465,"a3":538818,"v2":"r","v3":"g","cap2":4.9,"cap3":8.9,"ru":2150,"med":679000,"desc":30,"arv":737630,"flip":false},{"v":"y","a2":353465,"a3":538818,"v2":"r","v3":"g","cap2":5.4,"cap3":9.8,"ru":2150,"med":679000,"desc":35,"arv":689898,"flip":false},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":16.1,"cap3":26.0,"ru":2150,"med":679000,"desc":71,"arv":335131,"flip":true},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":28.0,"cap3":44.2,"ru":2150,"med":679000,"desc":82,"arv":227728,"flip":true},{"v":"r","a2":372248,"a3":567235,"v2":"r","v3":"r","cap2":1.4,"cap3":3.6,"ru":2200,"med":750000,"desc":-25,"arv":1391614,"flip":false},{"v":"g","a2":321051,"a3":490750,"v2":"g","v3":"g","cap2":51.0,"cap3":79.1,"ru":1850,"med":534500,"desc":89,"arv":141638,"flip":true},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":3.1,"cap3":5.6,"ru":2400,"med":689500,"desc":-23,"arv":1264111,"flip":false},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":5.1,"cap3":8.7,"ru":2400,"med":689500,"desc":13,"arv":910632,"flip":false},{"v":"g","a2":321051,"a3":490750,"v2":"g","v3":"g","cap2":41.2,"cap3":64.1,"ru":1850,"med":534500,"desc":86,"arv":160731,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":32.4,"cap3":50.3,"ru":2400,"med":689500,"desc":82,"arv":229600,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":32.8,"cap3":51.3,"ru":2200,"med":750000,"desc":86,"arv":209713,"flip":true},{"v":"y","a2":440589,"a3":670461,"v2":"y","v3":"g","cap2":7.3,"cap3":12.1,"ru":2400,"med":689500,"desc":34,"arv":703723,"flip":false},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":6.3,"cap3":10.5,"ru":2400,"med":689500,"desc":26,"arv":784397,"flip":false},{"v":"r","a2":440589,"a3":670461,"v2":"r","v3":"r","cap2":3.1,"cap3":5.7,"ru":2400,"med":689500,"desc":-22,"arv":1255596,"flip":false},{"v":"r","a2":321051,"a3":490750,"v2":"r","v3":"y","cap2":4.0,"cap3":7.3,"ru":1850,"med":534500,"desc":6,"arv":778176,"flip":false},{"v":"y","a2":372248,"a3":567235,"v2":"r","v3":"g","cap2":5.9,"cap3":10.4,"ru":2200,"med":750000,"desc":41,"arv":691185,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":23.5,"cap3":36.7,"ru":2400,"med":689500,"desc":76,"arv":290906,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":16.3,"cap3":25.8,"ru":2400,"med":689500,"desc":67,"arv":383056,"flip":true},{"v":"y","a2":321051,"a3":490750,"v2":"y","v3":"g","cap2":7.1,"cap3":12.0,"ru":1850,"med":534500,"desc":37,"arv":538384,"flip":false},{"v":"y","a2":440589,"a3":670461,"v2":"r","v3":"g","cap2":5.4,"cap3":9.2,"ru":2400,"med":689500,"desc":17,"arv":873021,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":32.1,"cap3":49.8,"ru":2400,"med":689500,"desc":82,"arv":231519,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":8.5,"cap3":13.9,"ru":2400,"med":689500,"desc":42,"arv":627185,"flip":true},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":128.8,"cap3":197.9,"ru":2150,"med":679000,"desc":96,"arv":97169,"flip":true},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":39.5,"cap3":61.7,"ru":2150,"med":679000,"desc":87,"arv":181626,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":22.6,"cap3":35.3,"ru":2400,"med":689500,"desc":75,"arv":299230,"flip":true},{"v":"g","a2":321051,"a3":490750,"v2":"g","v3":"g","cap2":9.2,"cap3":15.2,"ru":1850,"med":534500,"desc":49,"arv":450000,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":9.9,"cap3":16.1,"ru":2400,"med":689500,"desc":49,"arv":558850,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":12.6,"cap3":20.1,"ru":2400,"med":689500,"desc":58,"arv":467760,"flip":true},{"v":"g","a2":353465,"a3":538818,"v2":"g","v3":"g","cap2":28.6,"cap3":45.1,"ru":2150,"med":679000,"desc":83,"arv":224769,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":14.4,"cap3":22.9,"ru":2400,"med":689500,"desc":63,"arv":420792,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":21.8,"cap3":34.5,"ru":2200,"med":750000,"desc":79,"arv":278801,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":37.8,"cap3":58.5,"ru":2400,"med":689500,"desc":85,"arv":206390,"flip":true},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":9.7,"cap3":15.8,"ru":2400,"med":689500,"desc":48,"arv":568547,"flip":true},{"v":"g","a2":610007,"a3":924542,"v2":"g","v3":"g","cap2":16.1,"cap3":25.3,"ru":3300,"med":1400000,"desc":77,"arv":515510,"flip":true},{"v":"g","a2":425816,"a3":647980,"v2":"g","v3":"g","cap2":12.2,"cap3":19.7,"ru":2400,"med":731500,"desc":61,"arv":468327,"flip":true},{"v":"g","a2":425816,"a3":647980,"v2":"g","v3":"g","cap2":10.6,"cap3":17.2,"ru":2400,"med":731500,"desc":56,"arv":521091,"flip":true},{"v":"y","a2":463704,"a3":704738,"v2":"r","v3":"g","cap2":5.3,"cap3":9.3,"ru":2625,"med":687450,"desc":13,"arv":915102,"flip":false},{"v":"r","a2":425816,"a3":647980,"v2":"r","v3":"r","cap2":2.4,"cap3":4.7,"ru":2400,"med":731500,"desc":-25,"arv":1363936,"flip":false},{"v":"r","a2":425816,"a3":647980,"v2":"r","v3":"r","cap2":3.1,"cap3":5.8,"ru":2400,"med":731500,"desc":-8,"arv":1189208,"flip":false},{"v":"g","a2":463704,"a3":704738,"v2":"g","v3":"g","cap2":8.3,"cap3":13.7,"ru":2625,"med":687450,"desc":37,"arv":675143,"flip":true},{"v":"g","a2":463704,"a3":704738,"v2":"g","v3":"g","cap2":10.4,"cap3":16.9,"ru":2625,"med":687450,"desc":48,"arv":571496,"flip":true},{"v":"g","a2":463704,"a3":704738,"v2":"g","v3":"g","cap2":18.7,"cap3":29.6,"ru":2625,"med":687450,"desc":68,"arv":367424,"flip":true},{"v":"y","a2":463704,"a3":704738,"v2":"r","v3":"g","cap2":5.5,"cap3":9.6,"ru":2625,"med":687450,"desc":15,"arv":892288,"flip":false},{"v":"y","a2":610007,"a3":924542,"v2":"y","v3":"g","cap2":6.7,"cap3":11.2,"ru":3300,"med":1400000,"desc":52,"arv":1011471,"flip":true},{"v":"g","a2":610007,"a3":924542,"v2":"g","v3":"g","cap2":13.3,"cap3":21.1,"ru":3300,"med":1400000,"desc":73,"arv":598610,"flip":true},{"v":"g","a2":411492,"a3":626590,"v2":"g","v3":"g","cap2":10.4,"cap3":17.0,"ru":2300,"med":694500,"desc":54,"arv":509009,"flip":true},{"v":"g","a2":463704,"a3":704738,"v2":"g","v3":"g","cap2":129.3,"cap3":197.7,"ru":2625,"med":687450,"desc":95,"arv":106483,"flip":true},{"v":"y","a2":425816,"a3":647980,"v2":"r","v3":"g","cap2":4.8,"cap3":8.4,"ru":2400,"med":731500,"desc":18,"arv":910266,"flip":false},{"v":"g","a2":425816,"a3":647980,"v2":"g","v3":"g","cap2":7.9,"cap3":13.1,"ru":2400,"med":731500,"desc":44,"arv":645846,"flip":true},{"v":"g","a2":411492,"a3":626590,"v2":"g","v3":"g","cap2":10.2,"cap3":16.6,"ru":2300,"med":694500,"desc":53,"arv":518571,"flip":true},{"v":"r","a2":428238,"a3":651667,"v2":"r","v3":"r","cap2":2.6,"cap3":5.1,"ru":2400,"med":799999,"desc":-10,"arv":1309736,"flip":false},{"v":"g","a2":428238,"a3":651667,"v2":"g","v3":"g","cap2":19.3,"cap3":30.5,"ru":2400,"med":799999,"desc":76,"arv":332857,"flip":true},{"v":"g","a2":372248,"a3":567235,"v2":"g","v3":"g","cap2":7.6,"cap3":12.9,"ru":2200,"med":750000,"desc":50,"arv":588571,"flip":true},{"v":"y","a2":411492,"a3":626590,"v2":"r","v3":"g","cap2":4.6,"cap3":8.0,"ru":2300,"med":694500,"desc":14,"arv":909320,"flip":false},{"v":"g","a2":411492,"a3":626590,"v2":"g","v3":"g","cap2":13.2,"cap3":21.2,"ru":2300,"med":694500,"desc":63,"arv":427287,"flip":true},{"v":"y","a2":411492,"a3":626590,"v2":"r","v3":"g","cap2":5.7,"cap3":9.7,"ru":2300,"med":694500,"desc":26,"arv":786880,"flip":false},{"v":"y","a2":411492,"a3":626590,"v2":"r","v3":"g","cap2":4.3,"cap3":7.6,"ru":2300,"med":694500,"desc":10,"arv":946525,"flip":false},{"v":"y","a2":411492,"a3":626590,"v2":"r","v3":"g","cap2":4.5,"cap3":7.9,"ru":2300,"med":694500,"desc":13,"arv":921684,"flip":false},{"v":"g","a2":440589,"a3":670461,"v2":"g","v3":"g","cap2":8.2,"cap3":13.4,"ru":2400,"med":689500,"desc":40,"arv":647174,"flip":true},{"v":"r","a2":411492,"a3":626590,"v2":"r","v3":"r","cap2":2.2,"cap3":4.4,"ru":2300,"med":694500,"desc":-33,"arv":1378398,"flip":false}]/*/ANALISE*/;
 LEILOES.forEach(l=>{const p=pdate(l.date);l.ts=p.ts;l.br=p.br;});
+LEILOES.forEach((l,i)=>{l.an=ANALISE[i]||null;});
 const today=new Date(); today.setHours(0,0,0,0); const T=today.getTime();
 
 const BASE="https://salesweb.civilview.com";
 const COUNTY_ID={Essex:2,Bergen:7,Hudson:10,Union:15};
 const listUrl=l=>`${BASE}/Sales/SalesSearch?countyId=${COUNTY_ID[l.county]||''}`;
 
-let state={q:'',city:'',county:'',win:'fut',band:'',sort:'ts',dir:1};
+let state={q:'',city:'',county:'',win:'fut',band:'',v:'all',sort:'ts',dir:1};
 const cities=[...new Set(LEILOES.map(l=>l.city))].sort();
 const csel=document.getElementById('city');
 cities.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;csel.appendChild(o);});
@@ -381,8 +422,16 @@ function syncControls(){
   const on={soon:state.win==='15',cheap:state.band==='0-150000',newark:state.city==='Newark'};
   document.querySelectorAll('.chip').forEach(c=>{const k=c.dataset.chip; if(k in on) c.classList.toggle('on',on[k]);});
 }
+const VTXT={g:'Vale visitar',y:'Só se 3-family',r:'Não fecha'};
+// aluguel x flip: com veredito vermelho, dizer "só aluguel" seria contraditório
+function estrTxt(a){
+  if(!a) return '';
+  if(a.v==='r') return a.flip?'só flip':'nenhuma ao lance atual';
+  return a.flip?'aluguel ou flip':'só aluguel';
+}
 function apply(){
   let rows=LEILOES.filter(l=>{
+    if(state.v && state.v!=='all' && (!l.an || l.an.v!==state.v)) return false;
     if(state.city && l.city!==state.city) return false;
     if(state.county && l.county!==state.county) return false;
     if(!inWindow(l)) return false;
@@ -397,14 +446,39 @@ function apply(){
     const dcl=past?'dt past':(soon?'dt soon':'dt');
     const dnote=past?' (realizado)':'';
     const bank=(l.bank||'').replace(/"/g,'&quot;');
+    const a=l.an;
     return `<tr>
-      <td><div class="addr">${l.address}</div><div class="sub">${l.city}</div></td>
+      <td><div class="addr">${l.address}</div></td>
       <td><span class="co">${l.county}</span></td>
       <td class="${dcl}">${l.br}${dnote}</td>
       <td class="num">${fmt(l.upset)}</td>
+      <td>${a?`<span class="pill ${a.v}">${VTXT[a.v]}</span><div class="estr">${estrTxt(a)}</div>`:'—'}</td>
+      <td class="num alvo">${a?`${fmt(a.a2)}<span> / ${fmt(a.a3)}</span>`:'—'}</td>
       <td><div class="bank" title="${bank}">${l.bank||'—'}</div></td>
       <td><a class="srcl" href="${listUrl(l)}" target="_blank" rel="noopener" title="Abre a lista oficial do county ${l.county} no CivilView — ache pelo endereço/data (o site exige escolher o county antes de abrir cada ficha)">↗</a></td>
     </tr>`;
+  }).join('');
+
+  // cards (celular): a tabela some nessa largura
+  document.getElementById('cards').innerHTML=rows.map(l=>{
+    const past=l.ts<T, soon=l.ts>=T && l.ts<T+8*864e5, a=l.an;
+    const dcl=past?'past':(soon?'soon':'');
+    return `<article class="acard">
+      <div class="atop">
+        <div class="aend"><b>${l.address}</b><span>${l.county} County · ${estrTxt(l.an)}</span></div>
+        ${a?`<span class="pill ${a.v}">${VTXT[a.v]}</span>`:''}
+      </div>
+      <div class="adata ${dcl}">🗓 ${l.br}${past?' · realizado':(soon?' · em menos de 8 dias':'')}</div>
+      <div class="amet">
+        <div><span>Lance mínimo</span><b>${fmt(l.upset)}</b></div>
+        <div><span>Alvo se 2-family</span><b class="${a&&a.v2==='g'?'pos':''}">${a?fmt(a.a2):'—'}</b></div>
+        <div><span>Alvo se 3-family</span><b class="${a&&a.v3==='g'?'pos':''}">${a?fmt(a.a3):'—'}</b></div>
+      </div>
+      ${a?`<div class="anota">${a.desc!=null?`<b>${Math.abs(a.desc)}%</b> ${a.desc>=0?'abaixo':'acima'} da mediana de ${l.city} (${fmt(a.med)}) · `:''}${a.flip?`flip exigiria ARV ≥ <b>${fmt(a.arv)}</b>, plausível na cidade`:`flip exigiria ARV ≥ <b>${fmt(a.arv)}</b>, acima da mediana local`}</div>`:''}
+      <div class="aacoes">
+        <a class="abtn" href="${listUrl(l)}" target="_blank" rel="noopener">Ver edital no county ↗</a>
+      </div>
+    </article>`;
   }).join('');
   document.getElementById('empty').style.display=rows.length?'none':'block';
   document.getElementById('cnt').textContent=`${rows.length} de ${LEILOES.length} leilões`;
@@ -424,13 +498,21 @@ document.querySelectorAll('thead th[data-k]').forEach(th=>th.addEventListener('c
   if(state.sort===k)state.dir*=-1; else{state.sort=k;state.dir=(k==='upset')?-1:1;}
   apply();
 }));
-document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+// atalhos (a busca por data/preço) — escopado, senão pegava também os chips de veredito
+document.querySelectorAll('#chips .chip').forEach(c=>c.addEventListener('click',()=>{
   const k=c.dataset.chip;
   if(k==='soon') state.win = state.win==='15'?'fut':'15';
   else if(k==='cheap') state.band = state.band==='0-150000'?'':'0-150000';
   else if(k==='newark') state.city = state.city==='Newark'?'':'Newark';
-  else if(k==='reset'){state.q='';state.city='';state.county='';state.win='fut';state.band='';document.getElementById('q').value='';}
+  else if(k==='reset'){state.q='';state.city='';state.county='';state.win='fut';state.band='';state.v='all';
+    document.getElementById('q').value='';
+    document.querySelectorAll('#vchips .chip').forEach((x,i)=>x.classList.toggle('on',i===0));}
   apply();
+}));
+// filtro por veredito da análise
+document.querySelectorAll('#vchips .chip').forEach(c=>c.addEventListener('click',()=>{
+  document.querySelectorAll('#vchips .chip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on'); state.v=c.dataset.v; apply();
 }));
 apply();
 </script>
