@@ -163,6 +163,8 @@ a{color:inherit}
 .hmodal .htrig{background:rgba(240,169,59,.1);border:1px solid rgba(240,169,59,.3);border-radius:12px;padding:11px 13px;font-size:.84rem;color:#F5C06B;margin-bottom:12px}
 .hmodal .hnote{font-size:.85rem;color:#C7C7CC;line-height:1.5;margin-bottom:12px}
 .hmodal .hchart{background:#17171E;border:1px dashed rgba(255,255,255,.15);border-radius:13px;padding:15px;text-align:center;color:#8B8B94;font-size:.78rem;margin-bottom:14px}
+.hmodal .hlnota{font-size:.72rem;color:#8B8B94;margin-top:9px;line-height:1.4}
+.hmodal .hlnota a{color:#F0A93B;text-decoration:underline}
 .hmodal .hcta{display:flex;gap:10px}
 .hmodal .hcta a{flex:1;text-align:center;padding:13px;border-radius:12px;font-weight:700;font-size:.88rem;text-decoration:none}
 .hmodal .hcta .primary{background:#F0A93B;color:#141419}
@@ -273,6 +275,17 @@ a{color:inherit}
   .lgat{font-size:.72rem;color:var(--y);background:var(--watch-bg);padding:7px 12px;margin:0 -12px}
 }
 </style>
+<script>/*LINKS*/
+// gerado por 07-automacao/inject_links.py — estado REAL de cada link (checa_links.py)
+var LINK_ST={"149 Pomona Ave, Newark, NJ":0,"407 Jefferson Ave, Elizabeth, NJ 07201":0,"25 Greenville Ave, Jersey City, NJ 07305":1,"126 Scofield St, Newark, NJ":1,"13 Bayside Pl, Jersey City, NJ 07305":0,"166 Cator Ave, Jersey City, NJ 07305":1,"129 Stone St, Newark, NJ":1,"86 N 11th St, Newark, NJ":1,"575-577 Sand Ford Ave (Sandford Ave), Newark, NJ":1,"67 Weequahic Ave, Newark, NJ":0,"1709 Palisade Ave, Union City, NJ 07087":0,"623-625 Sanford Ave, Newark, NJ":1,"639 N 8th St, Newark, NJ":1,"626 Fulton St, Elizabeth, NJ 07206":0,"42-46 Mount Prospect Pl, Newark, NJ":0,"415 Magie Ave, Elizabeth, NJ 07208":0,"609 38th St, Union City, NJ 07087":0,"51 Myrtle Ave, Newark, NJ":1,"48 Seymour Ave, Newark, NJ":1,"16 Crittenden St, Newark, NJ":1,"332 21st St, Irvington, NJ 07111":0,"34 Holland St, Newark, NJ":1,"130 Park Ave, Englewood, NJ 07631":0,"63 Chadwick Ave, Newark, NJ":1,"135 Highland Ave, Newark, NJ":0,"93 Davenport Ave, Newark, NJ":0,"47 W Englewood Ave, Teaneck, NJ 07666":1,"626 S 20th St, Newark, NJ":1,"345 Summer Ave, Newark, NJ":0,"204 Astor St, Newark, NJ":0,"191 James St, Hackensack, NJ 07601":1,"1807 Manhattan Ave, Union City, NJ 07087":1,"23 Foundry St, Newark, NJ":1,"1720 Teaneck Rd, Teaneck, NJ 07666":1,"480 Washington Ave, Hackensack, NJ 07601":0,"637-639 Parker St, Newark, NJ":1,"957-959 Olive St, Elizabeth, NJ 07201":0,"82 E 26th St, Bayonne, NJ 07002":1,"523 Richmond St, Elizabeth, NJ 07202":0,"31 Robinson St, Teaneck, NJ 07666":0,"99 Kansas St, Hackensack, NJ 07601":0,"314 Atlantic St, Hackensack, NJ 07601":1,"723 Kennedy Blvd, Bayonne, NJ 07002":1,"197 Garfield Ave, Jersey City, NJ 07305":1,"17 Westview Terrace, Teaneck, NJ 07666":0,"205 Broughton Ave, Bloomfield, NJ 07003":1,"613 S 20th St, Irvington, NJ 07111":1,"54 Broughton Ave, Bloomfield, NJ 07003":1,"10 Almira St, Bloomfield, NJ 07003":0,"424 Myrtle Ave, Fort Lee, NJ 07024":0,"422 Myrtle Ave, Fort Lee, NJ 07024":0,"805 Fairview Ln, Fort Lee, NJ 07024":0};
+// 1 = testado e abre a ficha · 0 = testado e não abre · ausente = portal bloqueia robô
+window.linkAnuncio=function(addr,url){
+  var st=LINK_ST[addr];
+  var busca='https://www.google.com/search?q='+encodeURIComponent('"'+String(addr||'').replace(/"/g,'')+'" for sale');
+  if(st===0||!url) return {url:busca,direto:false,verificado:false,busca:busca};
+  return {url:url,direto:true,verificado:st===1,busca:busca};
+};
+/*/LINKS*/</script>
 </head>
 <body>
 
@@ -398,7 +411,8 @@ function apply(){
     const trig=(l.v==='y'&&l.trig)?`<div class="trig">gatilho ${fmt(l.trig)}</div>`:'';
     const bb=(l.beds||l.baths)?` · ${l.beds||'?'}q/${l.baths||'?'}b`:'';
     const conf=l.conf?`<span class="conf ${l.conf}">${l.conf}</span>`:'—';
-    const src=l.src?`<a class="srcl" href="${l.src}" target="_blank" rel="noopener" title="ver anúncio">↗</a>`:'';
+    const _lk=window.linkAnuncio(l.address,l.src);
+    const src=`<a class="srcl${_lk.direto?'':' busca'}" href="${_lk.url}" target="_blank" rel="noopener" title="${_lk.direto?'ver anúncio':'link do anúncio saiu do ar — procura pelo endereço'}">${_lk.direto?'↗':'🔎'}</a>`;
     return `<tr class="rowc" style="cursor:pointer" onclick="if(!event.target.closest('.star,a'))openHouse(__ROWS[${i}])">
       <td><div class="casa"><button class="star${FAV.has(l.address)?' on':''}" data-fav="${l.address.replace(/"/g,'&quot;')}" aria-label="favoritar" title="favoritar">${FAV.has(l.address)?'★':'☆'}</button><span class="vd ${l.v}"></span><div><div class="addr">${l.address}</div>
         <div class="sub" title="${(l.note||'').replace(/"/g,'&quot;')}">${l.city} · ${l.type}${bb}</div></div></div></td>
@@ -560,7 +574,17 @@ window.openHouse=function(h){
     +trig
     +(h.note?'<div class="hnote">'+esc(h.note)+'</div>':'')
     +'<div class="hchart">📉 Histórico de queda de preço — em breve (precisa do dado por casa)</div>'
-    +'<div class="hcta">'+(h.src?'<a class="primary" href="'+esc(h.src)+'" target="_blank" rel="noopener">Ver anúncio ↗</a>':'')+'<a class="ghost" href="analisador.html">Analisar deal</a></div>';
+    +(function(){
+       // resolvedor único (bloco /*LINKS*/, alimentado pelo teste real de cada link)
+       var l=(window.linkAnuncio||function(a,u){return {url:u,direto:!!u,verificado:false,busca:u};})
+             (h.address||h.addr, h.src||h.url);
+       return '<div class="hcta">'
+         +'<a class="primary" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+(l.direto?'Ver anúncio':'Procurar anúncio')+' ↗</a>'
+         +'<a class="ghost" href="analisador.html">Analisar deal</a></div>'
+         +(l.verificado?'':'<div class="hlnota">'+(l.direto
+             ? 'Anúncio saiu do ar? <a href="'+esc(l.busca)+'" target="_blank" rel="noopener">procurar pelo endereço ↗</a>'
+             : 'o link do anúncio não abre mais — este procura pelo endereço exato')+'</div>');
+     })();
   document.getElementById('hmodal').classList.add('open');
 };
 </script>

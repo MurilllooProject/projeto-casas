@@ -157,6 +157,8 @@ a{color:inherit}
 .hmodal .htrig{background:rgba(240,169,59,.1);border:1px solid rgba(240,169,59,.3);border-radius:12px;padding:11px 13px;font-size:.84rem;color:#F5C06B;margin-bottom:12px}
 .hmodal .hnote{font-size:.85rem;color:#C7C7CC;line-height:1.5;margin-bottom:12px}
 .hmodal .hchart{background:#17171E;border:1px dashed rgba(255,255,255,.15);border-radius:13px;padding:15px;text-align:center;color:#8B8B94;font-size:.78rem;margin-bottom:14px}
+.hmodal .hlnota{font-size:.72rem;color:#8B8B94;margin-top:9px;line-height:1.4}
+.hmodal .hlnota a{color:#F0A93B;text-decoration:underline}
 .hmodal .hcta{display:flex;gap:10px}
 .hmodal .hcta a{flex:1;text-align:center;padding:13px;border-radius:12px;font-weight:700;font-size:.88rem;text-decoration:none}
 .hmodal .hcta .primary{background:#F0A93B;color:#141419}
@@ -463,7 +465,17 @@ window.openHouse=function(h){
     +trig
     +(h.note?'<div class="hnote">'+esc(h.note)+'</div>':'')
     +'<div class="hchart">📉 Histórico de queda de preço — em breve (precisa do dado por casa)</div>'
-    +'<div class="hcta">'+(h.src?'<a class="primary" href="'+esc(h.src)+'" target="_blank" rel="noopener">Ver anúncio ↗</a>':'')+'<a class="ghost" href="analisador.html">Analisar deal</a></div>';
+    +(function(){
+       // resolvedor único (bloco /*LINKS*/, alimentado pelo teste real de cada link)
+       var l=(window.linkAnuncio||function(a,u){return {url:u,direto:!!u,verificado:false,busca:u};})
+             (h.address||h.addr, h.src||h.url);
+       return '<div class="hcta">'
+         +'<a class="primary" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+(l.direto?'Ver anúncio':'Procurar anúncio')+' ↗</a>'
+         +'<a class="ghost" href="analisador.html">Analisar deal</a></div>'
+         +(l.verificado?'':'<div class="hlnota">'+(l.direto
+             ? 'Anúncio saiu do ar? <a href="'+esc(l.busca)+'" target="_blank" rel="noopener">procurar pelo endereço ↗</a>'
+             : 'o link do anúncio não abre mais — este procura pelo endereço exato')+'</div>');
+     })();
   document.getElementById('hmodal').classList.add('open');
 };
 </script>
