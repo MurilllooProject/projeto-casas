@@ -166,67 +166,207 @@
 <style id="mhome-css">
 .mhome{display:none}
 @media(max-width:640px){
-  html,body{background:radial-gradient(900px 600px at 50% -10%,rgba(249,115,22,.10),transparent 60%),linear-gradient(165deg,#101014,#0B0B0E) !important}
-  body{padding:0 !important}
+  html,body{background:#0C0C10 !important;background-image:radial-gradient(700px 480px at 80% 0,rgba(249,115,22,.10),transparent 60%) !important;color:#F2F2EF !important}
+  body{padding:0 !important;font-family:"Inter",system-ui,sans-serif !important}
   header.nav,.wrap,footer{display:none !important}
-  .mhome{display:flex !important;min-height:100vh;align-items:center;justify-content:center;padding:24px 14px;position:relative;z-index:1}
-  .mhome .screen{width:100%;max-width:412px;background:#17171D;border-radius:42px;overflow:hidden;box-shadow:0 40px 100px -40px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.05);display:flex;flex-direction:column;font-family:"Inter",system-ui,sans-serif}
-  .mhome .m-hero{position:relative;height:358px;flex-shrink:0;background:url("img/lux2.png") center/cover}
-  .mhome .m-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,14,.45),transparent 26%,transparent 52%,rgba(6,8,14,.5))}
-  .mhome .m-back{position:absolute;top:18px;left:18px;z-index:2;width:40px;height:40px;border-radius:50%;background:rgba(20,20,26,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;color:#fff;font-size:1.2rem;text-decoration:none}
-  .mhome .m-brand{position:absolute;left:0;right:0;bottom:58px;z-index:2;text-align:center;color:#fff}
-  .mhome .m-brand .nm{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:2.5rem;line-height:1;text-shadow:0 2px 26px rgba(0,0,0,.6)}
-  .mhome .m-brand small{display:block;font-weight:500;font-size:.6rem;letter-spacing:.36em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-top:9px}
-  .mhome .m-body{position:relative;z-index:3;margin-top:-42px;background:#ECEBE7;border-radius:34px 34px 42px 42px;padding:22px 20px 26px;color:#17171C;flex:1;display:flex;flex-direction:column;gap:16px}
-  .mhome .m-featured{display:flex;gap:14px;align-items:stretch}
-  .mhome .m-img{width:116px;align-self:stretch;min-height:156px;flex-shrink:0;border-radius:20px;background:url("img/lux4.png") center/cover;box-shadow:0 10px 24px -10px rgba(0,0,0,.45)}
-  .mhome .m-ct{flex:1;min-width:0;display:flex;flex-direction:column}
-  .mhome .m-status{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;background:#fff;border-radius:999px;padding:6px 13px;font-size:.75rem;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-  .mhome .m-status .d{width:8px;height:8px;border-radius:50%;background:#3FB56B}
-  .mhome .m-title{font-weight:700;font-size:1.2rem;margin:12px 0 2px;letter-spacing:-.01em}
-  .mhome .m-sub{font-size:.82rem;color:#6A6A70}
-  .mhome .m-nested{margin-top:auto;display:flex;align-items:center;gap:11px;background:#17171C;color:#EDECE9;border-radius:16px;padding:11px 13px;text-decoration:none}
-  .mhome .m-nested .av{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:url("img/chart1.png") center/cover}
-  .mhome .m-nested .nt b{font-size:.88rem;font-weight:600}
-  .mhome .m-nested .nt small{display:block;font-size:.73rem;color:#9A9AA4;margin-top:1px}
-  .mhome .m-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:16px;border-top:1px solid #D6D4CE}
-  .mhome .m-meta .lb{font-size:.72rem;color:#6A6A70;margin-bottom:9px}
-  .mhome .m-meta .col.right{text-align:right}
-  .mhome .thumbs{display:flex;align-items:center}
-  .mhome .thumbs span{width:36px;height:36px;border-radius:50%;border:2px solid #ECEBE7;background-size:cover;background-position:center;margin-left:-11px}
-  .mhome .thumbs span:first-child{margin-left:0}
-  .mhome .thumbs .more{background:#17171C;color:#fff;display:grid;place-items:center;font-size:.62rem;font-weight:700}
-  .mhome .m-date{font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
-  .mhome .m-date small{display:block;font-weight:500;font-size:.75rem;color:#6A6A70;margin-top:2px}
-  .mhome .m-cta{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;background:#17171C;color:#F3F2EF;border-radius:999px;padding:17px;font-weight:600;font-size:1.02rem;text-decoration:none;box-shadow:0 12px 26px -12px rgba(0,0,0,.5)}
-  .mhome .m-cta .a{width:27px;height:27px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:.82rem}
-  .mhome .m-fine{text-align:center;font-size:.73rem;color:#6A6A70;line-height:1.45;margin:-2px 6px 0}
+  .mhome{display:block !important;max-width:640px;margin:0 auto;position:relative;z-index:1}
+  .mhome .feed{padding:0 0 100px}
+  /* hero */
+  .mhome .hero{position:relative;height:288px;background:url("img/lux2.png") center/cover;border-radius:0 0 30px 30px;overflow:hidden}
+  .mhome .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,14,.5),transparent 34%,transparent 46%,rgba(6,8,14,.62))}
+  .mhome .topbar{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;gap:10px;padding:16px 18px}
+  .mhome .loc{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;font-weight:600;color:#fff;background:rgba(20,20,26,.4);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);padding:7px 13px;border-radius:999px}
+  .mhome .ic-btn{margin-left:auto;width:40px;height:40px;border-radius:50%;background:rgba(20,20,26,.4);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.16);display:grid;place-items:center;color:#fff;font-size:1rem;text-decoration:none}
+  .mhome .herobrand{position:absolute;left:0;right:0;bottom:26px;z-index:3;text-align:center;color:#fff}
+  .mhome .herobrand .nm{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:2.3rem;line-height:1;text-shadow:0 2px 22px rgba(0,0,0,.55)}
+  .mhome .herobrand small{display:block;font-weight:500;font-size:.58rem;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-top:8px}
+  /* featured */
+  .mhome .featured{display:block;margin:-34px 16px 0;position:relative;z-index:4;background:#F0EFEB;border-radius:24px;padding:16px;color:#17171C;box-shadow:0 24px 50px -24px rgba(0,0,0,.6);text-decoration:none}
+  .mhome .feat-row{display:flex;gap:13px;align-items:stretch}
+  .mhome .feat-img{width:96px;align-self:stretch;min-height:120px;flex-shrink:0;border-radius:16px;background:url("img/lux4.png") center/cover}
+  .mhome .feat-ct{flex:1;min-width:0;display:flex;flex-direction:column}
+  .mhome .status{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:5px 11px;font-size:.72rem;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .mhome .status .d{width:7px;height:7px;border-radius:50%}
+  .mhome .feat-title{font-weight:700;font-size:1.08rem;margin:9px 0 1px;letter-spacing:-.01em}
+  .mhome .feat-sub{font-size:.78rem;color:#6C6C73}
+  .mhome .feat-nested{margin-top:auto;display:flex;align-items:center;gap:10px;background:#17171C;color:#EDECE9;border-radius:14px;padding:9px 12px}
+  .mhome .feat-nested .av{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:url("img/chart1.png") center/cover}
+  .mhome .feat-nested b{font-size:.8rem}.mhome .feat-nested small{display:block;font-size:.68rem;color:#9A9AA4}
+  /* section */
+  .mhome section.sec{margin:26px 0 0;padding:0 18px}
+  .mhome .sec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:13px}
+  .mhome .sec-h h2{font-size:1.06rem;font-weight:700;margin:0;letter-spacing:-.01em;color:#F2F2EF}
+  .mhome .sec-h a{margin-left:auto;font-size:.78rem;font-weight:600;color:#FB923C;text-decoration:none}
+  /* stats */
+  .mhome .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .mhome .stat{background:#141419;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:13px}
+  .mhome .stat .n{font-family:"Playfair Display",Georgia,serif;font-size:1.5rem;font-weight:700;line-height:1}
+  .mhome .stat .l{font-size:.68rem;color:#8B8B94;margin-top:4px}
+  .mhome .stat .sem{display:flex;gap:4px;margin-top:6px}.mhome .stat .sem b{font-size:.9rem;font-weight:700}
+  .mhome .stat .sd{width:8px;height:8px;border-radius:50%;align-self:center}
+  /* módulos */
+  .mhome .mods{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .mhome .mod{display:flex;flex-direction:column;align-items:center;gap:7px;background:#141419;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:13px 6px;text-decoration:none}
+  .mhome .mod .mi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:1.15rem;background:rgba(249,115,22,.14);border:1px solid rgba(249,115,22,.24)}
+  .mhome .mod .ml{font-size:.66rem;font-weight:600;color:#8B8B94;text-align:center}
+  /* mapa card */
+  .mhome .mapcard{display:block;position:relative;border-radius:20px;overflow:hidden;height:150px;background:url("img/map.png") center/cover}
+  .mhome .mapcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(6,8,14,.75))}
+  .mhome .mapcard .mc{position:absolute;left:16px;right:16px;bottom:14px;z-index:2;display:flex;align-items:flex-end;gap:10px;color:#fff}
+  .mhome .mapcard .mt{font-weight:700;font-size:1rem}.mhome .mapcard .ms{font-size:.74rem;color:rgba(255,255,255,.8)}
+  .mhome .mapcard .go{margin-left:auto;width:38px;height:38px;border-radius:50%;background:#fff;color:#141419;display:grid;place-items:center;font-size:.9rem}
+  /* leilões list */
+  .mhome .llist{background:#141419;border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden}
+  .mhome .lrow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08);text-decoration:none;color:inherit}
+  .mhome .lrow:last-child{border-bottom:0}
+  .mhome .ldate{width:46px;text-align:center;flex-shrink:0}
+  .mhome .ldate b{display:block;font-size:1.05rem;font-weight:800;line-height:1}.mhome .ldate small{font-size:.6rem;color:#8B8B94;text-transform:uppercase}
+  .mhome .lrow .li{flex:1;min-width:0}.mhome .lrow .li .t{font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mhome .lrow .li small{font-size:.72rem;color:#8B8B94}
+  .mhome .lrow .amt{font-weight:700;font-size:.82rem;color:#FB923C;white-space:nowrap}
+  /* deals scroller */
+  .mhome .scroller{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+  .mhome .scroller::-webkit-scrollbar{display:none}
+  .mhome .deal{flex:0 0 168px;background:#F0EFEB;border-radius:18px;overflow:hidden;color:#17171C;text-decoration:none}
+  .mhome .deal .di{height:104px;background-size:cover;background-position:center;position:relative}
+  .mhome .deal .dstatus{position:absolute;top:8px;left:8px;background:#fff;border-radius:999px;padding:3px 9px;font-size:.64rem;font-weight:700;display:flex;align-items:center;gap:5px}
+  .mhome .deal .dstatus .d{width:6px;height:6px;border-radius:50%}
+  .mhome .deal .db{padding:11px 12px}.mhome .deal .dt{font-weight:700;font-size:.86rem}.mhome .deal .ds{font-size:.72rem;color:#6C6C73;margin-top:1px}
+  .mhome .deal .dp{font-weight:800;font-size:.96rem;margin-top:7px}
+}
+</style>
+<style id="appcss">
+.appbar,.appsheet{display:none}
+@media(max-width:640px){
+  /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) ===== */
+  :root{
+    --bg:#0C0C10;--panel:#141419;--p2:#1B1B22;--panel2:#1B1B22;--surface:#141419;--surface2:#1B1B22;--s:#141419;
+    --line:rgba(255,255,255,.09);--ink:#F1F1EE;--dim:#9A9AA2;--dimmer:#74747C;--faint:#74747C;--mut:#9A9AA2;
+    --accent:#FB923C;--accent-ink:#141419;--acc:#FB923C;--brand:#FB923C;
+    --buy:#3FB56B;--watch:#D3A53A;--pass:#DB5B4E;--g:#3FB56B;--y:#D3A53A;--r:#DB5B4E;--green:#3FB56B;--amber:#D3A53A;--red:#DB5B4E;
+    --buy-bg:rgba(63,181,107,.14);--watch-bg:rgba(211,165,58,.16);--pass-bg:rgba(219,91,78,.14);
+  }
+  html{overflow-x:hidden}
+  html,body{background:#0C0C10 !important;color:#F1F1EE !important;overflow-x:hidden !important;
+    background-image:radial-gradient(680px 460px at 82% 0,rgba(249,115,22,.09),transparent 60%) !important}
+  img,table,pre,canvas,iframe{max-width:100%}
+  /* nav editorial vira barra de app escura e slim */
+  .enav{background:rgba(12,12,16,.82) !important;border-bottom:1px solid rgba(255,255,255,.08) !important}
+  .enav .ewrap{height:54px;padding:0 18px}
+  .elogo{color:#F1F1EE !important;font-size:.8rem}
+  /* footer editorial escuro combina; só reduz o respiro sobre a tab bar */
+  .efoot{margin-top:30px}
+  body{padding-bottom:78px}
+  .enav .epill{display:none}
+  /* ===== reflow do conteúdo editorial (evita corte horizontal no mobile) ===== */
+  .wrap,.ewrap{max-width:100% !important;padding-left:16px !important;padding-right:16px !important}
+  .hero{padding:20px 0 4px !important}
+  h1{font-size:1.5rem !important;line-height:1.16;letter-spacing:-.02em;overflow-wrap:anywhere}
+  .lead,.sub-lead,.intro{font-size:.92rem !important}
+  section,.readout,.warn,.srcnote,.cnt,.card,.panel,.block,.grid,.cols{max-width:100%}
+  /* linhas de filtro/controle empilham em coluna cheia */
+  .controls,.filters,.toolbar,.bar-row{flex-direction:column !important;align-items:stretch !important}
+  .controls>*,.filters>*{width:100% !important;min-width:0 !important}
+  .search,.csel,.sel,input,select{max-width:100% !important}
+  /* chips rolam na horizontal em vez de cortar */
+  .chips{flex-wrap:nowrap !important;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .chips::-webkit-scrollbar{display:none}
+  /* tabelas largas rolam dentro do próprio contêiner */
+  .tablewrap,.table-wrap,.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  /* ===== tab bar ===== */
+  .appbar{display:flex;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:640px;z-index:9500;
+    background:rgba(21,21,27,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid rgba(255,255,255,.09);padding:9px 8px calc(9px + env(safe-area-inset-bottom))}
+  .appbar .atab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 0;
+    color:#8B8B94;font-size:.62rem;font-weight:600;font-family:"Inter",system-ui,sans-serif;
+    background:none;border:0;cursor:pointer;text-decoration:none}
+  .appbar .atab .ai{font-size:1.25rem;line-height:1}
+  .appbar .atab.on{color:#FB923C}
+  /* ===== folha "Mais" ===== */
+  .appsheet{position:fixed;inset:0;z-index:9600;background:rgba(6,8,14,.55);backdrop-filter:blur(3px)}
+  .appsheet.open{display:block}
+  .appsheet .sheet-card{position:absolute;left:0;right:0;bottom:0;max-width:640px;margin:0 auto;background:#15151B;
+    border-radius:24px 24px 0 0;border-top:1px solid rgba(255,255,255,.09);
+    padding:16px 18px calc(20px + env(safe-area-inset-bottom));animation:sheetUp .22s ease}
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .appsheet .sheet-h{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:1rem;color:#F2F2EF;
+    font-family:"Inter",system-ui,sans-serif;margin-bottom:14px}
+  .appsheet .sheet-h .x{width:32px;height:32px;border-radius:50%;background:#242430;display:grid;place-items:center;color:#8B8B94;cursor:pointer;font-size:.8rem}
+  .appsheet .sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .appsheet .sheet-grid a{display:flex;align-items:center;gap:10px;background:#1B1B22;border:1px solid rgba(255,255,255,.07);
+    border-radius:14px;padding:13px 14px;color:#E7E7EA;font-size:.86rem;font-weight:600;
+    font-family:"Inter",system-ui,sans-serif;text-decoration:none}
+  .appsheet .sheet-grid a .e{font-size:1.1rem}
 }
 </style>
 </head>
 <body>
-<div class="mhome"><div class="screen">
-  <div class="m-hero">
-    <a class="m-back" href="painel.html">&#8249;</a>
-    <div class="m-brand"><div class="nm">Projeto Casas</div><small>oportunidades · new jersey</small></div>
+<div class="mhome"><div class="feed">
+
+  <div class="hero">
+    <div class="topbar"><span class="loc">📍 New Jersey</span><a class="ic-btn" href="lista.html">🔍</a></div>
+    <div class="herobrand"><div class="nm">Projeto Casas</div><small>oportunidades · nj</small></div>
   </div>
-  <div class="m-body">
-    <div class="m-featured">
-      <a class="m-img" href="lista.html" aria-label="Ver deal"></a>
-      <div class="m-ct">
-        <span class="m-status"><span class="d"></span> Comprar</span>
-        <div class="m-title">126 Scofield St</div>
-        <div class="m-sub">2-family · Newark · cap 7,1%</div>
-        <div class="m-nested"><span class="av"></span><span class="nt"><b>Motor de underwriting</b><small>veredito verde · +$132/mês</small></span></div>
+
+  <a class="featured" href="lista.html">
+    <div class="feat-row">
+      <div class="feat-img"></div>
+      <div class="feat-ct">
+        <span class="status"><span class="d"></span> Comprar</span>
+        <div class="feat-title">126 Scofield St</div>
+        <div class="feat-sub">2-family · Newark · cap 7,1%</div>
+        <div class="feat-nested"><span class="av"></span><span><b>Motor de underwriting</b><small>veredito verde · +$132/mês</small></span></div>
       </div>
     </div>
-    <div class="m-meta">
-      <div class="col left"><div class="lb">Comparáveis</div><div class="thumbs"><span style="background-image:url(img/mf1.png)"></span><span style="background-image:url(img/mf2.png)"></span><span style="background-image:url(img/lux3.png)"></span><span class="more">10+</span></div></div>
-      <div class="col right"><div class="lb">Próximo leilão</div><div class="m-date">Seg 21.07<small>East Orange · US$ 7,6k</small></div></div>
+  </a>
+
+  <section class="sec">
+    <div class="stats">
+      <div class="stat"><div class="n">94</div><div class="l">casas classificadas</div></div>
+      <div class="stat"><div class="l">semáforo</div><div class="sem"><span class="sd" style="background:#3FB56B"></span><b>7</b><span class="sd" style="background:#D3A53A"></span><b>8</b><span class="sd" style="background:#DB5B4E"></span><b>79</b></div></div>
+      <div class="stat"><div class="n">142</div><div class="l">leilões ao vivo</div></div>
     </div>
-    <a class="m-cta" href="painel.html">Ver o painel <span class="a">&#8594;</span></a>
-    <div class="m-fine">Cada imóvel recebe um veredito objetivo pelo motor — comprar, observar (com preço-gatilho) ou passar.</div>
-  </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h2>Explorar</h2><a href="painel.html">tudo</a></div>
+    <div class="mods">
+      <a class="mod" href="mapa.html"><span class="mi">🗺️</span><span class="ml">Mapa</span></a>
+      <a class="mod" href="lista.html"><span class="mi">📋</span><span class="ml">Lista</span></a>
+      <a class="mod" href="leiloes.html"><span class="mi">🏦</span><span class="ml">Leilões</span></a>
+      <a class="mod" href="terrenos.html"><span class="mi">🏗️</span><span class="ml">Terrenos</span></a>
+      <a class="mod" href="buy-hold.html"><span class="mi">🔑</span><span class="ml">Buy&amp;Hold</span></a>
+      <a class="mod" href="estrategias.html"><span class="mi">🎯</span><span class="ml">Estratégias</span></a>
+      <a class="mod" href="analisador.html"><span class="mi">🧮</span><span class="ml">Analisador</span></a>
+      <a class="mod" href="cidades.html"><span class="mi">🏘️</span><span class="ml">Cidades</span></a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h2>Mapa das casas</h2><a href="mapa.html">abrir</a></div>
+    <a class="mapcard" href="mapa.html"><div class="mc">
+      <div><div class="mt">94 pins pelo semáforo</div><div class="ms">12 cidades de NJ · crime e flood</div></div>
+      <span class="go">→</span>
+    </div></a>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h2>Próximos leilões</h2><a href="leiloes.html">ver 142</a></div>
+    <div class="llist">
+      <a class="lrow" href="leiloes.html"><div class="ldate"><b>21</b><small>jul</small></div><div class="li"><div class="t">166 North Ninth St</div><small>Newark · Essex</small></div><span class="amt">US$ 408k</span></a>
+      <a class="lrow" href="leiloes.html"><div class="ldate"><b>21</b><small>jul</small></div><div class="li"><div class="t">144 Shepard Ave</div><small>East Orange · Essex</small></div><span class="amt">US$ 111k</span></a>
+      <a class="lrow" href="leiloes.html"><div class="ldate"><b>24</b><small>jul</small></div><div class="li"><div class="t">1512 Palisade Ave</div><small>Fort Lee · Bergen</small></div><span class="amt">US$ 321k</span></a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h2>Deals em destaque</h2><a href="lista.html">lista</a></div>
+    <div class="scroller">
+      <a class="deal" href="lista.html"><div class="di" style="background-image:url(img/mf1.png)"><span class="dstatus"><span class="d" style="background:#3FB56B"></span>Comprar</span></div><div class="db"><div class="dt">126 Scofield St</div><div class="ds">2-family · Newark</div><div class="dp">US$ 410k</div></div></a>
+      <a class="deal" href="lista.html"><div class="di" style="background-image:url(img/mf2.png)"><span class="dstatus"><span class="d" style="background:#3FB56B"></span>Comprar</span></div><div class="db"><div class="dt">224 Chestnut St</div><div class="ds">3-family · Newark</div><div class="dp">US$ 650k</div></div></a>
+      <a class="deal" href="lista.html"><div class="di" style="background-image:url(img/mf3.png)"><span class="dstatus"><span class="d" style="background:#D3A53A"></span>Observar</span></div><div class="db"><div class="dt">84–86 Chambers</div><div class="ds">3-family · Ironbound</div><div class="dp">US$ 785k</div></div></a>
+    </div>
+  </section>
+
 </div></div>
 
 
@@ -340,5 +480,42 @@
 <div class="wrap"><div class="fbot"><span>© 2026 Projeto Casas · uso pessoal · dados verificados por workflows.</span><span>12 cidades · 94 casas · 142 leilões</span></div></div>
 </footer>
 
+<!--APPBAR-->
+<nav class="appbar">
+  <a class="atab" data-p="index.html" href="index.html"><span class="ai">🏠</span>Início</a>
+  <a class="atab" data-p="mapa.html" href="mapa.html"><span class="ai">🗺️</span>Mapa</a>
+  <a class="atab" data-p="leiloes.html" href="leiloes.html"><span class="ai">🏦</span>Leilões</a>
+  <a class="atab" data-p="painel.html" href="painel.html"><span class="ai">📊</span>Painel</a>
+  <button class="atab" id="moreBtn" type="button"><span class="ai">☰</span>Mais</button>
+</nav>
+<div class="appsheet" id="appsheet">
+  <div class="sheet-card">
+    <div class="sheet-h">Mais ferramentas <span class="x" id="sheetX">✕</span></div>
+    <div class="sheet-grid">
+      <a href="lista.html"><span class="e">📋</span> Lista</a>
+      <a href="terrenos.html"><span class="e">🏗️</span> Terrenos</a>
+      <a href="buy-hold.html"><span class="e">🔑</span> Buy &amp; Hold</a>
+      <a href="estrategias.html"><span class="e">🎯</span> Estratégias</a>
+      <a href="analisador.html"><span class="e">🧮</span> Analisador</a>
+      <a href="cidades.html"><span class="e">🏘️</span> Cidades</a>
+      <a href="glossario.html"><span class="e">📖</span> Glossário</a>
+      <a href="painel.html"><span class="e">📊</span> Painel</a>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var f=(location.pathname.split('/').pop()||'').toLowerCase();if(!f)f='index.html';
+  var main={'index.html':1,'mapa.html':1,'leiloes.html':1,'painel.html':1};
+  var el=main[f]?document.querySelector('.appbar .atab[data-p="'+f+'"]'):document.getElementById('moreBtn');
+  if(el)el.classList.add('on');
+  var sheet=document.getElementById('appsheet'),btn=document.getElementById('moreBtn'),x=document.getElementById('sheetX');
+  function close(){if(sheet)sheet.classList.remove('open');}
+  if(btn)btn.addEventListener('click',function(){if(sheet)sheet.classList.add('open');});
+  if(x)x.addEventListener('click',close);
+  if(sheet)sheet.addEventListener('click',function(e){if(e.target===sheet)close();});
+})();
+</script>
+<!--/APPBAR-->
 </body>
 </html>

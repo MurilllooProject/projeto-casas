@@ -109,6 +109,70 @@ a{color:inherit}
 .efoot .efbot{border-top:1px solid rgba(255,255,255,.1);margin-top:22px;padding-top:14px;font-size:.75rem;color:#72767F}
 @media(max-width:720px){.elinks{display:none}}
 </style>
+<style id="appcss">
+.appbar,.appsheet{display:none}
+@media(max-width:640px){
+  /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) ===== */
+  :root{
+    --bg:#0C0C10;--panel:#141419;--p2:#1B1B22;--panel2:#1B1B22;--surface:#141419;--surface2:#1B1B22;--s:#141419;
+    --line:rgba(255,255,255,.09);--ink:#F1F1EE;--dim:#9A9AA2;--dimmer:#74747C;--faint:#74747C;--mut:#9A9AA2;
+    --accent:#FB923C;--accent-ink:#141419;--acc:#FB923C;--brand:#FB923C;
+    --buy:#3FB56B;--watch:#D3A53A;--pass:#DB5B4E;--g:#3FB56B;--y:#D3A53A;--r:#DB5B4E;--green:#3FB56B;--amber:#D3A53A;--red:#DB5B4E;
+    --buy-bg:rgba(63,181,107,.14);--watch-bg:rgba(211,165,58,.16);--pass-bg:rgba(219,91,78,.14);
+  }
+  html{overflow-x:hidden}
+  html,body{background:#0C0C10 !important;color:#F1F1EE !important;overflow-x:hidden !important;
+    background-image:radial-gradient(680px 460px at 82% 0,rgba(249,115,22,.09),transparent 60%) !important}
+  img,table,pre,canvas,iframe{max-width:100%}
+  /* nav editorial vira barra de app escura e slim */
+  .enav{background:rgba(12,12,16,.82) !important;border-bottom:1px solid rgba(255,255,255,.08) !important}
+  .enav .ewrap{height:54px;padding:0 18px}
+  .elogo{color:#F1F1EE !important;font-size:.8rem}
+  /* footer editorial escuro combina; só reduz o respiro sobre a tab bar */
+  .efoot{margin-top:30px}
+  body{padding-bottom:78px}
+  .enav .epill{display:none}
+  /* ===== reflow do conteúdo editorial (evita corte horizontal no mobile) ===== */
+  .wrap,.ewrap{max-width:100% !important;padding-left:16px !important;padding-right:16px !important}
+  .hero{padding:20px 0 4px !important}
+  h1{font-size:1.5rem !important;line-height:1.16;letter-spacing:-.02em;overflow-wrap:anywhere}
+  .lead,.sub-lead,.intro{font-size:.92rem !important}
+  section,.readout,.warn,.srcnote,.cnt,.card,.panel,.block,.grid,.cols{max-width:100%}
+  /* linhas de filtro/controle empilham em coluna cheia */
+  .controls,.filters,.toolbar,.bar-row{flex-direction:column !important;align-items:stretch !important}
+  .controls>*,.filters>*{width:100% !important;min-width:0 !important}
+  .search,.csel,.sel,input,select{max-width:100% !important}
+  /* chips rolam na horizontal em vez de cortar */
+  .chips{flex-wrap:nowrap !important;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .chips::-webkit-scrollbar{display:none}
+  /* tabelas largas rolam dentro do próprio contêiner */
+  .tablewrap,.table-wrap,.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  /* ===== tab bar ===== */
+  .appbar{display:flex;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:640px;z-index:9500;
+    background:rgba(21,21,27,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid rgba(255,255,255,.09);padding:9px 8px calc(9px + env(safe-area-inset-bottom))}
+  .appbar .atab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 0;
+    color:#8B8B94;font-size:.62rem;font-weight:600;font-family:"Inter",system-ui,sans-serif;
+    background:none;border:0;cursor:pointer;text-decoration:none}
+  .appbar .atab .ai{font-size:1.25rem;line-height:1}
+  .appbar .atab.on{color:#FB923C}
+  /* ===== folha "Mais" ===== */
+  .appsheet{position:fixed;inset:0;z-index:9600;background:rgba(6,8,14,.55);backdrop-filter:blur(3px)}
+  .appsheet.open{display:block}
+  .appsheet .sheet-card{position:absolute;left:0;right:0;bottom:0;max-width:640px;margin:0 auto;background:#15151B;
+    border-radius:24px 24px 0 0;border-top:1px solid rgba(255,255,255,.09);
+    padding:16px 18px calc(20px + env(safe-area-inset-bottom));animation:sheetUp .22s ease}
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .appsheet .sheet-h{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:1rem;color:#F2F2EF;
+    font-family:"Inter",system-ui,sans-serif;margin-bottom:14px}
+  .appsheet .sheet-h .x{width:32px;height:32px;border-radius:50%;background:#242430;display:grid;place-items:center;color:#8B8B94;cursor:pointer;font-size:.8rem}
+  .appsheet .sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .appsheet .sheet-grid a{display:flex;align-items:center;gap:10px;background:#1B1B22;border:1px solid rgba(255,255,255,.07);
+    border-radius:14px;padding:13px 14px;color:#E7E7EA;font-size:.86rem;font-weight:600;
+    font-family:"Inter",system-ui,sans-serif;text-decoration:none}
+  .appsheet .sheet-grid a .e{font-size:1.1rem}
+}
+</style>
 </head>
 <body>
 
@@ -236,5 +300,42 @@ document.addEventListener('click',function(e){
   if(!e.target.closest('.grp')) document.querySelectorAll('.grp[open]').forEach(function(o){ o.open=false; });
 });
 </script>
+<!--APPBAR-->
+<nav class="appbar">
+  <a class="atab" data-p="index.html" href="index.html"><span class="ai">🏠</span>Início</a>
+  <a class="atab" data-p="mapa.html" href="mapa.html"><span class="ai">🗺️</span>Mapa</a>
+  <a class="atab" data-p="leiloes.html" href="leiloes.html"><span class="ai">🏦</span>Leilões</a>
+  <a class="atab" data-p="painel.html" href="painel.html"><span class="ai">📊</span>Painel</a>
+  <button class="atab" id="moreBtn" type="button"><span class="ai">☰</span>Mais</button>
+</nav>
+<div class="appsheet" id="appsheet">
+  <div class="sheet-card">
+    <div class="sheet-h">Mais ferramentas <span class="x" id="sheetX">✕</span></div>
+    <div class="sheet-grid">
+      <a href="lista.html"><span class="e">📋</span> Lista</a>
+      <a href="terrenos.html"><span class="e">🏗️</span> Terrenos</a>
+      <a href="buy-hold.html"><span class="e">🔑</span> Buy &amp; Hold</a>
+      <a href="estrategias.html"><span class="e">🎯</span> Estratégias</a>
+      <a href="analisador.html"><span class="e">🧮</span> Analisador</a>
+      <a href="cidades.html"><span class="e">🏘️</span> Cidades</a>
+      <a href="glossario.html"><span class="e">📖</span> Glossário</a>
+      <a href="painel.html"><span class="e">📊</span> Painel</a>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var f=(location.pathname.split('/').pop()||'').toLowerCase();if(!f)f='index.html';
+  var main={'index.html':1,'mapa.html':1,'leiloes.html':1,'painel.html':1};
+  var el=main[f]?document.querySelector('.appbar .atab[data-p="'+f+'"]'):document.getElementById('moreBtn');
+  if(el)el.classList.add('on');
+  var sheet=document.getElementById('appsheet'),btn=document.getElementById('moreBtn'),x=document.getElementById('sheetX');
+  function close(){if(sheet)sheet.classList.remove('open');}
+  if(btn)btn.addEventListener('click',function(){if(sheet)sheet.classList.add('open');});
+  if(x)x.addEventListener('click',close);
+  if(sheet)sheet.addEventListener('click',function(e){if(e.target===sheet)close();});
+})();
+</script>
+<!--/APPBAR-->
 </body>
 </html>
