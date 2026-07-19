@@ -182,7 +182,8 @@ a{color:inherit}
  border:1px solid color-mix(in srgb,var(--v) 40%,transparent);padding:3px 8px;border-radius:999px}
 .hcv i{width:6px;height:6px;border-radius:50%;background:var(--v)}
 .hcnome{font-weight:800;font-size:.95rem;letter-spacing:-.01em;margin-top:6px;line-height:1.2}
-.hcsub{color:#8D96A8;font-size:.74rem;margin-top:2px}
+.hcsub{color:#8D96A8;font-size:.73rem;margin-top:2px;line-height:1.3}
+.hccid{color:#79839A;font-size:.69rem;margin-top:0}
 .hcpreco{font-size:1.3rem;font-weight:800;margin:11px 0 0;display:flex;align-items:baseline;gap:8px}
 .hcpreco span{font-size:.72rem;font-weight:500;color:#8D96A8}
 .hcmet{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:11px 0}
@@ -190,8 +191,15 @@ a{color:inherit}
 .hcmet b{display:block;font-size:.92rem;font-weight:800}
 .hcmet b.g{color:#3FB56B}.hcmet b.w,.hcmet b.y{color:#D3A53A}.hcmet b.r{color:#DB5B4E}
 .hcmet span{display:block;font-size:.58rem;text-transform:uppercase;letter-spacing:.04em;color:#79839A;margin-top:2px}
-.hcbtn{width:100%;background:#F0A93B;color:#141419;border:0;border-radius:12px;padding:11px;
- font-weight:700;font-size:.84rem;cursor:pointer;font-family:inherit}
+.hcacoes{display:flex;gap:8px}
+.hcbtn,.hcbtn2{flex:1;border:0;border-radius:12px;padding:11px 8px;text-align:center;
+ font-weight:700;font-size:.84rem;cursor:pointer;font-family:inherit;text-decoration:none;white-space:nowrap}
+.hcbtn{flex:1.35;background:#F0A93B;color:#141419}
+.hcbtn2{background:#242A38;color:#D7DCE6;border:1px solid rgba(255,255,255,.09)}
+.hcnota{font-size:.63rem;color:#79839A;margin-top:8px;line-height:1.35}
+/* com o card aberto o HUD sai da frente — expandido ele cobre endereço e foto */
+body.cardopen .hud{opacity:0;pointer-events:none}
+.hud{transition:opacity .18s ease}
 .zpop .maplibregl-popup-content{background:#171A24!important;color:#F1F1EE!important;border:1px solid rgba(255,255,255,.11);
  border-radius:14px;padding:12px 14px;box-shadow:0 20px 44px -16px rgba(0,0,0,.9)}
 .zpop .maplibregl-popup-tip{border-top-color:#171A24!important;border-bottom-color:#171A24!important}
@@ -464,7 +472,7 @@ function openPanel(d){
    <div class="stat"><span class="i">🌊</span><span><b>Flood:</b> ${esc(d.flood)}</span></div>
    <div class="stat"><span class="i">🚆</span><span><b>Transporte:</b> ${esc(d.transit)}</span></div>
   </div>
-  ${d.url?`<a class="plink" href="${d.url}" target="_blank">🔗 Ver anúncio completo ↗</a>`:''}
+  ${(()=>{const l=linkAnuncio(d);return `<a class="plink" href="${l.url}" target="_blank" rel="noopener">🔗 ${l.direto?'Ver anúncio completo':'Procurar este endereço no portal'} ↗</a>`+(l.direto?'':`<div style="font-size:.7rem;color:var(--dim);margin-top:4px">o link direto deste anúncio não foi capturado — este abre a busca pelo endereço exato</div>`);})()}
   <div style="margin-top:14px;font-size:.72rem;color:var(--dim)">⚠️ Aluguel/imposto podem ser estimativa — confirme por endereço antes de agir.</div>
  </div>`;
  document.getElementById('panel').classList.add('open');
@@ -628,6 +636,17 @@ document.getElementById('legx').onclick=()=>legEl.classList.remove('open');
 // ---- card ancorado na casa clicada ----------------------------------------
 // Prévia curta grudada no pin; o painel completo continua a um toque de distância.
 let cardPop=null, cardSel=null;
+
+// Parte dos links coletados aponta pra página de busca da cidade, não pro anúncio.
+// Testamos se o número da rua aparece na URL (delimitado, senão o CEP dá falso
+// positivo); quando não aparece, caímos numa busca pelo endereço exato.
+function linkAnuncio(d){
+ const u=d.url||'', num=(d.addr.match(/^\s*(\d+)/)||[])[1];
+ if(u && num && new RegExp('(^|\\D)'+num+'(\\D|$)').test(u)) return {url:u,direto:true};
+ const slug=d.addr.replace(/\b\d{5}(-\d{4})?\b/g,'').replace(/[^A-Za-z0-9]+/g,'-')
+                  .replace(/^-|-$/g,'');
+ return {url:'https://www.zillow.com/homes/'+slug+'_rb/',direto:false};
+}
 function fachada(tipo){
  const t=(tipo||'').toLowerCase();
  if(t.includes('3-family')||t.includes('3 family')) return 'img/fac-3fam.jpg';
@@ -638,6 +657,7 @@ function fachada(tipo){
 function closeCard(){
   if(cardPop){cardPop.remove();cardPop=null;}
   if(cardSel){cardSel.classList.remove('sel');cardSel=null;}
+  document.body.classList.remove('cardopen');
 }
 window.openCard=function(d,el){
   closeCard();
@@ -650,12 +670,14 @@ window.openCard=function(d,el){
   const foto=(d.photos&&d.photos[0])||fachada(d.tipo);
   const thumb=`<img class="hcimg" src="${foto}" alt="" onerror="this.onerror=null;this.src='${fachada(d.tipo)}'">`;
   const cf=d.cf>=100?'g':(d.cf>=-50?'y':'r');
+  const lk=linkAnuncio(d);
   const html=`<div class="hcard2">
     <button class="hcx" aria-label="Fechar">&#10005;</button>
     <div class="hctop">${thumb}<div class="hcinfo">
       <div class="hcv" style="--v:${COLOR[d.sem]}"><i></i>${LABEL[d.sem].replace(/^\S+\s/,'')}${d.star?' · ★':''}</div>
       <div class="hcnome">${esc(d.addr.split(',')[0])}</div>
-      <div class="hcsub">${esc(d.tipo)} · ${esc(d.city)}</div>
+      <div class="hcsub">${esc(d.tipo)}</div>
+      <div class="hcsub hccid">${esc(d.city)}</div>
     </div></div>
     <div class="hcpreco">${money(d.price)}<span>${d.rent?money(d.rent)+'/mês de aluguel':''}</span></div>
     <div class="hcmet">
@@ -663,14 +685,22 @@ window.openCard=function(d,el){
       <div><b class="${cf}">${money(d.cf)}</b><span>cash flow</span></div>
       <div><b class="${cls(d.dscr,1.2,1)}">${d.dscr}</b><span>DSCR</span></div>
     </div>
-    <button class="hcbtn">Ver tudo sobre a casa</button>
+    <div class="hcacoes">
+      <a class="hcbtn" href="${lk.url}" target="_blank" rel="noopener">${lk.direto?'Ver anúncio':'Procurar anúncio'} &#8599;</a>
+      <button class="hcbtn2">Detalhes</button>
+    </div>
+    ${lk.direto?'':'<div class="hcnota">link direto do anúncio não capturado — abre a busca pelo endereço</div>'}
   </div>`;
   cardPop=new maplibregl.Popup({closeButton:false,closeOnClick:false,className:'hpop',
     maxWidth:'310px',offset:d.star?40:32,anchor:'bottom'})
     .setLngLat([d.lng,d.lat]).setHTML(html).addTo(map);
   const raiz=cardPop.getElement();
   raiz.querySelector('.hcx').onclick=closeCard;
-  raiz.querySelector('.hcbtn').onclick=()=>{openPanel(d);closeCard();};
+  raiz.querySelector('.hcbtn2').onclick=()=>{openPanel(d);closeCard();};
+  // o HUD sai da frente: expandido ele cobre o endereço e a foto da casa
+  document.body.classList.add('cardopen');
+  brandEl.classList.add('min');
+  legEl.classList.remove('open');
 };
 map.on('click',()=>closeCard());                            // clicou no vazio, fecha
 
