@@ -197,13 +197,29 @@
   .mhome .sec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:13px}
   .mhome .sec-h h2{font-size:1.06rem;font-weight:700;margin:0;letter-spacing:-.01em;color:#F2F2EF}
   .mhome .sec-h a{margin-left:auto;font-size:.78rem;font-weight:600;color:#FB923C;text-decoration:none}
-  /* stats */
-  .mhome .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .mhome .stat{background:#141419;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:13px}
-  .mhome .stat .n{font-family:"Playfair Display",Georgia,serif;font-size:1.5rem;font-weight:700;line-height:1}
-  .mhome .stat .l{font-size:.68rem;color:#8B8B94;margin-top:4px}
-  .mhome .stat .sem{display:flex;gap:4px;margin-top:6px}.mhome .stat .sem b{font-size:.9rem;font-weight:700}
-  .mhome .stat .sd{width:8px;height:8px;border-radius:50%;align-self:center}
+  /* carrossel melhores oportunidades */
+  .mhome section.carou-sec{margin:18px 0 0 !important;padding:0}
+  .mhome .carou-sec .sec-h{padding:0 18px;margin-bottom:11px}
+  .mhome .carousel{display:flex;gap:12px;overflow-x:auto;padding:2px 18px 8px;scrollbar-width:none;scroll-snap-type:x mandatory}
+  .mhome .carousel::-webkit-scrollbar{display:none}
+  .mhome .ccard{flex:0 0 214px;scroll-snap-align:start;background:#F0EFEB;border-radius:20px;overflow:hidden;color:#17171C;text-decoration:none;box-shadow:0 16px 34px -18px rgba(0,0,0,.6);cursor:pointer}
+  .mhome .ccard .ci{height:122px;background-size:cover;background-position:center;position:relative}
+  .mhome .ccard .cbadge{position:absolute;top:9px;left:9px;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:4px 11px;font-size:.68rem;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .mhome .ccard .cd{width:7px;height:7px;border-radius:50%;background:#2FBF71}
+  .mhome .ccard .cb{padding:12px 13px 14px}
+  .mhome .ccard .ct{font-weight:700;font-size:.96rem;letter-spacing:-.01em}
+  .mhome .ccard .cs{font-size:.75rem;color:#6C6C73;margin-top:2px}
+  .mhome .ccard .cmet{display:flex;align-items:baseline;gap:9px;margin-top:10px}
+  .mhome .ccard .cmet b{color:#199a5a;font-size:1rem}
+  .mhome .ccard .cmet span{font-size:.74rem;color:#6C6C73}
+  /* stats refinados */
+  .mhome .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .mhome .stat{background:linear-gradient(162deg,#181820,#111116);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px 13px 13px;position:relative;overflow:hidden}
+  .mhome .stat::before{content:"";position:absolute;top:0;left:14px;right:14px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(249,115,22,.55),transparent)}
+  .mhome .stat .n{font-family:"Playfair Display",Georgia,serif;font-size:1.62rem;font-weight:700;line-height:1;letter-spacing:-.01em}
+  .mhome .stat .l{font-size:.65rem;color:#8B8B94;margin-top:6px;line-height:1.3}
+  .mhome .stat .sem{display:flex;align-items:center;gap:5px;margin-top:8px}.mhome .stat .sem b{font-size:.98rem;font-weight:800}
+  .mhome .stat .sd{width:9px;height:9px;border-radius:50%}
   /* módulos */
   .mhome .mods{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
   .mhome .mod{display:flex;flex-direction:column;align-items:center;gap:7px;background:#141419;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:13px 6px;text-decoration:none}
@@ -236,6 +252,32 @@
 </style>
 <style id="appcss">
 .appbar,.appsheet{display:none}
+/* ===== modal de detalhe da casa (usado na home e na lista) ===== */
+.hmodal{display:none;position:fixed;inset:0;z-index:9700;background:rgba(6,8,14,.62);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.hmodal.open{display:block}
+@keyframes houseUp{from{transform:translateY(7%);opacity:.5}to{transform:translateY(0);opacity:1}}
+.hmodal .hcard{position:absolute;left:0;right:0;bottom:0;max-width:600px;margin:0 auto;max-height:92vh;overflow-y:auto;background:#15151B;color:#F1F1EE;border-radius:24px 24px 0 0;border-top:1px solid rgba(255,255,255,.1);font-family:"Inter",system-ui,sans-serif;box-shadow:0 -20px 60px -20px rgba(0,0,0,.7);animation:houseUp .24s ease}
+.hmodal .hhead{position:sticky;top:0;background:#15151B;display:flex;align-items:center;gap:10px;padding:15px 18px 12px;border-bottom:1px solid rgba(255,255,255,.07);z-index:2}
+.hmodal .hv{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:.8rem;padding:6px 13px;border-radius:999px}
+.hmodal .hv .d{width:8px;height:8px;border-radius:50%}
+.hmodal .hx{margin-left:auto;width:34px;height:34px;border-radius:50%;background:#242430;border:0;color:#9A9AA2;font-size:.85rem;cursor:pointer}
+.hmodal .hbody{padding:16px 18px 26px}
+.hmodal .haddr{font-weight:800;font-size:1.25rem;letter-spacing:-.01em;line-height:1.2}
+.hmodal .hsub{color:#9A9AA2;font-size:.85rem;margin-top:4px}
+.hmodal .hprice{font-size:1.7rem;font-weight:800;margin:15px 0 1px}
+.hmodal .hrent{color:#9A9AA2;font-size:.83rem}
+.hmodal .hgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:16px 0}
+.hmodal .hstat{background:#1B1B22;border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:11px 13px}
+.hmodal .hstat .k{font-size:.63rem;text-transform:uppercase;letter-spacing:.04em;color:#8B8B94;font-weight:600}
+.hmodal .hstat .v{font-size:1.1rem;font-weight:800;margin-top:3px}
+.hmodal .hstat .v.g{color:#3FB56B}.hmodal .hstat .v.y{color:#D3A53A}.hmodal .hstat .v.r{color:#DB5B4E}
+.hmodal .htrig{background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.3);border-radius:12px;padding:11px 13px;font-size:.84rem;color:#FDBA74;margin-bottom:12px}
+.hmodal .hnote{font-size:.85rem;color:#C7C7CC;line-height:1.5;margin-bottom:12px}
+.hmodal .hchart{background:#17171E;border:1px dashed rgba(255,255,255,.15);border-radius:13px;padding:15px;text-align:center;color:#8B8B94;font-size:.78rem;margin-bottom:14px}
+.hmodal .hcta{display:flex;gap:10px}
+.hmodal .hcta a{flex:1;text-align:center;padding:13px;border-radius:12px;font-weight:700;font-size:.88rem;text-decoration:none}
+.hmodal .hcta .primary{background:#FB923C;color:#141419}
+.hmodal .hcta .ghost{background:#1B1B22;border:1px solid rgba(255,255,255,.1);color:#E7E7EA}
 @media(max-width:640px){
   /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) ===== */
   :root{
@@ -304,20 +346,30 @@
 
   <div class="hero">
     <div class="topbar"><span class="loc">📍 New Jersey</span><a class="ic-btn" href="lista.html">🔍</a></div>
-    <div class="herobrand"><div class="nm">Projeto Casas</div><small>oportunidades · nj</small></div>
+    <div class="herobrand"><div class="nm">House</div><small>projeto casas · new jersey</small></div>
   </div>
 
-  <a class="featured" href="lista.html">
-    <div class="feat-row">
-      <div class="feat-img"></div>
-      <div class="feat-ct">
-        <span class="status"><span class="d"></span> Comprar</span>
-        <div class="feat-title">126 Scofield St</div>
-        <div class="feat-sub">2-family · Newark · cap 7,1%</div>
-        <div class="feat-nested"><span class="av"></span><span><b>Motor de underwriting</b><small>veredito verde · +$132/mês</small></span></div>
-      </div>
-    </div>
-  </a>
+  <section class="sec carou-sec">
+    <div class="sec-h"><h2>Melhores oportunidades</h2><a href="lista.html">ver todas</a></div>
+    <div class="carousel" id="carousel"></div>
+  </section>
+  <script>
+  var HG=[
+   {v:"g",address:"149 Pomona Ave, Newark, NJ",city:"Newark",type:"single-family",units:1,beds:"3",baths:"1.5",price:175000,rent:2600,cap:9.9,cfm:524,cfu:524,dscr:1.57,trig:215813,note:"MLS 4037555. Single-family, o menor ticket verde da lista.",src:"https://www.houzeo.com/homes-for-sale/new-jersey/newark/single-family-homes-for-sale"},
+   {v:"g",address:"407 Jefferson Ave, Elizabeth, NJ 07201",city:"Elizabeth",type:"4-family",units:4,beds:"11",baths:"4.5",price:690000,rent:8800,cap:9.1,cfm:1640,cfu:410,dscr:1.45,trig:804277,note:"Preço $690k e 11BR/4.5BA confirmados no Movoto.",src:"https://www.movoto.com/elizabeth-nj/multi-family/"},
+   {v:"g",address:"25 Greenville Ave, Jersey City, NJ 07305",city:"Jersey City",type:"4-family (quadplex)",units:4,beds:"10",baths:"5.5",price:850000,rent:10000,cap:8.5,cfm:1533,cfu:383,dscr:1.34,trig:931306,note:"2-family + unidade bônus + porão habitável = 4 unidades (MLS 24029369).",src:"https://www.redfin.com/NJ/Jersey-City/25-Greenville-Ave-07305/home/36534671"},
+   {v:"g",address:"65 38th St, Irvington, NJ 07111",city:"Irvington",type:"3-family",units:3,beds:"9",baths:"3",price:460000,rent:5700,cap:8.5,cfm:846,cfu:282,dscr:1.35,trig:504509,note:"3-family, cada unidade 3BR; garagem + estacionamento p/ 6 carros.",src:"https://www.zillow.com/homedetails/65-38th-St-Irvington-NJ-07111/38663638_zpid/"},
+   {v:"g",address:"12 Rutgers Dr #12, Newark, NJ",city:"Newark",type:"condo/townhouse",units:1,beds:"3",baths:"2.5",price:209000,rent:2600,cap:8.2,cfm:329,cfu:329,dscr:1.30,trig:222574,note:"Menor ticket de entrada (condo em Society Hill).",src:"https://www.bhsusa.com/for-sale/new-jersey/essex-county/newark-city/society-hill/12-rutgers-dr-12-newark-city-nj-07103/4010259-4558409"}
+  ];
+  (function(){var c=document.getElementById('carousel');if(!c)return;
+   var IMG=['img/mf1.png','img/mf2.png','img/mf4.png','img/mf3.png','img/lux3.png'];
+   c.innerHTML=HG.map(function(h,i){return '<a class="ccard" onclick="openHouse(HG['+i+'])">'
+    +'<div class="ci" style="background-image:url('+IMG[i]+')"><span class="cbadge"><span class="cd"></span> Comprar</span></div>'
+    +'<div class="cb"><div class="ct">'+h.address.split(',')[0]+'</div>'
+    +'<div class="cs">'+h.city+' · '+h.type+'</div>'
+    +'<div class="cmet"><b>cap '+(''+h.cap).replace('.',',')+'%</b><span>+US$ '+h.cfm.toLocaleString('pt-BR')+'/mês</span></div></div></a>';}).join('');
+  })();
+  </script>
 
   <section class="sec">
     <div class="stats">
@@ -515,6 +567,42 @@
   if(x)x.addEventListener('click',close);
   if(sheet)sheet.addEventListener('click',function(e){if(e.target===sheet)close();});
 })();
+</script>
+<div class="hmodal" id="hmodal" onclick="if(event.target===this)closeHouse()"><div class="hcard">
+  <div class="hhead" id="hhead"></div>
+  <div class="hbody" id="hbody"></div>
+</div></div>
+<script>
+window.closeHouse=function(){var m=document.getElementById('hmodal');if(m)m.classList.remove('open');};
+window.openHouse=function(h){
+  var VL={g:'Comprar',y:'Observar',r:'Passar'},VC={g:'#3FB56B',y:'#D3A53A',r:'#DB5B4E'};
+  var v=h.v||'g';
+  var money=function(n){return (n==null||n==='')?'—':'US$ '+Math.round(n).toLocaleString('pt-BR');};
+  var cls=function(x,g,y){return x==null?'':(x>=g?'g':(x>=y?'y':'r'));};
+  var esc=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  var dec=function(x){return x==null?'—':(''+x).replace('.',',');};
+  document.getElementById('hhead').innerHTML=
+    '<span class="hv" style="background:'+VC[v]+'22;color:'+VC[v]+'"><span class="d" style="background:'+VC[v]+'"></span>'+VL[v]+'</span>'
+    +'<button class="hx" onclick="closeHouse()">✕</button>';
+  var specs=[h.type,h.beds&&h.beds+' bd',h.baths&&h.baths+' ba',h.units&&h.units+' un'].filter(Boolean).map(esc).join(' · ');
+  var trig=(v!=='g'&&h.trig)?'<div class="htrig">🎯 Vira 🟢 verde se o preço ≤ '+money(h.trig)+'</div>':'';
+  document.getElementById('hbody').innerHTML=
+    '<div class="haddr">'+esc(h.address)+'</div>'
+    +'<div class="hsub">'+[esc(h.city),specs].filter(Boolean).join(' · ')+'</div>'
+    +'<div class="hprice">'+money(h.price)+'</div>'
+    +(h.rent?'<div class="hrent">aluguel estimado '+money(h.rent)+'/mês</div>':'')
+    +'<div class="hgrid">'
+    +'<div class="hstat"><div class="k">Cap rate</div><div class="v '+cls(h.cap,6,4)+'">'+(h.cap!=null?dec(h.cap)+'%':'—')+'</div></div>'
+    +'<div class="hstat"><div class="k">Cash flow/mês</div><div class="v '+(h.cfm>=100?'g':(h.cfm>=-50?'y':'r'))+'">'+money(h.cfm)+'</div></div>'
+    +'<div class="hstat"><div class="k">CF / unidade</div><div class="v">'+money(h.cfu)+'</div></div>'
+    +'<div class="hstat"><div class="k">DSCR</div><div class="v '+cls(h.dscr,1.2,1)+'">'+dec(h.dscr)+'</div></div>'
+    +'</div>'
+    +trig
+    +(h.note?'<div class="hnote">'+esc(h.note)+'</div>':'')
+    +'<div class="hchart">📉 Histórico de queda de preço — em breve (precisa do dado por casa)</div>'
+    +'<div class="hcta">'+(h.src?'<a class="primary" href="'+esc(h.src)+'" target="_blank" rel="noopener">Ver anúncio ↗</a>':'')+'<a class="ghost" href="analisador.html">Analisar deal</a></div>';
+  document.getElementById('hmodal').classList.add('open');
+};
 </script>
 <!--/APPBAR-->
 </body>

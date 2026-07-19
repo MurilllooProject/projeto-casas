@@ -6,9 +6,12 @@
 --buy:#2FBF71;--watch:#F5B23F;--pass:#F0563E;--mono:ui-monospace,Menlo,Consolas,monospace;}
 *{box-sizing:border-box} html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,Segoe UI,Roboto,sans-serif}
 #map{position:absolute;inset:0;z-index:1;background:var(--bg)}
-.pin{width:18px;height:18px;border-radius:50%;background:var(--c);border:2.5px solid rgba(255,255,255,.85);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 30%,transparent),0 2px 6px rgba(0,0,0,.5);cursor:pointer}
-.pin.star{width:24px;height:24px;box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 30%,transparent),0 0 0 7px rgba(51,211,194,.55),0 2px 8px rgba(0,0,0,.6)}
-.pin.star::after{content:"✅";position:absolute;top:-14px;left:9px;font-size:14px;filter:drop-shadow(0 1px 2px #000)}
+.pin{position:relative;width:18px;height:18px;border-radius:50%;background:var(--c);border:2.5px solid rgba(255,255,255,.85);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 30%,transparent),0 2px 6px rgba(0,0,0,.5);cursor:pointer}
+.pin.star{width:22px;height:22px;border-color:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 34%,transparent),0 0 14px 2px color-mix(in srgb,var(--c) 70%,transparent),0 2px 8px rgba(0,0,0,.6)}
+.pin.star::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid var(--c);animation:pulseRing 1.7s ease-out infinite;pointer-events:none}
+@keyframes pulseRing{0%{transform:scale(.72);opacity:.85}70%{opacity:0}100%{transform:scale(1.95);opacity:0}}
+.pdot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--buy);animation:pulseDot 1.7s ease-out infinite}
+@keyframes pulseDot{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--buy) 60%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
 .hud{position:absolute;z-index:1000;top:62px;left:14px;right:14px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;pointer-events:none}
 .hud>*{pointer-events:auto}
 .brand{background:rgba(22,30,44,.92);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
@@ -148,6 +151,32 @@ a{color:inherit}
 </style>
 <style id="appcss">
 .appbar,.appsheet{display:none}
+/* ===== modal de detalhe da casa (usado na home e na lista) ===== */
+.hmodal{display:none;position:fixed;inset:0;z-index:9700;background:rgba(6,8,14,.62);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.hmodal.open{display:block}
+@keyframes houseUp{from{transform:translateY(7%);opacity:.5}to{transform:translateY(0);opacity:1}}
+.hmodal .hcard{position:absolute;left:0;right:0;bottom:0;max-width:600px;margin:0 auto;max-height:92vh;overflow-y:auto;background:#15151B;color:#F1F1EE;border-radius:24px 24px 0 0;border-top:1px solid rgba(255,255,255,.1);font-family:"Inter",system-ui,sans-serif;box-shadow:0 -20px 60px -20px rgba(0,0,0,.7);animation:houseUp .24s ease}
+.hmodal .hhead{position:sticky;top:0;background:#15151B;display:flex;align-items:center;gap:10px;padding:15px 18px 12px;border-bottom:1px solid rgba(255,255,255,.07);z-index:2}
+.hmodal .hv{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:.8rem;padding:6px 13px;border-radius:999px}
+.hmodal .hv .d{width:8px;height:8px;border-radius:50%}
+.hmodal .hx{margin-left:auto;width:34px;height:34px;border-radius:50%;background:#242430;border:0;color:#9A9AA2;font-size:.85rem;cursor:pointer}
+.hmodal .hbody{padding:16px 18px 26px}
+.hmodal .haddr{font-weight:800;font-size:1.25rem;letter-spacing:-.01em;line-height:1.2}
+.hmodal .hsub{color:#9A9AA2;font-size:.85rem;margin-top:4px}
+.hmodal .hprice{font-size:1.7rem;font-weight:800;margin:15px 0 1px}
+.hmodal .hrent{color:#9A9AA2;font-size:.83rem}
+.hmodal .hgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:16px 0}
+.hmodal .hstat{background:#1B1B22;border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:11px 13px}
+.hmodal .hstat .k{font-size:.63rem;text-transform:uppercase;letter-spacing:.04em;color:#8B8B94;font-weight:600}
+.hmodal .hstat .v{font-size:1.1rem;font-weight:800;margin-top:3px}
+.hmodal .hstat .v.g{color:#3FB56B}.hmodal .hstat .v.y{color:#D3A53A}.hmodal .hstat .v.r{color:#DB5B4E}
+.hmodal .htrig{background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.3);border-radius:12px;padding:11px 13px;font-size:.84rem;color:#FDBA74;margin-bottom:12px}
+.hmodal .hnote{font-size:.85rem;color:#C7C7CC;line-height:1.5;margin-bottom:12px}
+.hmodal .hchart{background:#17171E;border:1px dashed rgba(255,255,255,.15);border-radius:13px;padding:15px;text-align:center;color:#8B8B94;font-size:.78rem;margin-bottom:14px}
+.hmodal .hcta{display:flex;gap:10px}
+.hmodal .hcta a{flex:1;text-align:center;padding:13px;border-radius:12px;font-weight:700;font-size:.88rem;text-decoration:none}
+.hmodal .hcta .primary{background:#FB923C;color:#141419}
+.hmodal .hcta .ghost{background:#1B1B22;border:1px solid rgba(255,255,255,.1);color:#E7E7EA}
 @media(max-width:640px){
   /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) ===== */
   :root{
@@ -226,7 +255,7 @@ a{color:inherit}
 <div class="legend"><div><span class="dot" style="background:var(--buy)"></span>Comprar</div>
 <div><span class="dot" style="background:var(--watch)"></span>Observar (gatilho)</div>
 <div><span class="dot" style="background:var(--pass)"></span>Passar</div>
-<div><span class="star-note">✅ Promissora</span></div>
+<div><span class="pdot"></span> <span class="star-note">Promissora · melhor aposta</span></div>
 <div style="color:var(--dim);margin-top:5px;font-size:.7rem">clique num pin → painel completo</div>
 <div class="lsep"></div><div class="lt">Camadas (orientação dos hubs)</div>
 <div class="lchip" data-l="flood"><span class="lc" style="background:#3B82F6"></span>🌊 Flood / alagamento</div>
@@ -261,7 +290,7 @@ function openPanel(d){
  const trig=(d.sem!=='buy'&&d.gatilho)?`<div class="trig">🎯 vira 🟢 verde se o preço ≤ ${money(d.gatilho)}</div>`:'';
  document.getElementById('pcontent').innerHTML = gal + `<div class="pbody">
   <span class="st" style="color:${COLOR[d.sem]};background:color-mix(in srgb,${COLOR[d.sem]} 15%,transparent)">${LABEL[d.sem]}</span>
-  ${d.star?'<span style="color:var(--accent);font-weight:700;margin-left:8px">✅ Promissora</span>':''}
+  ${d.star?'<span style="color:var(--accent);font-weight:700;margin-left:8px">★ Promissora · melhor aposta</span>':''}
   <h2>${esc(d.addr)}</h2><div class="loc">${esc(d.tipo)}${d.ward?' · '+esc(d.ward):''}</div>
   <div class="price">${money(d.price)}</div>
   <div class="specs">${[d.beds&&d.beds+' bd',d.baths&&d.baths+' ba',d.sqft&&d.sqft+' sqft',d.year&&('ano '+d.year)].filter(Boolean).map(esc).join(' · ')}</div>
@@ -301,8 +330,7 @@ function cityPopup(ct){const k=countFor(ct.name);
  return `<div class="cpop"><div class="t">${ct.name} <span class="tag">${ct.county}</span></div>`+
   `<div class="m">eff tax <b>${ct.tax}</b> · ${ct.tese}</div><div class="n2">${ct.note}</div>`+
   `<div class="cs" style="color:${k?'var(--accent)':'var(--dim)'}">${k?('🏠 '+k+' casas mapeadas'):'listagens em breve — hub de pesquisa pronto'}</div></div>`;}
-const cityMarkers=CITIES.map(ct=>{const m=L.marker([ct.lat,ct.lng],{icon:cityIcon(ct,false),zIndexOffset:600});
- m._ct=ct; m.bindPopup(cityPopup(ct)); m.on('click',()=>selectCity(ct.name)); return m.addTo(map);});
+const cityMarkers=[]; // marcadores de cidade removidos — mapa mais limpo (cidade só pelo filtro/dropdown)
 function refreshCityIcons(){cityMarkers.forEach(m=>m.setIcon(cityIcon(m._ct,m._ct.name===selectedCity)));}
 
 function refreshCounts(){
@@ -312,7 +340,7 @@ function refreshCounts(){
   `<span><span class="dot" style="background:var(--buy)"></span><b>${c.buy}</b></span>`+
   `<span><span class="dot" style="background:var(--watch)"></span><b>${c.watch}</b></span>`+
   `<span><span class="dot" style="background:var(--pass)"></span><b>${c.pass}</b></span>`+
-  `<span class="star-note">✅ <b>${st}</b></span>`
+  `<span class="star-note">★ <b>${st}</b></span>`
  ):`<span style="color:var(--dim);font-size:.72rem">nenhuma casa puxada ainda aqui — hub de pesquisa pronto</span>`;
 }
 function selectCity(name){
@@ -415,6 +443,42 @@ document.addEventListener('click',function(e){
   if(x)x.addEventListener('click',close);
   if(sheet)sheet.addEventListener('click',function(e){if(e.target===sheet)close();});
 })();
+</script>
+<div class="hmodal" id="hmodal" onclick="if(event.target===this)closeHouse()"><div class="hcard">
+  <div class="hhead" id="hhead"></div>
+  <div class="hbody" id="hbody"></div>
+</div></div>
+<script>
+window.closeHouse=function(){var m=document.getElementById('hmodal');if(m)m.classList.remove('open');};
+window.openHouse=function(h){
+  var VL={g:'Comprar',y:'Observar',r:'Passar'},VC={g:'#3FB56B',y:'#D3A53A',r:'#DB5B4E'};
+  var v=h.v||'g';
+  var money=function(n){return (n==null||n==='')?'—':'US$ '+Math.round(n).toLocaleString('pt-BR');};
+  var cls=function(x,g,y){return x==null?'':(x>=g?'g':(x>=y?'y':'r'));};
+  var esc=function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  var dec=function(x){return x==null?'—':(''+x).replace('.',',');};
+  document.getElementById('hhead').innerHTML=
+    '<span class="hv" style="background:'+VC[v]+'22;color:'+VC[v]+'"><span class="d" style="background:'+VC[v]+'"></span>'+VL[v]+'</span>'
+    +'<button class="hx" onclick="closeHouse()">✕</button>';
+  var specs=[h.type,h.beds&&h.beds+' bd',h.baths&&h.baths+' ba',h.units&&h.units+' un'].filter(Boolean).map(esc).join(' · ');
+  var trig=(v!=='g'&&h.trig)?'<div class="htrig">🎯 Vira 🟢 verde se o preço ≤ '+money(h.trig)+'</div>':'';
+  document.getElementById('hbody').innerHTML=
+    '<div class="haddr">'+esc(h.address)+'</div>'
+    +'<div class="hsub">'+[esc(h.city),specs].filter(Boolean).join(' · ')+'</div>'
+    +'<div class="hprice">'+money(h.price)+'</div>'
+    +(h.rent?'<div class="hrent">aluguel estimado '+money(h.rent)+'/mês</div>':'')
+    +'<div class="hgrid">'
+    +'<div class="hstat"><div class="k">Cap rate</div><div class="v '+cls(h.cap,6,4)+'">'+(h.cap!=null?dec(h.cap)+'%':'—')+'</div></div>'
+    +'<div class="hstat"><div class="k">Cash flow/mês</div><div class="v '+(h.cfm>=100?'g':(h.cfm>=-50?'y':'r'))+'">'+money(h.cfm)+'</div></div>'
+    +'<div class="hstat"><div class="k">CF / unidade</div><div class="v">'+money(h.cfu)+'</div></div>'
+    +'<div class="hstat"><div class="k">DSCR</div><div class="v '+cls(h.dscr,1.2,1)+'">'+dec(h.dscr)+'</div></div>'
+    +'</div>'
+    +trig
+    +(h.note?'<div class="hnote">'+esc(h.note)+'</div>':'')
+    +'<div class="hchart">📉 Histórico de queda de preço — em breve (precisa do dado por casa)</div>'
+    +'<div class="hcta">'+(h.src?'<a class="primary" href="'+esc(h.src)+'" target="_blank" rel="noopener">Ver anúncio ↗</a>':'')+'<a class="ghost" href="analisador.html">Analisar deal</a></div>';
+  document.getElementById('hmodal').classList.add('open');
+};
 </script>
 <!--/APPBAR-->
 </body></html>
