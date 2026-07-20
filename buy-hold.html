@@ -324,6 +324,11 @@ a{color:inherit}
 .hmodal .mbar{display:flex;height:9px;border-radius:5px;overflow:hidden;margin-bottom:11px;
   background:rgba(255,255,255,.06)}
 .hmodal .mbar i{display:block}
+.hmodal .mli b i{font-style:normal;color:#75757E;font-weight:500;font-size:.86em}
+.hmodal .malerta{background:rgba(219,91,78,.1);border:1px solid rgba(219,91,78,.32);
+  border-radius:11px;padding:11px 13px;margin-top:11px;font-size:.75rem;line-height:1.6;
+  color:#E8A79F}
+.hmodal .malerta b{color:#FFC8C0}
 /* painel de cidade do mapa (só existe em mapa.html, tema escuro) */
 #cmerc{margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.09)}
 #cmerc:empty{display:none;margin:0;padding:0;border:0}
@@ -768,8 +773,35 @@ window.blocoMercado=function(h){
       +'O semáforo continua medindo risco: valorização não paga parcela em mês vago.</div></div>';
   }
 
+  // ---- registro oficial do municipio (MOD-IV / NJ OGIS) ----
+  var reg='';
+  var temReg=h.aval||h.vend||h.anoreg||h.dwell||h.ppsf;
+  if(temReg){
+    var ri=[];
+    if(h.ppsf)  ri.push(['Preço por pé²',m2(h.ppsf)]);
+    if(h.aval)  ri.push(['Avaliação do município',m2(h.aval)
+                  +(price?' <b class="'+(h.aval<price?'r':'g')+'">'+sin((h.aval/price-1)*100)+'</b>':'')]);
+    if(h.vend)  ri.push(['Última venda',m2(h.vend)+(h.vdata?' <i>'+h.vdata.replace('-','/')+'</i>':'')]);
+    if(h.anoreg)ri.push(['Ano de construção',h.anoreg]);
+    if(h.taxr||h.tax) ri.push(['Imposto do ano',m2(h.taxr||h.tax)]);
+    // conflito de unidades: o anuncio diz X, a prefeitura registra Y. Em NJ
+    // isso costuma ser unidade extra sem legalizar — nao da pra alugar nem
+    // segurar. E o nosso "por unidade" divide pelo numero do anuncio.
+    var alerta = (h.dwell&&h.dwell!==units)
+      ? '<div class="malerta">O anúncio diz <b>'+units+' unidade'+(units>1?'s':'')+'</b>, '
+        +'o registro do município diz <b>'+h.dwell+'</b>. Em NJ isso costuma ser unidade '
+        +'a mais sem legalizar — não se aluga legalmente nem entra no seguro. '
+        +'Nossos números por unidade dividem por '+units+'; se o certo for '+h.dwell+', '
+        +'o cash flow por porta é outro. Confirmar com o assessor antes de ofertar.</div>'
+      : '';
+    reg='<div class="mbloco"><div class="mh">Registro do município <span>oficial</span></div>'
+      +'<div class="mlist">'+ri.map(function(x){
+          return '<div class="mli"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')
+      +'</div>'+alerta+'</div>';
+  }
+
   var c=MERCADO[h.city];
-  if(!c) return fin+ret;
+  if(!c) return fin+ret+reg;
   var pu=Math.round(price/units), dif=c.zhvi?Math.round((pu/c.zhvi-1)*100):null;
   var itens=[];
   if(c.v5!=null)  itens.push(['Valorização 5 anos',sin(c.v5)+' ao ano']);
@@ -784,7 +816,7 @@ window.blocoMercado=function(h){
     +'<div class="mlist">'+itens.map(function(i){
         return '<div class="mli"><span>'+i[0]+'</span><b>'+i[1]+'</b></div>';}).join('')
     +'</div></div>';
-  return fin+ret+merc;
+  return fin+ret+reg+merc;
 };
 
 // Informação da ÁREA — usada no painel de cidade do mapa. Uma linha por dado,
