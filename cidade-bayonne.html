@@ -252,6 +252,16 @@ a{color:inherit}
 .hmodal .mli span{color:#8B8B94}
 .hmodal .mli b{color:#EDEDF1;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
 .hmodal .mli b.g{color:#3FB56B}.hmodal .mli b.r{color:#DB5B4E}
+.hmodal .mli b i{color:#75757E;font-style:normal;font-weight:600;font-size:.86em;margin-left:3px}
+.hmodal .mli span em{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px}
+.hmodal .mli.tot{border-top:1px solid rgba(255,255,255,.09);margin-top:8px;padding-top:8px}
+.hmodal .mroi{font-size:2rem;font-weight:800;letter-spacing:-.02em;line-height:1;color:#fff;
+  margin-bottom:12px;font-variant-numeric:tabular-nums}
+.hmodal .mroi small{display:block;font-size:.68rem;font-weight:500;color:#8B8B94;
+  letter-spacing:0;margin-top:5px}
+.hmodal .mbar{display:flex;height:9px;border-radius:5px;overflow:hidden;margin-bottom:11px;
+  background:rgba(255,255,255,.06)}
+.hmodal .mbar i{display:block}
 /* painel de cidade do mapa (só existe em mapa.html, tema escuro) */
 #cmerc{margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.09)}
 #cmerc:empty{display:none;margin:0;padding:0;border:0}
@@ -625,6 +635,30 @@ window.finan=function(price,units,down){
   return {down:down,entrada:price*down,loan:loan,taxa:taxa,pmt:pmt,ano:pmt*12};
 };
 
+// Retorno TOTAL projetado. O semáforo mede só cash flow, que nos verdes da
+// carteira é ~25% do retorno — os outros ~75% são amortização e valorização.
+// Aqui o retorno é a posição final (equity + cash flow acumulado) sobre a
+// entrada, anualizada. Dividir o GANHO pela entrada subestima: a entrada volta
+// junto com o ganho no fim.
+window.retorno=function(h,down,anos){
+  anos=anos||5;
+  var price=h.price, units=h.units||1, c=MERCADO[h.city];
+  if(!price||!c||c.v5==null) return null;
+  var noi=NOI[h.address||h.addr];
+  if(noi==null&&h.cap!=null) noi=h.cap/100*price;
+  if(noi==null) return null;
+  var f=window.finan(price,units,down);
+  if(!f||f.entrada<=0) return null;
+  var r=f.taxa/100/12, n=360, k=anos*12;
+  var saldo=f.loan*(Math.pow(1+r,n)-Math.pow(1+r,k))/(Math.pow(1+r,n)-1);
+  var valor=price*Math.pow(1+c.v5/100,anos);
+  var cf=(noi-f.ano)*anos;                 // pode ser negativo
+  var fim=(valor-saldo)+cf;                // equity + o que entrou no bolso
+  return {anos:anos,down:f.down,entrada:f.entrada,cf:cf,amort:f.loan-saldo,
+          val:valor-price,fim:fim,cresc:c.v5,
+          roi:fim>0?(Math.pow(fim/f.entrada,1/anos)-1)*100:null};
+};
+
 window.blocoMercado=function(h){
   var price=h.price, units=h.units||1;
   if(!price) return '';
@@ -635,6 +669,9 @@ window.blocoMercado=function(h){
   var pc=function(n,c){return (n==null?'—':(n<0?'−':'')+Math.abs(n).toFixed(c==null?1:c).replace('.',',')+'%');};
   var sin=function(n){return n==null?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(1).replace('.',',')+'%';};
 
+  // dentro da tabela o "US$ " repetido 9 vezes é o que estourava a largura no
+  // celular e cortava a coluna Sobra/mês. A moeda vai no título do bloco.
+  var m3=function(n){return Math.round(n).toLocaleString('pt-BR');};
   function cenario(down,rot,destaque){
     var f=window.finan(price,units,down); if(!f) return '';
     var cf=noi!=null? (noi-f.ano)/12 : null;
@@ -642,9 +679,9 @@ window.blocoMercado=function(h){
     var cor=cf==null?'':(cf>=100?'g':(cf>=-50?'y':'r'));
     return '<tr'+(destaque?' class="on"':'')+'>'
       +'<th>'+rot+'<span>'+pc(f.down*100,0)+' · '+pc(f.taxa,2)+'</span></th>'
-      +'<td>'+m2(f.entrada)+'</td>'
-      +'<td>'+m2(f.pmt)+'</td>'
-      +'<td class="'+cor+'">'+(cf==null?'—':m2(cf))+'</td>'
+      +'<td>'+m3(f.entrada)+'</td>'
+      +'<td>'+m3(f.pmt)+'</td>'
+      +'<td class="'+cor+'">'+(cf==null?'—':m3(cf))+'</td>'
       +'<td class="dsc">'+(ds==null?'—':ds.toFixed(2).replace('.',','))+'</td></tr>';
   }
 
@@ -657,7 +694,8 @@ window.blocoMercado=function(h){
     ? 'Mínimo de 25% porque tem '+units+' unidades — imóvel de investimento de 2 a 4 unidades não desce disso.'
     : 'Mínimo de 15% por ser 1 unidade. Abaixo de 25% de entrada o banco cobra taxa maior, já refletido acima.';
 
-  var fin='<div class="mbloco"><div class="mh">Financiamento <span>estimativa</span></div>'
+  var fin='<div class="mbloco"><div class="mh">Financiamento <span>estimativa</span>'
+    +'<span>US$</span></div>'
     +'<div class="mrolo"><table class="mtab"><thead><tr><th>Cenário</th><th>Entrada</th>'
     +'<th>Parcela/mês</th><th>Sobra/mês</th><th class="dsc">DSCR</th></tr></thead><tbody>'
     +linhas+'</tbody></table></div>'
@@ -666,8 +704,38 @@ window.blocoMercado=function(h){
     +'da sua carta de aprovação. "Sobra/mês" já desconta imposto, seguro, vacância, '
     +'administração e manutenção.</div></div>';
 
+  // ---- retorno total projetado ----
+  var ret='', R=window.retorno(h,min);
+  if(R&&R.roi!=null){
+    var partes=[['Cash flow',R.cf,'#3FB56B'],['Amortização',R.amort,'#6E8FD6'],
+                ['Valorização',R.val,'#C9A227']];
+    var soma=partes.reduce(function(s,p){return s+Math.max(0,p[1]);},0);
+    var barra=soma>0? '<div class="mbar">'+partes.map(function(p){
+      return p[1]<=0?'':'<i style="width:'+(p[1]/soma*100).toFixed(1)+'%;background:'+p[2]+'"></i>';
+    }).join('')+'</div>' : '';
+    var det=partes.map(function(p){
+      var pc2=soma>0&&p[1]>0? Math.round(p[1]/soma*100)+'%' : '—';
+      return '<div class="mli"><span><em style="background:'+p[2]+'"></em>'+p[0]+'</span>'
+        +'<b class="'+(p[1]<0?'r':'')+'">'+m2(p[1])+' <i>'+pc2+'</i></b></div>';
+    }).join('');
+    // o mesmo imóvel com mais entrada rende menos ao ano: alavancagem é o que
+    // muda, não o imóvel. Mostrar lado a lado evita ler o número como "o" retorno.
+    var outros=[min,.25,.40].filter(function(v,i,a){return a.indexOf(v)===i;})
+      .map(function(dn){var x=window.retorno(h,dn);
+        return x&&x.roi!=null? pc(dn*100,0)+' → <b>'+pc(x.roi)+'/ano</b>' : '';})
+      .filter(Boolean).join(' · ');
+    ret='<div class="mbloco"><div class="mh">Retorno projetado · '+R.anos+' anos <span>projeção</span></div>'
+      +'<div class="mroi">'+pc(R.roi)+'<small>ao ano, com entrada de '+m2(R.entrada)+'</small></div>'
+      +barra+'<div class="mlist">'+det+'</div>'
+      +'<div class="mli tot"><span>Posição no fim</span><b>'+m2(R.fim)+'</b></div>'
+      +'<div class="mnota">Por entrada: '+outros+'.<br>'
+      +'Valorização projetada pela média de 5 anos de '+h.city+' ('+sin(R.cresc)+' ao ano) — '
+      +'é projeção, não promessa. Não desconta custo de compra e venda nem imposto sobre ganho. '
+      +'O semáforo continua medindo risco: valorização não paga parcela em mês vago.</div></div>';
+  }
+
   var c=MERCADO[h.city];
-  if(!c) return fin;
+  if(!c) return fin+ret;
   var pu=Math.round(price/units), dif=c.zhvi?Math.round((pu/c.zhvi-1)*100):null;
   var itens=[];
   if(c.v5!=null)  itens.push(['Valorização 5 anos',sin(c.v5)+' ao ano']);
@@ -682,7 +750,7 @@ window.blocoMercado=function(h){
     +'<div class="mlist">'+itens.map(function(i){
         return '<div class="mli"><span>'+i[0]+'</span><b>'+i[1]+'</b></div>';}).join('')
     +'</div></div>';
-  return fin+merc;
+  return fin+ret+merc;
 };
 
 // Informação da ÁREA — usada no painel de cidade do mapa. Uma linha por dado,
