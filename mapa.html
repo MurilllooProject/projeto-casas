@@ -38,6 +38,9 @@ html,body{margin:0;height:100%;height:100dvh;background:var(--bg);color:var(--in
 .legend div{margin:3px 0}
 .lsep{height:1px;background:var(--line);margin:9px 0}
 .lt{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:5px}
+/* os POIs só existem nas tiles a partir do zoom ~14; sem este aviso, marcar a
+   camada na visão da cidade não mostra nada e parece defeito */
+.ldica{font-size:.66rem;color:#74747C;margin:-2px 0 6px}
 .lchip{display:flex!important;align-items:center;gap:7px;cursor:pointer;color:var(--dim);padding:3px 0;user-select:none}
 .lchip:hover{color:var(--ink)} .lchip.on{color:var(--ink);font-weight:700}
 .lc{width:11px;height:11px;border-radius:3px;opacity:.45;flex-shrink:0} .lchip.on .lc{opacity:1}
@@ -247,12 +250,15 @@ body.cardopen .hud{opacity:0;pointer-events:none}
 .chip.on{background:#F0A93B!important;color:#141419!important;border-color:#F0A93B!important}
 
 /* ===== legenda: some atrás de um botão ===== */
-.legbtn{position:absolute;z-index:900;bottom:18px;left:14px;width:46px;height:46px;border-radius:50%;cursor:pointer;
+/* fixed, não absolute: o absolute se prende à altura do corpo, que no
+   navegador do celular fica desatualizada quando a barra recolhe — o botão
+   sobe e deixa faixa morta embaixo. O fixed acompanha a área visível. */
+.legbtn{position:fixed;z-index:900;bottom:18px;left:14px;width:46px;height:46px;border-radius:50%;cursor:pointer;
  background:rgba(19,19,24,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
  border:1px solid rgba(255,255,255,.1);color:#F0A93B;display:grid;place-items:center;
  box-shadow:0 14px 30px -12px rgba(26,22,16,.8)}
 .legbtn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.legend{display:none;bottom:18px;left:14px;border-radius:18px!important;padding:13px 15px 14px!important;max-width:min(88vw,290px)}
+.legend{display:none;position:fixed;bottom:18px;left:14px;border-radius:18px!important;padding:13px 15px 14px!important;max-width:min(88vw,290px)}
 .legend.open{display:block}
 .legend.open~.legbtn{display:none}
 .lhead{display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:.8rem;margin-bottom:9px}
@@ -497,6 +503,11 @@ window.linkAnuncio=function(addr,url){
 <div class="lsep"></div><div class="lt">Camadas (orientação dos hubs)</div>
 <div class="lchip" data-l="flood"><span class="lb" style="--lb:#3B82F6"><svg viewBox="0 0 24 24"><path d="M12 3.2s5.6 5.7 5.6 9.4a5.6 5.6 0 0 1-11.2 0C6.4 8.9 12 3.2 12 3.2z"/></svg></span>Flood / alagamento<span class="leye"><svg viewBox="0 0 24 24"><path d="M2.2 12S6 5.6 12 5.6 21.8 12 21.8 12 18 18.4 12 18.4 2.2 12 2.2 12z"/><circle cx="12" cy="12" r="2.9"/></svg></span></div>
 <div class="lchip" data-l="crime"><span class="lb" style="--lb:#F0563E"><svg viewBox="0 0 24 24"><path d="M12 3.1l7 2.6v5.6c0 4.3-2.9 7.7-7 9.6-4.1-1.9-7-5.3-7-9.6V5.7z"/></svg></span>Crime · zonas mais seguras<span class="leye"><svg viewBox="0 0 24 24"><path d="M2.2 12S6 5.6 12 5.6 21.8 12 21.8 12 18 18.4 12 18.4 2.2 12 2.2 12z"/><circle cx="12" cy="12" r="2.9"/></svg></span></div>
+<div class="lsep"></div><div class="lt">Serviços por perto</div>
+<div class="ldica">aparecem ao aproximar o mapa</div>
+<div class="lchip" data-l="escola"><span class="lb" style="--lb:#4CC3F0"><svg viewBox="0 0 24 24"><path d="M12 4 2.8 8.6 12 13.2l9.2-4.6z"/><path d="M6.4 10.8v4.6c0 1.6 2.5 2.9 5.6 2.9s5.6-1.3 5.6-2.9v-4.6"/><path d="M21.2 8.6v5"/></svg></span>Escolas<span class="leye"><svg viewBox="0 0 24 24"><path d="M2.2 12S6 5.6 12 5.6 21.8 12 21.8 12 18 18.4 12 18.4 2.2 12 2.2 12z"/><circle cx="12" cy="12" r="2.9"/></svg></span></div>
+<div class="lchip" data-l="policia"><span class="lb" style="--lb:#8B9BFF"><svg viewBox="0 0 24 24"><path d="M12 2.9 5.4 5.4v6c0 4.1 2.8 7.5 6.6 9.2 3.8-1.7 6.6-5.1 6.6-9.2v-6z"/><path d="m12 8.1 1.2 2.5 2.7.4-2 1.9.5 2.7-2.4-1.3-2.4 1.3.5-2.7-2-1.9 2.7-.4z"/></svg></span>Polícia<span class="leye"><svg viewBox="0 0 24 24"><path d="M2.2 12S6 5.6 12 5.6 21.8 12 21.8 12 18 18.4 12 18.4 2.2 12 2.2 12z"/><circle cx="12" cy="12" r="2.9"/></svg></span></div>
+<div class="lchip" data-l="bombeiro"><span class="lb" style="--lb:#FF7A45"><svg viewBox="0 0 24 24"><path d="M12 2.8s4.8 4.3 4.8 8.6a4.8 4.8 0 0 1-9.6 0c0-1.6.7-3.1 1.6-4.4.4 1 1.1 1.8 2 2.2 0-2.6.5-4.8 1.2-6.4z"/><path d="M12 21.2v-2.6"/></svg></span>Bombeiros<span class="leye"><svg viewBox="0 0 24 24"><path d="M2.2 12S6 5.6 12 5.6 21.8 12 21.8 12 18 18.4 12 18.4 2.2 12 2.2 12z"/><circle cx="12" cy="12" r="2.9"/></svg></span></div>
 </div>
 <button class="legbtn" id="legbtn" type="button" aria-label="Legenda e camadas"><svg viewBox="0 0 24 24"><path d="M3.6 7.4 12 3.6l8.4 3.8-8.4 3.8z"/><path d="M4.2 12.2 12 15.7l7.8-3.5"/><path d="M4.2 16.6 12 20.1l7.8-3.5"/></svg></button>
 <div class="panel" id="panel"><button class="close" onclick="document.getElementById('panel').classList.remove('open')">✕</button><div id="pcontent"></div></div>
@@ -732,7 +743,10 @@ function addZonas(grupo){
 }
 document.querySelectorAll('.lchip[data-l]').forEach(el=>el.onclick=()=>{
   const on=el.classList.toggle('on'), g=el.dataset.l, v=on?'visible':'none';
-  [g+'-fill',g+'-linha'].forEach(id=>{if(map.getLayer(id))map.setLayoutProperty(id,'visibility',v);});
+  // -poi/-rot são os serviços públicos (escola, polícia, bombeiro); os outros
+  // dois sufixos são as camadas de área que já existiam
+  [g+'-fill',g+'-linha',g+'-poi',g+'-rot'].forEach(id=>{
+    if(map.getLayer(id))map.setLayoutProperty(id,'visibility',v);});
 });
 
 // ---- painéis que abrem/escondem no toque (mapa limpo por padrão) ----
@@ -823,6 +837,24 @@ map.on('click',e=>{
 
 // init — abre nas 12 cidades, ou já na cidade pedida em mapa.html?cidade=Newark
 map.on('load',()=>{
+  // Serviços públicos: vêm da camada 'poi' das PRÓPRIAS tiles (OpenMapTiles),
+  // então não custam requisição nem chave nova. Nascem escondidos — o mapa só
+  // mostra o que você marcar na legenda.
+  [['escola','school','#4CC3F0'],['policia','police','#8B9BFF'],
+   ['bombeiro','fire_station','#FF7A45']].forEach(([id,cls,cor])=>{
+    map.addLayer({id:id+'-poi',type:'circle',source:'omt','source-layer':'poi',
+      minzoom:11.5, filter:['==',['get','class'],cls], layout:{visibility:'none'},
+      paint:{'circle-radius':['interpolate',['linear'],['zoom'],11.5,3,16,7.5],
+             'circle-color':cor,'circle-opacity':.92,
+             'circle-stroke-width':1.4,'circle-stroke-color':'rgba(8,11,18,.9)'}});
+    map.addLayer({id:id+'-rot',type:'symbol',source:'omt','source-layer':'poi',
+      minzoom:14.2, filter:['==',['get','class'],cls],
+      layout:{visibility:'none','text-field':['get','name'],
+        'text-font':['Noto Sans Regular'],'text-size':10.5,'text-offset':[0,1.05],
+        'text-anchor':'top','text-max-width':9,'text-optional':true,
+        'text-allow-overlap':false},
+      paint:{'text-color':cor,'text-halo-color':'#080B12','text-halo-width':1.4}});
+  });
   map.addSource('cidade',{type:'geojson',data:VAZIO});
   // o contorno vai ABAIXO dos prédios: o verde vira chão iluminado, não capa
   // o preenchimento some ao chegar perto: dentro da cidade ele tingiria a tela toda
