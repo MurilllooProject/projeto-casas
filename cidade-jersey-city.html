@@ -267,6 +267,20 @@ a{color:inherit}
   border-radius:11px;padding:11px 13px;margin-top:11px;font-size:.75rem;line-height:1.6;
   color:#E8A79F}
 :is(.hmodal,#pcontent) .malerta b{color:#FFC8C0}
+:is(.hmodal,#pcontent) .mcons{background:rgba(0,0,0,.28);border-radius:10px;padding:10px 11px;
+  margin-top:10px}
+:is(.hmodal,#pcontent) .mch{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;
+  color:#C99A93;font-weight:700;margin-bottom:8px}
+:is(.hmodal,#pcontent) .mcg{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+:is(.hmodal,#pcontent) .mcg>div{display:flex;flex-direction:column;gap:2px}
+:is(.hmodal,#pcontent) .mcg span{font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;
+  color:#9A8580;font-weight:600}
+:is(.hmodal,#pcontent) .mcg b{font-size:.95rem;font-weight:800;color:#EDE0DE;
+  font-variant-numeric:tabular-nums}
+:is(.hmodal,#pcontent) .mcg b.g{color:#3FB56B}
+:is(.hmodal,#pcontent) .mcg b.y{color:#D3A53A}
+:is(.hmodal,#pcontent) .mcg b.r{color:#FF6E5E}
+:is(.hmodal,#pcontent) .mcnota{font-size:.68rem;color:#A98F8A;line-height:1.55;margin-top:9px}
 /* painel de cidade do mapa (só existe em mapa.html, tema escuro) */
 #cmerc{margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.09)}
 #cmerc:empty{display:none;margin:0;padding:0;border:0}
@@ -769,13 +783,29 @@ window.blocoMercado=function(h){
     // conflito de unidades: o anuncio diz X, a prefeitura registra Y. Em NJ
     // isso costuma ser unidade extra sem legalizar — nao da pra alugar nem
     // segurar. E o nosso "por unidade" divide pelo numero do anuncio.
-    var alerta = (h.dwell&&h.dwell!==units)
-      ? '<div class="malerta">O anúncio diz <b>'+units+' unidade'+(units>1?'s':'')+'</b>, '
+    var alerta='';
+    if(h.dwell&&h.dwell!==units){
+      var VT={g:'Comprar',y:'Observar',r:'Passar'};
+      // não basta avisar: mostro a conta refeita pela contagem do município,
+      // porque em 3 dos 9 verdes ela vira vermelho
+      var conta = h.cv
+        ? '<div class="mcons"><div class="mch">Se valer o registro · '+h.dwell+' unidades</div>'
+          +'<div class="mcg">'
+          +'<div><span>Veredito</span><b class="'+h.cv+'">'+(VT[h.cv]||'—')+'</b></div>'
+          +'<div><span>Cash flow/mês</span><b class="'+(h.ccfm>=100?'g':(h.ccfm>=-50?'y':'r'))+'">'
+             +m2(h.ccfm)+'</b></div>'
+          +'<div><span>Cap rate</span><b>'+pc(h.ccap)+'</b></div>'
+          +'<div><span>DSCR</span><b>'+(h.cdscr!=null?String(h.cdscr).replace('.',','):'—')+'</b></div>'
+          +'</div></div>'
+        : '';
+      alerta='<div class="malerta">O anúncio diz <b>'+units+' unidade'+(units>1?'s':'')+'</b>, '
         +'o registro do município diz <b>'+h.dwell+'</b>. Em NJ isso costuma ser unidade '
-        +'a mais sem legalizar — não se aluga legalmente nem entra no seguro. '
-        +'Nossos números por unidade dividem por '+units+'; se o certo for '+h.dwell+', '
-        +'o cash flow por porta é outro. Confirmar com o assessor antes de ofertar.</div>'
-      : '';
+        +'a mais sem legalizar — não se aluga legalmente nem entra no seguro.'
+        +conta
+        +'<div class="mcnota">O aluguel foi reduzido na proporção das portas: é premissa, '
+        +'não medição. Quem resolve é o certificado de ocupação da prefeitura — confirmar '
+        +'antes de ofertar.</div></div>';
+    }
     reg='<div class="mbloco"><div class="mh">Registro do município <span>oficial</span></div>'
       +'<div class="mlist">'+ri.map(function(x){
           return '<div class="mli"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')
