@@ -4,7 +4,12 @@
 <style>
 :root{--bg:#0E1420;--panel:#161E2C;--p2:#1E2838;--line:#2A3648;--ink:#EAF0F8;--dim:#8DA0B8;--accent:#33D3C2;
 --buy:#2FBF71;--watch:#F5B23F;--pass:#F0563E;--mono:ui-monospace,Menlo,Consolas,monospace;}
-*{box-sizing:border-box} html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,Segoe UI,Roboto,sans-serif}
+*{box-sizing:border-box} /* height:100% resolve contra o viewport PEQUENO: quando a barra do navegador
+   do celular recolhe, o corpo fica mais curto que a tela e tudo ancorado em
+   baixo (botão de camadas, atribuição, zoom) sobe junto, deixando uma faixa
+   morta. 100dvh acompanha a área realmente visível. O 100% fica de reserva
+   para navegador sem dvh. */
+html,body{margin:0;height:100%;height:100dvh;background:var(--bg);color:var(--ink);font-family:system-ui,Segoe UI,Roboto,sans-serif}
 #map{position:absolute;inset:0;z-index:1;background:var(--bg)}
 /* .pin — estilo gota fica no bloco #mapfix (basemap Snap) */
 @keyframes pulseRing{0%{transform:scale(.72);opacity:.85}70%{opacity:0}100%{transform:scale(1.95);opacity:0}}
@@ -280,7 +285,8 @@ body.cardopen .hud{opacity:0;pointer-events:none}
   /* atribuição recolhida atrás do (i) — o padrão compacto do MapLibre */
   .maplibregl-ctrl-attrib:not(.maplibregl-compact-show) .maplibregl-ctrl-attrib-inner{display:none}
   .hud{top:60px;left:10px;right:10px}
-  .legend,.legbtn{bottom:calc(88px + env(safe-area-inset-bottom))}
+  /* 78px é a barra de abas; o resto é só o respiro para ela */
+  .legend,.legbtn{bottom:calc(84px + env(safe-area-inset-bottom))}
   .legend{left:10px;max-height:60vh;overflow-y:auto}
   .cmark{font-size:.63rem;padding:4px 9px}
   .cmark .n{font-size:.58rem;margin-left:4px}
@@ -403,57 +409,57 @@ window.linkAnuncio=function(addr,url){
 };
 /*/LINKS*/</script>
 <style id="mercadocss">
-.hmodal .mbloco{background:#17171E;border:1px solid rgba(255,255,255,.08);border-radius:14px;
+:is(.hmodal,#pcontent) .mbloco{background:#17171E;border:1px solid rgba(255,255,255,.08);border-radius:14px;
   padding:13px 14px;margin-bottom:12px}
-.hmodal .mh{font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:#8B8B94;
+:is(.hmodal,#pcontent) .mh{font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:#8B8B94;
   font-weight:700;margin-bottom:10px}
-.hmodal .mh span{background:rgba(255,255,255,.07);color:#A9A9B2;border-radius:999px;
+:is(.hmodal,#pcontent) .mh span{background:rgba(255,255,255,.07);color:#A9A9B2;border-radius:999px;
   padding:2px 7px;margin-left:6px;letter-spacing:.02em;font-weight:600;text-transform:none}
-.hmodal .mrolo{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -2px}
-.hmodal .mtab{width:100%;border-collapse:collapse;font-size:.78rem;min-width:430px}
-.hmodal .mtab th,.hmodal .mtab td{padding:7px 8px;text-align:right;white-space:nowrap;
+:is(.hmodal,#pcontent) .mrolo{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -2px}
+:is(.hmodal,#pcontent) .mtab{width:100%;border-collapse:collapse;font-size:.78rem;min-width:430px}
+:is(.hmodal,#pcontent) .mtab th,:is(.hmodal,#pcontent) .mtab td{padding:7px 8px;text-align:right;white-space:nowrap;
   font-variant-numeric:tabular-nums}
-.hmodal .mtab thead th{font-size:.6rem;text-transform:uppercase;letter-spacing:.05em;
+:is(.hmodal,#pcontent) .mtab thead th{font-size:.6rem;text-transform:uppercase;letter-spacing:.05em;
   color:#75757E;font-weight:700;border-bottom:1px solid rgba(255,255,255,.09)}
-.hmodal .mtab tbody th{text-align:left;font-weight:600;color:#E4E4E8}
-.hmodal .mtab tbody th span{display:block;font-size:.66rem;color:#75757E;font-weight:500;
+:is(.hmodal,#pcontent) .mtab tbody th{text-align:left;font-weight:600;color:#E4E4E8}
+:is(.hmodal,#pcontent) .mtab tbody th span{display:block;font-size:.66rem;color:#75757E;font-weight:500;
   letter-spacing:.01em}
-.hmodal .mtab tbody tr{border-bottom:1px solid rgba(255,255,255,.05)}
-.hmodal .mtab tbody tr:last-child{border-bottom:0}
-.hmodal .mtab tr.on{background:rgba(255,255,255,.045)}
-.hmodal .mtab tr.on th{color:#fff}
-.hmodal .mtab .g{color:#3FB56B;font-weight:700}
-.hmodal .mtab .y{color:#D3A53A;font-weight:700}
-.hmodal .mtab .r{color:#DB5B4E;font-weight:700}
-.hmodal .mnota{font-size:.7rem;color:#83838C;line-height:1.55;margin-top:10px}
+:is(.hmodal,#pcontent) .mtab tbody tr{border-bottom:1px solid rgba(255,255,255,.05)}
+:is(.hmodal,#pcontent) .mtab tbody tr:last-child{border-bottom:0}
+:is(.hmodal,#pcontent) .mtab tr.on{background:rgba(255,255,255,.045)}
+:is(.hmodal,#pcontent) .mtab tr.on th{color:#fff}
+:is(.hmodal,#pcontent) .mtab .g{color:#3FB56B;font-weight:700}
+:is(.hmodal,#pcontent) .mtab .y{color:#D3A53A;font-weight:700}
+:is(.hmodal,#pcontent) .mtab .r{color:#DB5B4E;font-weight:700}
+:is(.hmodal,#pcontent) .mnota{font-size:.7rem;color:#83838C;line-height:1.55;margin-top:10px}
 /* No celular a tabela não cabe em 5 colunas e cortava justamente Sobra/mês.
    O DSCR sai: ele já aparece no quadro de métricas logo acima do bloco. */
 @media(max-width:560px){
-  .hmodal .mtab{min-width:0;font-size:.74rem}
-  .hmodal .mtab th,.hmodal .mtab td{padding:7px 4px}
-  .hmodal .mtab .dsc{display:none}
+  :is(.hmodal,#pcontent) .mtab{min-width:0;font-size:.74rem}
+  :is(.hmodal,#pcontent) .mtab th,:is(.hmodal,#pcontent) .mtab td{padding:7px 4px}
+  :is(.hmodal,#pcontent) .mtab .dsc{display:none}
 }
-.hmodal .mlist{display:grid;gap:7px}
-.hmodal .mli{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+:is(.hmodal,#pcontent) .mlist{display:grid;gap:7px}
+:is(.hmodal,#pcontent) .mli{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
   font-size:.79rem}
-.hmodal .mli span{color:#8B8B94}
-.hmodal .mli b{color:#EDEDF1;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
-.hmodal .mli b.g{color:#3FB56B}.hmodal .mli b.r{color:#DB5B4E}
-.hmodal .mli b i{color:#75757E;font-style:normal;font-weight:600;font-size:.86em;margin-left:3px}
-.hmodal .mli span em{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px}
-.hmodal .mli.tot{border-top:1px solid rgba(255,255,255,.09);margin-top:8px;padding-top:8px}
-.hmodal .mroi{font-size:2rem;font-weight:800;letter-spacing:-.02em;line-height:1;color:#fff;
+:is(.hmodal,#pcontent) .mli span{color:#8B8B94}
+:is(.hmodal,#pcontent) .mli b{color:#EDEDF1;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+:is(.hmodal,#pcontent) .mli b.g{color:#3FB56B}:is(.hmodal,#pcontent) .mli b.r{color:#DB5B4E}
+:is(.hmodal,#pcontent) .mli b i{color:#75757E;font-style:normal;font-weight:600;font-size:.86em;margin-left:3px}
+:is(.hmodal,#pcontent) .mli span em{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px}
+:is(.hmodal,#pcontent) .mli.tot{border-top:1px solid rgba(255,255,255,.09);margin-top:8px;padding-top:8px}
+:is(.hmodal,#pcontent) .mroi{font-size:2rem;font-weight:800;letter-spacing:-.02em;line-height:1;color:#fff;
   margin-bottom:12px;font-variant-numeric:tabular-nums}
-.hmodal .mroi small{display:block;font-size:.68rem;font-weight:500;color:#8B8B94;
+:is(.hmodal,#pcontent) .mroi small{display:block;font-size:.68rem;font-weight:500;color:#8B8B94;
   letter-spacing:0;margin-top:5px}
-.hmodal .mbar{display:flex;height:9px;border-radius:5px;overflow:hidden;margin-bottom:11px;
+:is(.hmodal,#pcontent) .mbar{display:flex;height:9px;border-radius:5px;overflow:hidden;margin-bottom:11px;
   background:rgba(255,255,255,.06)}
-.hmodal .mbar i{display:block}
-.hmodal .mli b i{font-style:normal;color:#75757E;font-weight:500;font-size:.86em}
-.hmodal .malerta{background:rgba(219,91,78,.1);border:1px solid rgba(219,91,78,.32);
+:is(.hmodal,#pcontent) .mbar i{display:block}
+:is(.hmodal,#pcontent) .mli b i{font-style:normal;color:#75757E;font-weight:500;font-size:.86em}
+:is(.hmodal,#pcontent) .malerta{background:rgba(219,91,78,.1);border:1px solid rgba(219,91,78,.32);
   border-radius:11px;padding:11px 13px;margin-top:11px;font-size:.75rem;line-height:1.6;
   color:#E8A79F}
-.hmodal .malerta b{color:#FFC8C0}
+:is(.hmodal,#pcontent) .malerta b{color:#FFC8C0}
 /* painel de cidade do mapa (só existe em mapa.html, tema escuro) */
 #cmerc{margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.09)}
 #cmerc:empty{display:none;margin:0;padding:0;border:0}
@@ -552,6 +558,7 @@ function openPanel(d){
    <div class="cell"><div class="k">DSCR</div><div class="v ${cls(d.dscr,1.2,1)}">${d.dscr}</div></div>
    <div class="cell"><div class="k">Aluguel/imposto est.</div><div class="v" style="font-size:.8rem">${money(d.rent)}/m · ${money(d.tax)}/a</div></div>
   </div>${trig}</div>
+  ${window.blocoMercado?window.blocoMercado(d):''}
   <div class="sec"><h3>Estatísticas da casa</h3>
    <div class="stat"><span class="i">👤</span><span><b>Dono:</b> ${esc(d.owner)}</span></div>
    <div class="stat"><span class="i">📍</span><span><b>Bairro:</b> ${esc(d.ward||'Newark')}</span></div>
@@ -644,6 +651,15 @@ function refreshCounts(){
  const mc=document.getElementById('cmerc');
  if(mc) mc.innerHTML = window.mercadoArea ? window.mercadoArea(selectedCity) : '';
 }
+// Com uma cidade selecionada, tocar no mapa FORA do contorno dela volta para a
+// visão geral. Os pins e o card são elementos DOM sobre o mapa, então não
+// disparam este clique — só o toque no mapa em si chega aqui.
+function sairDaCidade(e){
+ if(selectedCity==='all'||!map.getLayer('cidade-fill')) return;
+ if(map.queryRenderedFeatures(e.point,{layers:['cidade-fill']}).length) return;
+ selectCity('all',true);
+}
+
 function selectCity(name,animar){
  selectedCity=name; document.getElementById('citysel').value=name;
  closeCard();
@@ -796,7 +812,14 @@ window.openCard=function(d,el){
   brandEl.classList.add('min');
   legEl.classList.remove('open');
 };
-map.on('click',()=>closeCard());                            // clicou no vazio, fecha
+// Clicou no vazio: um toque fecha o card aberto; o toque seguinte, já sem card,
+// sai da cidade e volta pra visão geral. Um por vez, pra não desfazer duas
+// coisas com um dedo só.
+map.on('click',e=>{
+  const tinhaCard=document.body.classList.contains('cardopen');
+  closeCard();
+  if(!tinhaCard) sairDaCidade(e);
+});
 
 // init — abre nas 12 cidades, ou já na cidade pedida em mapa.html?cidade=Newark
 map.on('load',()=>{
