@@ -25,6 +25,20 @@ html,body{margin:0;height:100%;height:100dvh;background:var(--bg);color:var(--in
 .filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:flex-start}
 .chip{background:rgba(22,30,44,.92);backdrop-filter:blur(8px);border:1px solid var(--line);color:var(--dim);padding:8px 13px;border-radius:999px;font-size:.8rem;cursor:pointer;font-weight:600}
 .chip.on{background:var(--accent);color:#04201d;border-color:var(--accent)}
+/* pills de veredito preenchidas (estilo cheio). O número vem primeiro, o rótulo
+   depois; inativas ficam mais apagadas pra a selecionada saltar. !important pra
+   vencer o override mobile de .chip que força fundo escuro. */
+.hud .filters .chip{display:inline-flex;align-items:center;gap:6px;font-weight:700;
+  padding:7px 13px 7px 10px;letter-spacing:-.01em;transition:transform .12s,box-shadow .12s,opacity .12s}
+.hud .filters .chip b{font-variant-numeric:tabular-nums;font-weight:800;font-size:.92em}
+.hud .filters .chip.f-buy{background:var(--buy)!important;color:#06240f!important;border-color:transparent!important}
+.hud .filters .chip.f-watch{background:var(--watch)!important;color:#2a1d00!important;border-color:transparent!important}
+.hud .filters .chip.f-pass{background:var(--pass)!important;color:#2a0805!important;border-color:transparent!important}
+.hud .filters .chip.f-all{background:#20283a!important;color:#E6ECF6!important;border-color:rgba(255,255,255,.14)!important}
+.hud .filters .chip:not(.on){opacity:.46;transform:scale(.965)}
+.hud .filters .chip.on{opacity:1;box-shadow:0 4px 14px -4px rgba(0,0,0,.6),0 0 0 2px rgba(255,255,255,.9) inset}
+.hud .filters .chip.f-all.on{box-shadow:0 4px 14px -4px rgba(0,0,0,.6),0 0 0 1.5px var(--accent) inset;
+  background:var(--accent)!important;color:#141419!important;border-color:var(--accent)!important}
 /* seletor de cidade */
 .citysel{background:rgba(22,30,44,.94);backdrop-filter:blur(8px);border:1px solid var(--line);color:var(--ink);
  padding:9px 12px;border-radius:10px;font-size:.85rem;font-weight:700;font-family:inherit;cursor:pointer;min-width:210px}
@@ -686,15 +700,19 @@ function refreshCounts(){
 // visão geral. Os pins e o card são elementos DOM sobre o mapa, então não
 // disparam este clique — só o toque no mapa em si chega aqui.
 function sairDaCidade(e){
- if(selectedCity==='all'||!map.getLayer('cidade-fill')) return;
- if(map.queryRenderedFeatures(e.point,{layers:['cidade-fill']}).length) return;
+ // Qualquer toque no mapa vazio volta pro geral. Antes eu exigia que o toque
+ // caísse FORA do contorno da cidade, mas com a cidade selecionada o verde
+ // preenche quase toda a tela — não sobrava "fora" pra tocar, e nunca saía.
+ // Tocar num pin não chega aqui (é elemento DOM sobre o mapa), então o alvo
+ // deste clique é sempre o mapa vazio.
+ if(selectedCity==='all') return;
  selectCity('all',true);
 }
 
 function selectCity(name,animar){
  selectedCity=name; document.getElementById('citysel').value=name;
  closeCard();
- const b=drawCity(name); apply(); refreshCounts(); refreshCityMarkers();
+ const b=drawCity(name); apply(); refreshCounts(); refreshCityMarkers(); bf();
  const ds=DEALS.filter(d=>d.city===name);
  if(name==='all'){ enquadrar(caixa(CITIES.map(c=>[c.lat,c.lng])),{maxZoom:11,animar}); }
  else if(b){ enquadrar(b,{animar,pitch:PITCH_CIDADE}); }   // enquadra a cidade inteira
@@ -711,8 +729,16 @@ csel.innerHTML=`<option value="all">🗺️ Todas as 12 cidades</option>`+
 csel.value=selectedCity; csel.onchange=()=>selectCity(csel.value);
 
 // filtros de cor (semáforo)
-const opts=[['all','Todas'],['buy','🟢'],['watch','🟡'],['pass','🔴']];
-function bf(){document.getElementById('filters').innerHTML=opts.map(([k,l])=>`<span class="chip ${k===filter?'on':''}" data-f="${k}">${l}</span>`).join('');
+const FLABEL={all:'Todas',buy:'Comprar',watch:'Observar',pass:'Passar'};
+function bf(){
+ // pills preenchidas com a cor do veredito + a contagem da cidade atual.
+ // antes eram um chip escuro com um emoji dentro (pareciam pontos soltos).
+ const ds=selectedCity==='all'?DEALS:DEALS.filter(d=>d.city===selectedCity);
+ const n={all:ds.length,buy:0,watch:0,pass:0};
+ ds.forEach(d=>{if(n[d.sem]!=null)n[d.sem]++;});
+ const ordem=['all','buy','watch','pass'];
+ document.getElementById('filters').innerHTML=ordem.map(k=>
+   `<span class="chip f-${k} ${k===filter?'on':''}" data-f="${k}"><b>${n[k]}</b>${FLABEL[k]}</span>`).join('');
  document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{filter=ch.dataset.f;bf();apply();});}
 
 // ---- camadas de orientação (flood / crime) — qualitativo dos hubs verificados ----
@@ -879,6 +905,21 @@ map.on('load',()=>{
     paint:{'line-color':'#C8A2FF','line-width':['interpolate',['linear'],['zoom'],10,.9,16,2.6],
            'line-opacity':.75,'line-dasharray':[2.5,1.6]}});
 
+  // desenha um pin (gota) da cor pedida, com borda branca e furo central —
+  // o mesmo silhueta do marcador das casas, pra os serviços não ficarem como
+  // bolinhas soltas. Registrado como imagem pro symbol layer usar.
+  function pinImg(cor){
+    const W=44,H=56,cv=document.createElement('canvas');cv.width=W;cv.height=H;
+    const x=cv.getContext('2d'),cx=W/2,r=15,cy=r+4,tip=H-3;
+    function gota(rr,cyy){ x.beginPath();
+      x.moveTo(cx,tip);
+      x.lineTo(cx-rr*0.72,cyy+rr*0.72); x.arc(cx,cyy,rr,Math.PI*0.75,Math.PI*0.25);
+      x.lineTo(cx,tip); x.closePath(); }
+    gota(r+2,cy); x.fillStyle='#fff'; x.fill();          // borda branca
+    gota(r,cy);   x.fillStyle=cor;    x.fill();           // corpo colorido
+    x.beginPath(); x.arc(cx,cy,r*0.36,0,7); x.fillStyle='rgba(255,255,255,.95)'; x.fill();
+    return x.getImageData(0,0,W,H);
+  }
   [['escola','school','#4CC3F0'],['policia','police','#8B9BFF'],
    ['bombeiro','fire_station','#FF7A45'],['trem','railway','#C8A2FF'],
    ['mercado','grocery','#7DE0C0'],['hospital','hospital','#FF9FC4']].forEach(([id,cls,cor])=>{
@@ -888,11 +929,12 @@ map.on('load',()=>{
       : ['==',['get','class'],cls];
     // estação é ponto de referência: aparece antes dos outros, e com nome antes
     const zPin = cls==='railway' ? 11 : 11.5, zNome = cls==='railway' ? 12.5 : 14.2;
-    map.addLayer({id:id+'-poi',type:'circle',source:'omt','source-layer':'poi',
-      minzoom:zPin, filter:f, layout:{visibility:'none'},
-      paint:{'circle-radius':['interpolate',['linear'],['zoom'],11.5,3,16,7.5],
-             'circle-color':cor,'circle-opacity':.92,
-             'circle-stroke-width':1.4,'circle-stroke-color':'rgba(8,11,18,.9)'}});
+    if(!map.hasImage(id+'-pin')) map.addImage(id+'-pin',pinImg(cor),{pixelRatio:2});
+    map.addLayer({id:id+'-poi',type:'symbol',source:'omt','source-layer':'poi',
+      minzoom:zPin, filter:f,
+      layout:{visibility:'none','icon-image':id+'-pin','icon-anchor':'bottom',
+        'icon-allow-overlap':true,'icon-ignore-placement':true,
+        'icon-size':['interpolate',['linear'],['zoom'],11.5,.42,15,.72,18,.92]}});
     map.addLayer({id:id+'-rot',type:'symbol',source:'omt','source-layer':'poi',
       minzoom:zNome, filter:f,
       layout:{visibility:'none','text-field':['get','name'],
