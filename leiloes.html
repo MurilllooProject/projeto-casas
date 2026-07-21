@@ -166,6 +166,10 @@ a{color:inherit}
 .hmodal .hstat .v.g{color:#3FB56B}.hmodal .hstat .v.y{color:#D3A53A}.hmodal .hstat .v.r{color:#DB5B4E}
 .hmodal .htrig{background:rgba(240,169,59,.1);border:1px solid rgba(240,169,59,.3);border-radius:12px;padding:11px 13px;font-size:.84rem;color:#F5C06B;margin-bottom:12px}
 .hmodal .hnote{font-size:.85rem;color:#C7C7CC;line-height:1.5;margin-bottom:12px}
+.hmodal .hsit{border-radius:12px;padding:11px 13px;margin-bottom:13px;font-weight:700;font-size:.9rem}
+.hmodal .hsit.vendido{background:#DB5B4E;color:#fff}
+.hmodal .hsit.removido{background:rgba(240,169,59,.14);border:1px solid rgba(240,169,59,.4);color:#F5C06B}
+.hmodal .hsit span{display:block;font-weight:400;font-size:.72rem;opacity:.85;margin-top:2px}
 .hmodal .hchart{background:#17171E;border:1px dashed rgba(255,255,255,.15);border-radius:13px;padding:15px;text-align:center;color:#8B8B94;font-size:.78rem;margin-bottom:14px}
 .hmodal .hlnota{font-size:.72rem;color:#8B8B94;margin-top:9px;line-height:1.4}
 .hmodal .hlnota a{color:#F0A93B;text-decoration:underline}
@@ -864,8 +868,14 @@ window.openHouse=function(h){
     +'<button class="hx" onclick="closeHouse()">✕</button>';
   var specs=[h.type,h.beds&&h.beds+' bd',h.baths&&h.baths+' ba',h.units&&h.units+' un'].filter(Boolean).map(esc).join(' · ');
   var trig=(v!=='g'&&h.trig)?'<div class="htrig">🎯 Vira 🟢 verde se o preço ≤ '+money(h.trig)+'</div>':'';
+  // situação do anúncio (cruzamento com os portais) — no topo, antes de tudo,
+  // porque muda se vale a pena continuar lendo o resto
+  var sit=h.sit?('<div class="hsit '+h.sit.tipo+'">'
+    +(h.sit.tipo==='vendido'?'🔴 Já '+esc(h.sit.motivo):'🟠 Anúncio fora do ar — reconferir')
+    +'<span>portal '+esc(h.sit.portal||'')+(h.sit.quando?' · '+h.sit.quando.split('-').reverse().join('/'):'')+'</span></div>'):'';
   document.getElementById('hbody').innerHTML=
-    '<div class="haddr">'+esc(h.address)+'</div>'
+    sit
+    +'<div class="haddr">'+esc(h.address)+'</div>'
     +'<div class="hsub">'+[esc(h.city),specs].filter(Boolean).join(' · ')+'</div>'
     +'<div class="hprice">'+money(h.price)+'</div>'
     +(h.rent?'<div class="hrent">aluguel estimado '+money(h.rent)+'/mês</div>':'')
