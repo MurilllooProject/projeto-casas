@@ -250,15 +250,17 @@ body.cardopen .hud{opacity:0;pointer-events:none}
 .chip.on{background:#F0A93B!important;color:#141419!important;border-color:#F0A93B!important}
 
 /* ===== legenda: some atrás de um botão ===== */
-/* fixed, não absolute: o absolute se prende à altura do corpo, que no
-   navegador do celular fica desatualizada quando a barra recolhe — o botão
-   sobe e deixa faixa morta embaixo. O fixed acompanha a área visível. */
-.legbtn{position:fixed;z-index:900;bottom:18px;left:14px;width:46px;height:46px;border-radius:50%;cursor:pointer;
+/* position:absolute — mas relativo ao CONTAINER DO MAPA, não ao corpo (o JS
+   move o botão pra dentro de #map no load). O corpo tem altura instável no
+   navegador embutido; o container do mapa o MapLibre mantém do tamanho visível,
+   e é por isso que os controles de zoom aparecem certos lá. Ancorar junto deles
+   resolve os dois casos: barra que recolhe e webview de app. */
+.legbtn{position:absolute;z-index:900;bottom:18px;left:14px;width:46px;height:46px;border-radius:50%;cursor:pointer;
  background:rgba(19,19,24,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
  border:1px solid rgba(255,255,255,.1);color:#F0A93B;display:grid;place-items:center;
  box-shadow:0 14px 30px -12px rgba(26,22,16,.8)}
 .legbtn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.legend{display:none;position:fixed;bottom:18px;left:14px;border-radius:18px!important;padding:13px 15px 14px!important;max-width:min(88vw,290px)}
+.legend{display:none;position:absolute;bottom:18px;left:14px;border-radius:18px!important;padding:13px 15px 14px!important;max-width:min(88vw,290px)}
 .legend.open{display:block}
 .legend.open~.legbtn{display:none}
 .lhead{display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:.8rem;margin-bottom:9px}
@@ -855,6 +857,16 @@ map.on('click',e=>{
 
 // init — abre nas 12 cidades, ou já na cidade pedida em mapa.html?cidade=Newark
 map.on('load',()=>{
+  // Ancora legenda e botão dentro do container do mapa. No webview de app o
+  // position:fixed se prende ao layout viewport (atrás da barra do app) e o
+  // botão some; o container do mapa o MapLibre mantém do tamanho visível — por
+  // isso os controles de zoom aparecem certos lá. Move mantendo a ordem
+  // legenda→botão pra não quebrar o seletor .legend.open~.legbtn.
+  try{
+    const _c=map.getContainer(), _l=document.getElementById('legend'), _b=document.getElementById('legbtn');
+    if(_c&&_l&&_b){ _c.appendChild(_l); _c.appendChild(_b); }
+  }catch(e){}
+
   // Serviços públicos: vêm da camada 'poi' das PRÓPRIAS tiles (OpenMapTiles),
   // então não custam requisição nem chave nova. Nascem escondidos — o mapa só
   // mostra o que você marcar na legenda.
