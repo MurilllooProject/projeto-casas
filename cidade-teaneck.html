@@ -86,10 +86,15 @@
 </style>
 <style id="shell2">
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-/* ==== casca editorial: reescreve o tema dark antigo para o claro cinza ==== */
+/* ==== casca editorial: reescreve o tema dark antigo para o claro cinza ====
+   ATENCAO: toda variavel de cor que as paginas usam precisa ser redefinida
+   AQUI. --prose ficou de fora nesta migracao e as 12 paginas de cidade +
+   terrenos renderizaram o corpo do texto em #C6D2E2 (cor do tema escuro)
+   sobre fundo claro: 1,53:1 de contraste, ilegivel, e ninguem viu por semanas.
+   Escala: ink #1A1C21 > prose #3F444D > dim #5C616B > dimmer #9297A0. */
 :root{
   --bg:#E4E6E9; --panel:#F6F7F9; --p2:#EDEEF1; --panel2:#EDEEF1; --surface:#F6F7F9; --surface2:#EDEEF1;
-  --line:#D4D7DC; --ink:#1A1C21; --dim:#5C616B; --dimmer:#9297A0; --faint:#9297A0;
+  --line:#D4D7DC; --ink:#1A1C21; --prose:#3F444D; --dim:#5C616B; --dimmer:#9297A0; --faint:#9297A0;
   --accent:#1A1C21; --accent-ink:#F2F3F5;
   --buy:#5F9366; --watch:#C2A24A; --pass:#C0655A;
   --g:#5F9366; --y:#C2A24A; --r:#C0655A;
@@ -114,8 +119,8 @@ a{color:inherit}
 .efoot .ewrap{max-width:1200px;margin:0 auto;padding:0 26px;display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:flex-start;font-size:.84rem}
 .efoot a{color:#C4C8CE;text-decoration:none}.efoot a:hover{color:#fff}
 .efoot .eflogo{font-weight:900;line-height:.84;color:#EDEEF1;font-size:.95rem}
-.efoot .efcol .h{color:#72767F;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700}
-.efoot .efbot{border-top:1px solid rgba(255,255,255,.1);margin-top:22px;padding-top:14px;font-size:.75rem;color:#72767F}
+.efoot .efcol .h{color:#85858D;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700}
+.efoot .efbot{border-top:1px solid rgba(255,255,255,.1);margin-top:22px;padding-top:14px;font-size:.75rem;color:#85858D}
 @media(max-width:720px){.elinks{display:none}}
 </style>
 <style id="appcss">
@@ -153,10 +158,15 @@ a{color:inherit}
 .hmodal .hcta .primary{background:#F0A93B;color:#141419}
 .hmodal .hcta .ghost{background:#1B1B22;border:1px solid rgba(255,255,255,.1);color:#E7E7EA}
 @media(max-width:640px){
-  /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) ===== */
+  /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) =====
+     O site tem DOIS temas: claro (build_shell.py, desktop) e este escuro
+     (mobile <=640px). Toda variavel de cor precisa existir nos DOIS — se uma
+     faltar aqui, ela vaza do tema claro e some no fundo escuro (e vice-versa).
+     Ja aconteceu com --prose duas vezes, em direcoes opostas.
+     testes.py trava isso: compara os dois :root e falha se divergirem. */
   :root{
     --bg:#0C0C10;--panel:#141419;--p2:#1B1B22;--panel2:#1B1B22;--surface:#141419;--surface2:#1B1B22;--s:#141419;
-    --line:rgba(255,255,255,.09);--ink:#F1F1EE;--dim:#9A9AA2;--dimmer:#74747C;--faint:#74747C;--mut:#9A9AA2;
+    --line:rgba(255,255,255,.09);--ink:#F1F1EE;--prose:#D6D6DA;--dim:#9A9AA2;--dimmer:#74747C;--faint:#74747C;--mut:#9A9AA2;
     --accent:#F0A93B;--accent-ink:#141419;--acc:#F0A93B;--brand:#F0A93B;
     --buy:#3FB56B;--watch:#D3A53A;--pass:#DB5B4E;--g:#3FB56B;--y:#D3A53A;--r:#DB5B4E;--green:#3FB56B;--amber:#D3A53A;--red:#DB5B4E;
     --buy-bg:rgba(63,181,107,.14);--watch-bg:rgba(211,165,58,.16);--pass-bg:rgba(219,91,78,.14);
@@ -584,7 +594,7 @@ a{color:inherit}
   <div class="efcol"><div class="h">Analisar</div><a href="buy-hold.html">Buy &amp; Hold</a> · <a href="estrategias.html">Estratégias</a> · <a href="analisador.html">Analisador</a> · <a href="painel.html">Painel</a></div>
   <div class="efcol"><div class="h">Entender</div><a href="cidades.html">Cidades</a> · <a href="glossario.html">Glossário</a></div>
 </div>
-<div class="ewrap efbot">© 2026 IHouse · uso pessoal · dados verificados por workflows · 12 cidades · 94 casas · 137 leilões</div>
+<div class="ewrap efbot">© 2026 IHouse · uso pessoal · dados verificados por workflows · 18 cidades · 94 casas · 137 leilões</div>
 </footer>
 <script id="nav2js">
 // fecha um dropdown quando outro abre + fecha ao clicar fora

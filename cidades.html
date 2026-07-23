@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cidades — IHouse</title>
-<meta name="description" content="As 12 cidades de New Jersey cobertas: imposto efetivo, tese, rent control e flood/reavaliação por cidade — Essex, Bergen e Hudson.">
+<meta name="description" content="As 18 cidades de New Jersey cobertas: imposto efetivo, tese, rent control e flood/reavaliação por cidade — Essex, Bergen e Hudson.">
 <style>
   :root{
     --bg:#0E1420; --panel:#161E2C; --p2:#1E2838; --line:#2A3648;
@@ -52,6 +52,12 @@
   .cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
   .city{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:17px 18px;transition:border-color .14s,background .14s,transform .14s}
   .city:hover{border-color:var(--accent);background:var(--p2);transform:translateY(-3px)}
+  /* hub ainda sem pesquisa qualitativa: numeros sao reais, o texto e que falta */
+  /* fundo continua o do painel: deixar transparente escurecia o fundo sob os
+     rotulos cinza e derrubava o contraste de 2,67 pra 2,35. A borda tracejada
+     ja comunica "em construcao" sozinha. */
+  .city.wip{border-style:dashed}
+  .city.wip .open{color:var(--dim)}
   .city .open{display:inline-block;margin-top:11px;font-family:var(--mono);font-size:.75rem;color:var(--accent);font-weight:600}
   .city:hover .open{text-decoration:underline}
   .city .r1{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
@@ -94,10 +100,15 @@
 </style>
 <style id="shell2">
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-/* ==== casca editorial: reescreve o tema dark antigo para o claro cinza ==== */
+/* ==== casca editorial: reescreve o tema dark antigo para o claro cinza ====
+   ATENCAO: toda variavel de cor que as paginas usam precisa ser redefinida
+   AQUI. --prose ficou de fora nesta migracao e as 12 paginas de cidade +
+   terrenos renderizaram o corpo do texto em #C6D2E2 (cor do tema escuro)
+   sobre fundo claro: 1,53:1 de contraste, ilegivel, e ninguem viu por semanas.
+   Escala: ink #1A1C21 > prose #3F444D > dim #5C616B > dimmer #9297A0. */
 :root{
   --bg:#E4E6E9; --panel:#F6F7F9; --p2:#EDEEF1; --panel2:#EDEEF1; --surface:#F6F7F9; --surface2:#EDEEF1;
-  --line:#D4D7DC; --ink:#1A1C21; --dim:#5C616B; --dimmer:#9297A0; --faint:#9297A0;
+  --line:#D4D7DC; --ink:#1A1C21; --prose:#3F444D; --dim:#5C616B; --dimmer:#9297A0; --faint:#9297A0;
   --accent:#1A1C21; --accent-ink:#F2F3F5;
   --buy:#5F9366; --watch:#C2A24A; --pass:#C0655A;
   --g:#5F9366; --y:#C2A24A; --r:#C0655A;
@@ -122,8 +133,8 @@ a{color:inherit}
 .efoot .ewrap{max-width:1200px;margin:0 auto;padding:0 26px;display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:flex-start;font-size:.84rem}
 .efoot a{color:#C4C8CE;text-decoration:none}.efoot a:hover{color:#fff}
 .efoot .eflogo{font-weight:900;line-height:.84;color:#EDEEF1;font-size:.95rem}
-.efoot .efcol .h{color:#72767F;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700}
-.efoot .efbot{border-top:1px solid rgba(255,255,255,.1);margin-top:22px;padding-top:14px;font-size:.75rem;color:#72767F}
+.efoot .efcol .h{color:#85858D;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700}
+.efoot .efbot{border-top:1px solid rgba(255,255,255,.1);margin-top:22px;padding-top:14px;font-size:.75rem;color:#85858D}
 @media(max-width:720px){.elinks{display:none}}
 </style>
 <style id="appcss">
@@ -161,10 +172,15 @@ a{color:inherit}
 .hmodal .hcta .primary{background:#F0A93B;color:#141419}
 .hmodal .hcta .ghost{background:#1B1B22;border:1px solid rgba(255,255,255,.1);color:#E7E7EA}
 @media(max-width:640px){
-  /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) ===== */
+  /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) =====
+     O site tem DOIS temas: claro (build_shell.py, desktop) e este escuro
+     (mobile <=640px). Toda variavel de cor precisa existir nos DOIS — se uma
+     faltar aqui, ela vaza do tema claro e some no fundo escuro (e vice-versa).
+     Ja aconteceu com --prose duas vezes, em direcoes opostas.
+     testes.py trava isso: compara os dois :root e falha se divergirem. */
   :root{
     --bg:#0C0C10;--panel:#141419;--p2:#1B1B22;--panel2:#1B1B22;--surface:#141419;--surface2:#1B1B22;--s:#141419;
-    --line:rgba(255,255,255,.09);--ink:#F1F1EE;--dim:#9A9AA2;--dimmer:#74747C;--faint:#74747C;--mut:#9A9AA2;
+    --line:rgba(255,255,255,.09);--ink:#F1F1EE;--prose:#D6D6DA;--dim:#9A9AA2;--dimmer:#74747C;--faint:#74747C;--mut:#9A9AA2;
     --accent:#F0A93B;--accent-ink:#141419;--acc:#F0A93B;--brand:#F0A93B;
     --buy:#3FB56B;--watch:#D3A53A;--pass:#DB5B4E;--g:#3FB56B;--y:#D3A53A;--r:#DB5B4E;--green:#3FB56B;--amber:#D3A53A;--red:#DB5B4E;
     --buy-bg:rgba(63,181,107,.14);--watch-bg:rgba(211,165,58,.16);--pass-bg:rgba(219,91,78,.14);
@@ -317,7 +333,7 @@ a{color:inherit}
 
 <div class="wrap">
   <section class="hero" style="padding-bottom:0">
-    <p class="eyebrow">Cobertura · 12 cidades de NJ</p>
+    <p class="eyebrow">Cobertura · 18 cidades de NJ</p>
     <h1>Onde estamos olhando em New Jersey.</h1>
     <p class="lead"><b>Clique numa cidade</b> para abrir o hub completo (mercado & tese, bairros/segurança/flood, impostos & leilões). O <b>property tax é o fator nº 1</b> — por isso cada cartão já mostra o efetivo real, a tese, o <b>rent control</b> e o risco de <b>flood/reavaliação</b>.</p>
     <div class="keys">
@@ -328,15 +344,7 @@ a{color:inherit}
     </div>
   </section>
 
-  <section>
-    <p class="grouplab">Essex &amp; vizinhas</p>
-    <div class="cities" id="essex"></div>
-  </section>
-
-  <section style="padding-top:6px">
-    <p class="grouplab">Fronteira NY · Gold Coast (Bergen + Hudson)</p>
-    <div class="cities" id="gold"></div>
-  </section>
+  <div id="grupos"></div>
 </div>
 
 <footer class="efoot"><div class="ewrap">
@@ -345,35 +353,28 @@ a{color:inherit}
   <div class="efcol"><div class="h">Analisar</div><a href="buy-hold.html">Buy &amp; Hold</a> · <a href="estrategias.html">Estratégias</a> · <a href="analisador.html">Analisador</a> · <a href="painel.html">Painel</a></div>
   <div class="efcol"><div class="h">Entender</div><a href="cidades.html">Cidades</a> · <a href="glossario.html">Glossário</a></div>
 </div>
-<div class="ewrap efbot">© 2026 IHouse · uso pessoal · dados verificados por workflows · 12 cidades · 94 casas · 137 leilões</div>
+<div class="ewrap efbot">© 2026 IHouse · uso pessoal · dados verificados por workflows · 18 cidades · 94 casas · 137 leilões</div>
 </footer>
 
-<script>
-  var ESSEX=[
-    {nm:'Newark',co:'Essex',tax:'1,845%',tese:'Appreciation',rc:'Teto menor(CPI,4%); owner-occ ≤4un isento',fl:'Reval só FY2027; South Ironbound com flood',note:'Menor imposto do grupo + momentum. Foco travado, hub completo (bairro a bairro).'},
-    {nm:'Irvington',co:'Essex',tax:'2,26%',tese:'Cash-flow',rc:'Chapter 472 (teto 4/3/2%)',fl:'Já reavaliada em 2025 → imposto assentado',note:'Muito 2–4 family, ~70% inquilinos. Sem choque de imposto à frente (reval feita).'},
-    {nm:'East Orange',co:'Essex',tax:'2,888%',tese:'Value-add',rc:'Sim (verificar por lote)',fl:'SEM reval — imposto previsível',note:'Imposto alto mas estável; trânsito Morris & Essex. Entrada por reforma/reposicionamento.'},
-    {nm:'Bloomfield',co:'Essex',tax:'2,603%',tese:'House-hack',rc:'1–4 family ISENTAS (aluguel a mercado)',fl:'Flood do Third River em pontos',note:'Isenção de rent control em 1–4 family favorece o house-hack; DD de flood por endereço.'},
-    {nm:'Elizabeth',co:'Union',tax:'2,072%',tese:'Cash-flow',rc:'Litígio + sunset em 2026 (instável)',fl:'Reval de 1977(!) + flood costeiro',note:'Perto do EWR/porto. 3 wildcards: rent control judicializado, reval antiquíssima e flood.'}
-  ];
-  var GOLD=[
-    {nm:'Fort Lee',co:'Bergen',tax:'1,891%',tese:'Appreciation',rc:'Teto 5% fixo; duplex isento',fl:'Reval FY2027; encosta (flood baixo)',note:'Vizinha da GWB/NYC. 2–4 family US$ 1M+; jogo de valorização, não de cash flow.'},
-    {nm:'Englewood',co:'Bergen',tax:'2,171%',tese:'Appreciation',rc:'Rent leveling — isenção estreita',fl:'Reval FY2026 ATIVA (risco de choque)',note:'Reavaliação em curso pode redistribuir a carga — subscrever com margem.'},
-    {nm:'Teaneck',co:'Bergen',tax:'2,250%',tese:'Appreciation',rc:'Sim',fl:'Reval feita (2024) = imposto assentado',note:'Demanda residencial forte (comunidade ortodoxa). Imposto já assentado.'},
-    {nm:'Hackensack',co:'Bergen',tax:'2,678%',tese:'Cash-flow',rc:'2-family FORA do rent control',fl:'Sede do county; sheriff Bergen aqui',note:'O cash-flow de Bergen. Downtown em requalificação; 2-family a mercado.'},
-    {nm:'Jersey City',co:'Hudson',tax:'1,919%',tese:'Appreciation',rc:'1–4 unidades ISENTO',fl:'~40% do território em flood; reval ~85%',note:'PATH para Manhattan. Preço alto; flood é o grande DD por endereço.'},
-    {nm:'Union City',co:'Hudson',tax:'1,997%',tese:'House-hack',rc:'2-family isento (3-family dentro)',fl:'Zone X (flood baixo); reassessment anual',note:'Densa e bem servida de transporte. Reavaliação todo ano mantém o imposto colado ao mercado.'},
-    {nm:'Bayonne',co:'Hudson',tax:'2,116%',tese:'House-hack',rc:'Só 5+ unidades no rent control',fl:'Flood da península; tax sale presencial',note:'Península entre NY e Newark Bay. 1–4 family a mercado; leilão de imposto é presencial.'}
-  ];
-  function card(c){ var slug=c.nm.toLowerCase().replace(/ /g,'-'); return '<a class="city" href="cidade-'+slug+'.html">'+
-    '<div class="r1"><span class="nm">'+c.nm+'</span><span class="co">'+c.co+' County</span></div>'+
+<script>/*CIDADES*/
+  var CIDADES=[{"nome": "Bloomfield", "slug": "bloomfield", "county": "Essex", "grupo": "essex", "lat": 40.8068, "lng": -74.1854, "tax": "2,603%", "tese": "House-hack", "note": "Isenção de rent control em 1–4 family favorece o house-hack; DD de flood por endereço.", "rc": "1–4 family ISENTAS (aluguel a mercado)", "fl": "Flood do Third River em pontos", "pesquisado": true}, {"nome": "East Orange", "slug": "east-orange", "county": "Essex", "grupo": "essex", "lat": 40.7673, "lng": -74.2049, "tax": "2,888%", "tese": "Value-add", "note": "Imposto alto mas estável; trânsito Morris & Essex. Entrada por reforma/reposicionamento.", "rc": "Sim (verificar por lote)", "fl": "SEM reval — imposto previsível", "pesquisado": true}, {"nome": "Elizabeth", "slug": "elizabeth", "county": "Union", "grupo": "essex", "lat": 40.6639, "lng": -74.2107, "tax": "2,072%", "tese": "Cash-flow", "note": "Perto do EWR/porto. 3 wildcards: rent control judicializado, reval antiquíssima e flood.", "rc": "Litígio + sunset em 2026 (instável)", "fl": "Reval de 1977(!) + flood costeiro", "pesquisado": true}, {"nome": "Irvington", "slug": "irvington", "county": "Essex", "grupo": "essex", "lat": 40.7323, "lng": -74.2291, "tax": "2,26%", "tese": "Cash-flow", "note": "Muito 2–4 family, ~70% inquilinos. Sem choque de imposto à frente (reval feita).", "rc": "Chapter 472 (teto 4/3/2%)", "fl": "Já reavaliada em 2025 → imposto assentado", "pesquisado": true}, {"nome": "Newark", "slug": "newark", "county": "Essex", "grupo": "essex", "lat": 40.7357, "lng": -74.1724, "tax": "1,845%", "tese": "Appreciation", "note": "Menor imposto do grupo + momentum. Foco travado, hub completo (bairro a bairro).", "rc": "Teto menor(CPI,4%); owner-occ ≤4un isento", "fl": "Reval só FY2027; South Ironbound com flood", "pesquisado": true}, {"nome": "West Orange", "slug": "west-orange", "county": "Essex", "grupo": "essex", "lat": 40.7889, "lng": -74.2555, "tax": "2,58%", "tese": "Appreciation", "note": "Novo hub. Colado no cluster Essex; +7,7%/5a, ticket mais alto.", "rc": "", "fl": "", "pesquisado": false}, {"nome": "Bayonne", "slug": "bayonne", "county": "Hudson", "grupo": "gold", "lat": 40.6687, "lng": -74.1143, "tax": "2,116%", "tese": "House-hack", "note": "Península entre NY e Newark Bay. 1–4 family a mercado; leilão de imposto é presencial.", "rc": "Só 5+ unidades no rent control", "fl": "Flood da península; tax sale presencial", "pesquisado": true}, {"nome": "Englewood", "slug": "englewood", "county": "Bergen", "grupo": "gold", "lat": 40.8929, "lng": -73.9726, "tax": "2,171%", "tese": "Appreciation", "note": "Reavaliação em curso pode redistribuir a carga — subscrever com margem.", "rc": "Rent leveling — isenção estreita", "fl": "Reval FY2026 ATIVA (risco de choque)", "pesquisado": true}, {"nome": "Fort Lee", "slug": "fort-lee", "county": "Bergen", "grupo": "gold", "lat": 40.8509, "lng": -73.9701, "tax": "1,891%", "tese": "Appreciation", "note": "Vizinha da GWB/NYC. 2–4 family US$ 1M+; jogo de valorização, não de cash flow.", "rc": "Teto 5% fixo; duplex isento", "fl": "Reval FY2027; encosta (flood baixo)", "pesquisado": true}, {"nome": "Hackensack", "slug": "hackensack", "county": "Bergen", "grupo": "gold", "lat": 40.8859, "lng": -74.0435, "tax": "2,678%", "tese": "Cash-flow", "note": "O cash-flow de Bergen. Downtown em requalificação; 2-family a mercado.", "rc": "2-family FORA do rent control", "fl": "Sede do county; sheriff Bergen aqui", "pesquisado": true}, {"nome": "Jersey City", "slug": "jersey-city", "county": "Hudson", "grupo": "gold", "lat": 40.7178, "lng": -74.0431, "tax": "1,919%", "tese": "Appreciation", "note": "PATH para Manhattan. Preço alto; flood é o grande DD por endereço.", "rc": "1–4 unidades ISENTO", "fl": "~40% do território em flood; reval ~85%", "pesquisado": true}, {"nome": "Teaneck", "slug": "teaneck", "county": "Bergen", "grupo": "gold", "lat": 40.8976, "lng": -74.016, "tax": "2,250%", "tese": "Appreciation", "note": "Demanda residencial forte (comunidade ortodoxa). Imposto já assentado.", "rc": "Sim", "fl": "Reval feita (2024) = imposto assentado", "pesquisado": true}, {"nome": "Union City", "slug": "union-city", "county": "Hudson", "grupo": "gold", "lat": 40.7795, "lng": -74.0238, "tax": "1,997%", "tese": "House-hack", "note": "Densa e bem servida de transporte. Reavaliação todo ano mantém o imposto colado ao mercado.", "rc": "2-family isento (3-family dentro)", "fl": "Zone X (flood baixo); reassessment anual", "pesquisado": true}, {"nome": "West New York", "slug": "west-new-york", "county": "Hudson", "grupo": "gold", "lat": 40.7877, "lng": -74.0144, "tax": "1,84%", "tese": "Cash-flow", "note": "Novo hub. Maior yield do grupo (6,7%) + imposto baixo; densa, ônibus/ferry pra NYC.", "rc": "", "fl": "", "pesquisado": false}, {"nome": "Linden", "slug": "linden", "county": "Union", "grupo": "union", "lat": 40.6217, "lng": -74.2462, "tax": "2,13%", "tese": "Equilíbrio", "note": "Novo hub. Imposto baixo pra Union; corredor NEC (trem pra Newark/NYC).", "rc": "", "fl": "", "pesquisado": false}, {"nome": "Plainfield", "slug": "plainfield", "county": "Union", "grupo": "union", "lat": 40.6132, "lng": -74.4292, "tax": "2,48%", "tese": "Desconto", "note": "Novo hub. Mercado lento (30 dias, 16% cortam preço) = espaço pra negociar; +10,8%/10a.", "rc": "", "fl": "", "pesquisado": false}, {"nome": "Rahway", "slug": "rahway", "county": "Union", "grupo": "union", "lat": 40.6073, "lng": -74.2835, "tax": "2,44%", "tese": "Transit", "note": "Novo hub. Estação NEC forte e centro em revitalização; equilíbrio yield/valorização.", "rc": "", "fl": "", "pesquisado": false}, {"nome": "Roselle", "slug": "roselle", "county": "Union", "grupo": "union", "lat": 40.6516, "lng": -74.2649, "tax": "2,65%", "tese": "Appreciation", "note": "Novo hub. Melhor valorização de 10 anos do grupo (+11,3%/ano); trem NJ Transit.", "rc": "", "fl": "", "pesquisado": false}];
+  var GRUPOS=[{"id": "essex", "titulo": "Essex &amp; vizinhas"}, {"id": "gold", "titulo": "Fronteira NY · Gold Coast (Bergen + Hudson)"}, {"id": "union", "titulo": "Union County · corredor Rahway–Plainfield"}];
+/*/CIDADES*/
+  function card(c){ var falta=!c.pesquisado;
+    return '<a class="city'+(falta?' wip':'')+'" href="cidade-'+c.slug+'.html">'+
+    '<div class="r1"><span class="nm">'+c.nome+'</span><span class="co">'+c.county+' County</span></div>'+
     '<div class="r2"><span class="tax">eff&nbsp;<b>'+c.tax+'</b></span><span class="tese" data-t="'+c.tese+'">'+c.tese+'</span></div>'+
-    '<div class="fact"><span class="fl">Rent control</span><span class="fv">'+c.rc+'</span></div>'+
-    '<div class="fact"><span class="fl">Flood / reval</span><span class="fv">'+c.fl+'</span></div>'+
+    '<div class="fact"><span class="fl">Rent control</span><span class="fv">'+(c.rc||'a pesquisar')+'</span></div>'+
+    '<div class="fact"><span class="fl">Flood / reval</span><span class="fv">'+(c.fl||'a pesquisar')+'</span></div>'+
     '<p class="note">'+c.note+'</p>'+
-    '<span class="open">abrir hub completo →</span></a>'; }
-  document.getElementById('essex').innerHTML = ESSEX.map(card).join('');
-  document.getElementById('gold').innerHTML  = GOLD.map(card).join('');
+    '<span class="open">'+(falta?'hub em construção →':'abrir hub completo →')+'</span></a>'; }
+  document.getElementById('grupos').innerHTML = GRUPOS.map(function(g,i){
+    var doGrupo = CIDADES.filter(function(c){ return c.grupo===g.id; });
+    if(!doGrupo.length) return '';
+    return '<section'+(i?' style="padding-top:6px"':'')+'>'+
+      '<p class="grouplab">'+g.titulo+'</p>'+
+      '<div class="cities">'+doGrupo.map(card).join('')+'</div></section>';
+  }).join('');
 </script>
 <script id="nav2js">
 // fecha um dropdown quando outro abre + fecha ao clicar fora

@@ -117,10 +117,15 @@ html,body{margin:0;height:100%;height:100dvh;background:var(--bg);color:var(--in
 </style>
 <style id="shell2">
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-/* ==== casca editorial: reescreve o tema dark antigo para o claro cinza ==== */
+/* ==== casca editorial: reescreve o tema dark antigo para o claro cinza ====
+   ATENCAO: toda variavel de cor que as paginas usam precisa ser redefinida
+   AQUI. --prose ficou de fora nesta migracao e as 12 paginas de cidade +
+   terrenos renderizaram o corpo do texto em #C6D2E2 (cor do tema escuro)
+   sobre fundo claro: 1,53:1 de contraste, ilegivel, e ninguem viu por semanas.
+   Escala: ink #1A1C21 > prose #3F444D > dim #5C616B > dimmer #9297A0. */
 :root{
   --bg:#E4E6E9; --panel:#F6F7F9; --p2:#EDEEF1; --panel2:#EDEEF1; --surface:#F6F7F9; --surface2:#EDEEF1;
-  --line:#D4D7DC; --ink:#1A1C21; --dim:#5C616B; --dimmer:#9297A0; --faint:#9297A0;
+  --line:#D4D7DC; --ink:#1A1C21; --prose:#3F444D; --dim:#5C616B; --dimmer:#9297A0; --faint:#9297A0;
   --accent:#1A1C21; --accent-ink:#F2F3F5;
   --buy:#5F9366; --watch:#C2A24A; --pass:#C0655A;
   --g:#5F9366; --y:#C2A24A; --r:#C0655A;
@@ -145,8 +150,8 @@ a{color:inherit}
 .efoot .ewrap{max-width:1200px;margin:0 auto;padding:0 26px;display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:flex-start;font-size:.84rem}
 .efoot a{color:#C4C8CE;text-decoration:none}.efoot a:hover{color:#fff}
 .efoot .eflogo{font-weight:900;line-height:.84;color:#EDEEF1;font-size:.95rem}
-.efoot .efcol .h{color:#72767F;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700}
-.efoot .efbot{border-top:1px solid rgba(255,255,255,.1);margin-top:22px;padding-top:14px;font-size:.75rem;color:#72767F}
+.efoot .efcol .h{color:#85858D;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700}
+.efoot .efbot{border-top:1px solid rgba(255,255,255,.1);margin-top:22px;padding-top:14px;font-size:.75rem;color:#85858D}
 @media(max-width:720px){.elinks{display:none}}
 </style>
 <style id="mapfix">
@@ -351,10 +356,15 @@ body.cardopen .hud{opacity:0;pointer-events:none}
 .hmodal .hcta .primary{background:#F0A93B;color:#141419}
 .hmodal .hcta .ghost{background:#1B1B22;border:1px solid rgba(255,255,255,.1);color:#E7E7EA}
 @media(max-width:640px){
-  /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) ===== */
+  /* ===== re-tema DARK app no mobile (reverte a casca clara do shell2) =====
+     O site tem DOIS temas: claro (build_shell.py, desktop) e este escuro
+     (mobile <=640px). Toda variavel de cor precisa existir nos DOIS — se uma
+     faltar aqui, ela vaza do tema claro e some no fundo escuro (e vice-versa).
+     Ja aconteceu com --prose duas vezes, em direcoes opostas.
+     testes.py trava isso: compara os dois :root e falha se divergirem. */
   :root{
     --bg:#0C0C10;--panel:#141419;--p2:#1B1B22;--panel2:#1B1B22;--surface:#141419;--surface2:#1B1B22;--s:#141419;
-    --line:rgba(255,255,255,.09);--ink:#F1F1EE;--dim:#9A9AA2;--dimmer:#74747C;--faint:#74747C;--mut:#9A9AA2;
+    --line:rgba(255,255,255,.09);--ink:#F1F1EE;--prose:#D6D6DA;--dim:#9A9AA2;--dimmer:#74747C;--faint:#74747C;--mut:#9A9AA2;
     --accent:#F0A93B;--accent-ink:#141419;--acc:#F0A93B;--brand:#F0A93B;
     --buy:#3FB56B;--watch:#D3A53A;--pass:#DB5B4E;--g:#3FB56B;--y:#D3A53A;--r:#DB5B4E;--green:#3FB56B;--amber:#D3A53A;--red:#DB5B4E;
     --buy-bg:rgba(63,181,107,.14);--watch-bg:rgba(211,165,58,.16);--pass-bg:rgba(219,91,78,.14);
@@ -522,7 +532,7 @@ window.linkAnuncio=function(addr,url){
 </div></header>
 <div id="map"></div>
 <div class="hud"><div class="brand min" id="brand">
-<button class="bhead" id="bhead" type="button" aria-expanded="false"><span class="bico"><svg viewBox="0 0 24 24"><path d="M3.5 10.6 12 3.4l8.5 7.2"/><path d="M5.6 9.6V20.6h12.8V9.6"/><path d="M10 20.6v-5.2h4v5.2"/></svg></span><span class="bttl"><b>Mapa das Casas</b><em id="bsum">todas as 12 cidades</em></span><span class="bchev"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></button>
+<button class="bhead" id="bhead" type="button" aria-expanded="false"><span class="bico"><svg viewBox="0 0 24 24"><path d="M3.5 10.6 12 3.4l8.5 7.2"/><path d="M5.6 9.6V20.6h12.8V9.6"/><path d="M10 20.6v-5.2h4v5.2"/></svg></span><span class="bttl"><b>Mapa das Casas</b><em id="bsum">todas as cidades</em></span><span class="bchev"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></button>
 <div class="bbody">
 <select class="citysel" id="citysel" title="Selecionar cidade"></select>
 <div class="counts" id="counts"></div><div class="cmerc" id="cmerc"></div><button class="stbtn" onclick="document.getElementById('modal').classList.add('open')">Estratégias</button>
@@ -628,7 +638,7 @@ function openPanel(d){
  document.getElementById('panel').classList.add('open');
 }
 let filter='all', selectedCity='all';
-const CITIES = [{"name": "Newark", "lat": 40.7357, "lng": -74.1724, "county": "Essex", "tax": "1,845%", "tese": "Appreciation", "note": "Menor imposto do grupo + momentum; hub completo."}, {"name": "Irvington", "lat": 40.7323, "lng": -74.2291, "county": "Essex", "tax": "2,26%", "tese": "Cash-flow", "note": "Já reavaliada (2025) → imposto assentado."}, {"name": "East Orange", "lat": 40.7673, "lng": -74.2049, "county": "Essex", "tax": "2,888%", "tese": "Value-add", "note": "Imposto alto mas SEM reval; trânsito Morris & Essex."}, {"name": "Bloomfield", "lat": 40.8068, "lng": -74.1854, "county": "Essex", "tax": "2,603%", "tese": "House-hack", "note": "1–4 family isentas de rent control; flood Third River."}, {"name": "Elizabeth", "lat": 40.6639, "lng": -74.2107, "county": "Union", "tax": "2,072%", "tese": "Cash-flow", "note": "Perto do EWR/porto; 3 wildcards (RC + reval 1977 + flood)."}, {"name": "Fort Lee", "lat": 40.8509, "lng": -73.9701, "county": "Bergen", "tax": "1,891%", "tese": "Appreciation", "note": "GWB; 2–4 family US$ 1M+; duplex isento; reval FY2027."}, {"name": "Englewood", "lat": 40.8929, "lng": -73.9726, "county": "Bergen", "tax": "2,171%", "tese": "Appreciation", "note": "Reval FY2026 ativa; isenção de rent leveling estreita."}, {"name": "Teaneck", "lat": 40.8976, "lng": -74.016, "county": "Bergen", "tax": "2,250%", "tese": "Appreciation", "note": "Reval feita (2024) = imposto assentado; demanda ortodoxa."}, {"name": "Hackensack", "lat": 40.8859, "lng": -74.0435, "county": "Bergen", "tax": "2,678%", "tese": "Cash-flow", "note": "O cash-flow de Bergen; 2-family fora do rent control."}, {"name": "Jersey City", "lat": 40.7178, "lng": -74.0431, "county": "Hudson", "tax": "1,919%", "tese": "Appreciation", "note": "PATH; 1–4 un. isento de rent control; 40% em flood."}, {"name": "Union City", "lat": 40.7795, "lng": -74.0238, "county": "Hudson", "tax": "1,997%", "tese": "House-hack", "note": "2-family isento (3-family dentro); reassessment anual."}, {"name": "Bayonne", "lat": 40.6687, "lng": -74.1143, "county": "Hudson", "tax": "2,116%", "tese": "House-hack", "note": "Só 5+ un. no rent control; tax sale presencial; flood península."}, {"name": "West New York", "lat": 40.7877, "lng": -74.0144, "county": "Hudson", "tax": "1,84%", "tese": "Cash-flow", "note": "Novo hub. Maior yield do grupo (6,7%) + imposto baixo; densa, ônibus/ferry pra NYC.", "hub": true}, {"name": "Roselle", "lat": 40.6516, "lng": -74.2649, "county": "Union", "tax": "2,65%", "tese": "Appreciation", "note": "Novo hub. Melhor valorização de 10 anos do grupo (+11,3%/ano); trem NJ Transit.", "hub": true}, {"name": "Plainfield", "lat": 40.6132, "lng": -74.4292, "county": "Union", "tax": "2,48%", "tese": "Desconto", "note": "Novo hub. Mercado lento (30 dias, 16% cortam preço) = espaço pra negociar; +10,8%/10a.", "hub": true}, {"name": "Linden", "lat": 40.6217, "lng": -74.2462, "county": "Union", "tax": "2,13%", "tese": "Equilíbrio", "note": "Novo hub. Imposto baixo pra Union; corredor NEC (trem pra Newark/NYC).", "hub": true}, {"name": "Rahway", "lat": 40.6073, "lng": -74.2835, "county": "Union", "tax": "2,44%", "tese": "Transit", "note": "Novo hub. Estação NEC forte e centro em revitalização; equilíbrio yield/valorização.", "hub": true}, {"name": "West Orange", "lat": 40.7889, "lng": -74.2555, "county": "Essex", "tax": "2,58%", "tese": "Appreciation", "note": "Novo hub. Colado no cluster Essex; +7,7%/5a, ticket mais alto.", "hub": true}];
+const CITIES = [{"name": "Bloomfield", "lat": 40.8068, "lng": -74.1854, "county": "Essex", "tax": "2,603%", "tese": "House-hack", "note": "Isenção de rent control em 1–4 family favorece o house-hack; DD de flood por endereço."}, {"name": "East Orange", "lat": 40.7673, "lng": -74.2049, "county": "Essex", "tax": "2,888%", "tese": "Value-add", "note": "Imposto alto mas estável; trânsito Morris & Essex. Entrada por reforma/reposicionamento."}, {"name": "Elizabeth", "lat": 40.6639, "lng": -74.2107, "county": "Union", "tax": "2,072%", "tese": "Cash-flow", "note": "Perto do EWR/porto. 3 wildcards: rent control judicializado, reval antiquíssima e flood."}, {"name": "Irvington", "lat": 40.7323, "lng": -74.2291, "county": "Essex", "tax": "2,26%", "tese": "Cash-flow", "note": "Muito 2–4 family, ~70% inquilinos. Sem choque de imposto à frente (reval feita)."}, {"name": "Newark", "lat": 40.7357, "lng": -74.1724, "county": "Essex", "tax": "1,845%", "tese": "Appreciation", "note": "Menor imposto do grupo + momentum. Foco travado, hub completo (bairro a bairro)."}, {"name": "West Orange", "lat": 40.7889, "lng": -74.2555, "county": "Essex", "tax": "2,58%", "tese": "Appreciation", "note": "Novo hub. Colado no cluster Essex; +7,7%/5a, ticket mais alto.", "hub": true}, {"name": "Bayonne", "lat": 40.6687, "lng": -74.1143, "county": "Hudson", "tax": "2,116%", "tese": "House-hack", "note": "Península entre NY e Newark Bay. 1–4 family a mercado; leilão de imposto é presencial."}, {"name": "Englewood", "lat": 40.8929, "lng": -73.9726, "county": "Bergen", "tax": "2,171%", "tese": "Appreciation", "note": "Reavaliação em curso pode redistribuir a carga — subscrever com margem."}, {"name": "Fort Lee", "lat": 40.8509, "lng": -73.9701, "county": "Bergen", "tax": "1,891%", "tese": "Appreciation", "note": "Vizinha da GWB/NYC. 2–4 family US$ 1M+; jogo de valorização, não de cash flow."}, {"name": "Hackensack", "lat": 40.8859, "lng": -74.0435, "county": "Bergen", "tax": "2,678%", "tese": "Cash-flow", "note": "O cash-flow de Bergen. Downtown em requalificação; 2-family a mercado."}, {"name": "Jersey City", "lat": 40.7178, "lng": -74.0431, "county": "Hudson", "tax": "1,919%", "tese": "Appreciation", "note": "PATH para Manhattan. Preço alto; flood é o grande DD por endereço."}, {"name": "Teaneck", "lat": 40.8976, "lng": -74.016, "county": "Bergen", "tax": "2,250%", "tese": "Appreciation", "note": "Demanda residencial forte (comunidade ortodoxa). Imposto já assentado."}, {"name": "Union City", "lat": 40.7795, "lng": -74.0238, "county": "Hudson", "tax": "1,997%", "tese": "House-hack", "note": "Densa e bem servida de transporte. Reavaliação todo ano mantém o imposto colado ao mercado."}, {"name": "West New York", "lat": 40.7877, "lng": -74.0144, "county": "Hudson", "tax": "1,84%", "tese": "Cash-flow", "note": "Novo hub. Maior yield do grupo (6,7%) + imposto baixo; densa, ônibus/ferry pra NYC.", "hub": true}, {"name": "Linden", "lat": 40.6217, "lng": -74.2462, "county": "Union", "tax": "2,13%", "tese": "Equilíbrio", "note": "Novo hub. Imposto baixo pra Union; corredor NEC (trem pra Newark/NYC).", "hub": true}, {"name": "Plainfield", "lat": 40.6132, "lng": -74.4292, "county": "Union", "tax": "2,48%", "tese": "Desconto", "note": "Novo hub. Mercado lento (30 dias, 16% cortam preço) = espaço pra negociar; +10,8%/10a.", "hub": true}, {"name": "Rahway", "lat": 40.6073, "lng": -74.2835, "county": "Union", "tax": "2,44%", "tese": "Transit", "note": "Novo hub. Estação NEC forte e centro em revitalização; equilíbrio yield/valorização.", "hub": true}, {"name": "Roselle", "lat": 40.6516, "lng": -74.2649, "county": "Union", "tax": "2,65%", "tese": "Appreciation", "note": "Novo hub. Melhor valorização de 10 anos do grupo (+11,3%/ano); trem NJ Transit.", "hub": true}];
 const countFor=n=>DEALS.filter(d=>d.city===n).length;
 
 // pins das casas
@@ -690,7 +700,7 @@ function refreshCounts(){
  const ds=selectedCity==='all'?DEALS:DEALS.filter(d=>d.city===selectedCity);
  const c={buy:0,watch:0,pass:0}; ds.forEach(d=>c[d.sem]++); const st=ds.filter(d=>d.star).length;
  document.getElementById('bsum').textContent = selectedCity==='all'
-   ? `${DEALS.length} casas · 12 cidades`
+   ? `${DEALS.length} casas · ${CITIES.length} cidades`
    : `${selectedCity} · ${ds.length?ds.length+' casas':'hub de pesquisa'}`;
  document.getElementById('counts').innerHTML= ds.length?(
   `<span><span class="dot" style="background:var(--buy)"></span><b>${c.buy}</b></span>`+
